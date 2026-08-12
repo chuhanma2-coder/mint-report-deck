@@ -1,0 +1,7 @@
+interface:
+  display_name: "Mint 中文汇报"
+  short_description: "将粗略笔记生成统一、可编辑、可交互的 Mint HTML 汇报"
+  brand_color: "#1C7866"
+  default_prompt: "Use $mint-report-deck to turn my rough Chinese notes or attachments into a source-grounded, editable Mint HTML report."
+policy:
+  allow_implicit_invocation: true

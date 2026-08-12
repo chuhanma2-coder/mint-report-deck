@@ -1,0 +1,14 @@
+{
+  "version": "1.1.0",
+  "terms": {
+    "赋能": "require_definition_or_source",
+    "抓手": "require_actor_action_result",
+    "闭环": "require_actor_action_result",
+    "体系化": "require_concrete_scope",
+    "战略期权": "require_source_and_definition",
+    "深刻理解": "replace_with_observable_fact",
+    "全面提升": "require_metric_or_scope",
+    "显著改善": "require_metric_or_evidence"
+  },
+  "preferredPattern": ["object", "change_or_action", "evidence", "implication", "owner_or_validation"]
+}

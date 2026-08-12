@@ -1,0 +1,45 @@
+{
+  "version": "2.1",
+  "principle": "select a visual from the analytical question, data shape and evidence contract; never from page number or visual variety",
+  "requiredChartFields": ["labels", "values", "unit", "period", "sourceRefs"],
+  "decisionOrder": [
+    "validate evidence and data shape",
+    "identify the question and relationship",
+    "choose the lowest-complexity truthful visual",
+    "apply label-density and series-count constraints",
+    "fall back to a table or takeaway when a chart would mislead"
+  ],
+  "catalog": {
+    "trend": ["line", "area", "small-multiples"],
+    "category-comparison": ["bar-horizontal", "column", "dot-plot"],
+    "part-to-whole": ["donut", "stacked-bar", "100%-stacked-bar"],
+    "distribution": ["histogram", "box-plot"],
+    "correlation": ["scatter", "bubble"],
+    "matrix": ["heatmap"],
+    "flow": ["process", "sankey", "funnel"],
+    "change-bridge": ["waterfall"],
+    "target": ["bullet", "progress"],
+    "time-plan": ["timeline", "roadmap", "gantt"],
+    "hierarchy": ["tree", "treemap", "layered-architecture"],
+    "roles": ["swimlane", "responsibility-matrix"],
+    "exact-values": ["table", "kpi"],
+    "geography": ["map", "ranked-bar"],
+    "causality": ["causal-chain", "problem-tree"]
+  },
+  "hardGuards": {
+    "donut": "one part-to-whole series, positive values, 2-5 parts only",
+    "line": "ordered time or another naturally ordered continuous axis",
+    "heatmap": "two categorical dimensions and one comparable numeric measure",
+    "scatter": "paired x/y observations; correlation is not causation",
+    "map": "geographic comparison only; use ranked bars when precise comparison matters",
+    "funnel": "ordered stages sharing a valid cohort and denominator",
+    "sankey": "weighted flows whose source and destination totals reconcile",
+    "waterfall": "additive contributions that reconcile opening to closing value",
+    "chart": "confirmed numeric evidence with labels, units, period and sourceRefs"
+  },
+  "fallback": {
+    "component": "table",
+    "secondary": "takeaway",
+    "warning": "No trustworthy chart contract or compatible data shape; do not fabricate a visual."
+  }
+}

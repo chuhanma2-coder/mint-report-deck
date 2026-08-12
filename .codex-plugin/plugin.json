@@ -1,0 +1,8 @@
+{
+  "name": "mint-report-deck",
+  "version": "0.1.0",
+  "description": "Generate source-grounded, editable and interactive Mint HTML reports from rough Chinese notes or attachments.",
+  "author": { "name": "Mint project team" },
+  "license": "MIT",
+  "skills": "./skills/"
+}

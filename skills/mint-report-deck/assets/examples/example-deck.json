@@ -1,0 +1,66 @@
+{
+  "id": "mint-skill-public-example",
+  "version": 1,
+  "title": "项目进展与下一步",
+  "subtitle": "从已完成事项，走向可验证交付",
+  "date": "2026.08",
+  "confidentiality": "示例材料",
+  "slides": [
+    {
+      "type": "cover",
+      "chapter": "项目汇报",
+      "titleLines": ["项目进展，", "与下一步安排"],
+      "subtitle": "从已完成事项，走向可验证交付",
+      "meta": ["示例材料", "2026.08"],
+      "visual": "phone-card"
+    },
+    {
+      "type": "process",
+      "chapter": "推进路径",
+      "titleLines": ["工作不止停留在完成，", "还要走到结果验证"],
+      "lead": "每个阶段都对应明确输入、行动和交付结果。",
+      "focusIndex": 2,
+      "items": [
+        {"title": "确认目标", "detail": "明确汇报对象与需要推动的决定。"},
+        {"title": "核对事实", "detail": "区分事实、假设、冲突与不确定信息。"},
+        {"title": "形成判断", "detail": "围绕同一问题组织证据与结论。"},
+        {"title": "落实行动", "detail": "明确责任人、时间和验证指标。"},
+        {"title": "跟踪结果", "detail": "记录结果并形成下一轮输入。"}
+      ],
+      "source": "来源：公开示例数据"
+    },
+    {
+      "type": "chart",
+      "chapter": "结果观察",
+      "titleLines": ["处理时长连续下降，", "最近两期改善趋稳"],
+      "lead": "点击图例可隐藏系列，拖动滑杆可改变观察窗口，悬停查看精确值。",
+      "chart": {
+        "title": "示例处理时长",
+        "labels": ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"],
+        "unit": "小时",
+        "period": "示例八周",
+        "window": 6,
+        "sourceRefs": ["public-example-01"],
+        "series": [
+          {"name": "实际", "type": "bar", "values": [42, 39, 35, 31, 28, 25, 24, 23]},
+          {"name": "目标", "type": "line", "values": [36, 35, 34, 31, 29, 27, 25, 23]}
+        ]
+      },
+      "source": "来源：虚构示例，仅用于展示交互"
+    },
+    {
+      "type": "decision",
+      "chapter": "需要决策",
+      "titleLines": ["下一阶段聚焦一项试点，", "用真实结果决定是否扩展"],
+      "lead": "先控制范围和风险，再根据验证结果决定投入。",
+      "decision": "批准在一个明确场景中开展四周试点，并以结果指标复盘。",
+      "why": ["目标和责任人已明确。", "过程可回退，风险范围可控。"],
+      "actions": [
+        {"owner": "业务 Owner", "action": "确认试点范围与成功标准", "time": "第 1 周"},
+        {"owner": "项目团队", "action": "执行并记录过程数据", "time": "第 2–3 周"},
+        {"owner": "评审组", "action": "复盘结果并决定是否推广", "time": "第 4 周"}
+      ],
+      "source": "来源：公开示例内容"
+    }
+  ]
+}

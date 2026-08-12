@@ -1,0 +1,49 @@
+# Controlled relationship and component contract V2.1
+
+Select a visual from the business question, evidence contract and data shape. Page number, visual variety, and the presence of isolated numbers never select a chart.
+
+## Chart evidence contract
+
+Every quantitative visual requires aligned labels and values, unit, period, statistical object, and `sourceRefs`. Missing or conflicting fields produce `needs-review`; they are never repaired by inference.
+
+## Controlled visual catalog
+
+| Analytical question | Preferred components | Required shape |
+| --- | --- | --- |
+| Trend and turning point | line, area, small-multiples | ordered time series |
+| Category comparison | horizontal bar, column, dot plot | categories on a common measure |
+| Part-to-whole | donut, stacked bar, 100% stacked bar | positive parts of one or more valid wholes |
+| Distribution | histogram, box plot | observations or valid bins/quantiles |
+| Association | scatter, bubble | paired x/y observations; optional third magnitude |
+| Two-dimensional intensity | heatmap | complete row-by-column numeric matrix |
+| Ordered conversion | funnel | same cohort and denominator across ordered stages |
+| Weighted movement | Sankey | reconciled weighted source-destination links |
+| Additive change | waterfall | contributions reconcile opening to closing value |
+| Actual versus target | bullet, progress | confirmed actual and target |
+| Time plan | timeline, roadmap, Gantt | milestones or tasks with dates/durations |
+| Geography | map, ranked bar | confirmed geographic key and measure |
+| Exact value or mapping | table, KPI | precise values or lookup relationships |
+| Sequence | process, stage-gate | ordered actions, not decorative numbers |
+| Cause | causal chain, problem tree | supported causal or hypothesis structure |
+| Roles | swimlane, responsibility matrix | actors and responsibilities |
+| Hierarchy | tree, treemap, layered architecture | parent-child or nested quantity structure |
+
+## Hard guards
+
+- Use a donut only for one positive whole with 2-5 parts.
+- Use a line only for a naturally ordered continuous axis, normally time.
+- Use a heatmap only when every cell uses one comparable scale.
+- Use a funnel only for the same cohort; independent stage totals are not a funnel.
+- Use a Sankey only when link weights reconcile with node totals.
+- Use a waterfall only when contributions reconcile opening and closing values.
+- A scatter plot can show association but must not state causation without evidence.
+- Prefer ranked bars over maps when precise comparison is more important than location.
+- Prefer a table when the audience must read exact values.
+
+## Presentation and interaction
+
+Formal slides show only report content, concise sources, and unobtrusive navigation. Authoring warnings such as “no data, no chart,” component names, or template instructions belong in QA/editor mode and must not appear on the slide.
+
+Charts may support presenter interaction when it helps explanation: hover for exact value, click to isolate a series or row, drag to change a time window, and click a region/category to update an insight panel. Interaction must not alter the underlying data or the printed final state.
+
+Use a restrained 280-450 ms cross-fade with no large spatial movement between pages. Respect `prefers-reduced-motion`. Do not use flip, cube, bounce, or decorative parallax transitions in leadership reports.
