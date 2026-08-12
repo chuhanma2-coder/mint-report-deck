@@ -14,9 +14,10 @@
 Codex 重新启动后即可使用。也可以在终端安装：
 
 ```bash
-python ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo chuhanma2-coder/mint-report-deck \
-  --path skills/mint-report-deck
+  --path skills/mint-report-deck \
+  --method git
 ```
 
 ## 日常使用
