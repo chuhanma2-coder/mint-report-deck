@@ -1,0 +1,12 @@
+{
+  "schemaVersion":"0.3","id":"three-section-consistency","version":1,"title":"三部分完整汇报","pageBudget":6,
+  "deckPlan":{"narrativeArc":["context","evidence","action"],"introFamily":"section-intro","sections":[{"id":"S1","title":"业务策略","accentTone":"jade"},{"id":"S2","title":"牌照路径","accentTone":"blue"},{"id":"S3","title":"风险与行动","accentTone":"copper"}]},
+  "slides":[
+    {"type":"section-intro","sectionId":"S1","pageRole":"section-intro","introFamily":"section-intro","chapter":"01","sectionNumber":"01","sectionTitle":"业务策略","sectionClaim":"先形成可验证业务，再扩大产品范围","titleLines":["业务策略"],"sourceRefs":["USER:1"]},
+    {"type":"statement","sectionId":"S1","pageRole":"claim","chapter":"业务策略","titleLines":["业务先验证生态，","再评估现金产品"],"statementLines":["围绕核心企业数据形成可验证业务"],"support":["保留事实边界"],"sourceRefs":["USER:2"]},
+    {"type":"section-intro","sectionId":"S2","pageRole":"section-intro","introFamily":"section-intro","chapter":"02","sectionNumber":"02","sectionTitle":"牌照路径","sectionClaim":"业务经营与牌照升级同步验证","titleLines":["牌照路径"],"sourceRefs":["USER:3"]},
+    {"type":"timeline","sectionId":"S2","pageRole":"relationship","chapter":"牌照路径","titleLines":["牌照按监管节点，","逐步进入下一阶段"],"items":[{"time":"当前","title":"NOC","detail":"第一道审批"},{"time":"其后","title":"注册","detail":"完成公司注册"},{"time":"运营期","title":"DRB","detail":"连续运营"}],"sourceRefs":["USER:4"]},
+    {"type":"section-intro","sectionId":"S3","pageRole":"section-intro","introFamily":"section-intro","chapter":"03","sectionNumber":"03","sectionTitle":"风险与行动","sectionClaim":"把关键风险转化为管理层动作","titleLines":["风险与行动"],"sourceRefs":["USER:5"]},
+    {"type":"risk-spotlight","sectionId":"S3","pageRole":"risk","chapter":"风险与行动","titleLines":["正式协议尚未签署，","可能影响监管真实性审核"],"risk":{"label":"关键风险","judgment":"合作真实性证据仍不充分","severity":"高","evidence":["目前仅有意向材料"],"impacts":["可能影响申报审核"],"actions":["尽快签署正式协议"]},"sourceRefs":["USER:6"]}
+  ]
+}

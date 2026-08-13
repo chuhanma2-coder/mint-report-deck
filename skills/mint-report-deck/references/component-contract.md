@@ -30,6 +30,8 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 | Front-middle-back or ecosystem layers | architecture-brief | 3-5 layers with explicit entities and roles |
 | Two parallel evolution paths | dual-track-roadmap | exactly two tracks with ordered stages |
 | Management actions | decision, action banner | action, owner, time and expected result |
+| Business capability handoff | capability-chain | 3–5 stages with entities, capabilities and direction |
+| Material risk judgment | risk-spotlight | concise judgment, evidence, impact and action |
 
 ## Hard guards
 
@@ -45,6 +47,9 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 - A numbered list is not a process unless the items form a real sequence.
 - Architecture layers do not require invented outputs. Show only supplied entities, roles and relationships.
 - Page recipes are selected from content, not assigned to fixed page numbers.
+- Use a table only for exact lookup or cell-by-cell comparison. Never use a wide table as the default expression for a business chain.
+- Render entity names, monetary values and decisions as primary anchors; explanations are secondary.
+- Reserve at least 55% of the usable body for the primary relationship visual.
 
 ## Presentation and interaction
 

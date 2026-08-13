@@ -25,8 +25,9 @@ export function selectComponent(page) {
   }
   if (r === "numeric-matrix") return result("heatmap", "两个分类维度共享同一数值尺度");
   const routes = {
-    "front-middle-back": ["architecture-brief", "前台—中台—后台是分层业务架构"],
-    hierarchy: ["architecture-brief", "父子或层级关系"],
+    "front-middle-back": ["capability-chain", "前台—中台—后台按能力与交接方向阅读"],
+    "capability-handoff": ["capability-chain", "主体通过能力交接共同形成业务结果"],
+    hierarchy: ["architecture-brief", "严格父子或层级归属关系"],
     sequence: page.hasRealOrder ? ["process", "输入—处理—输出或真实阶段顺序"] : ["statement", "不存在可证实的先后关系"],
     time: ["timeline", "单轨时间或阶段演进"],
     parallel: ["dual-track-roadmap", "两条并行演进路径"],
@@ -35,6 +36,8 @@ export function selectComponent(page) {
     matrix: ["matrix", "两个分类维度的交叉关系"],
     "exact-values": ["table", "需要读取精确文字或数值"],
     action: ["decision", "决策、动作、Owner 与时间应突出"],
+    risk: ["risk-spotlight", "重要风险需要独立判断、影响和行动"],
+    section: ["section-intro", "整份汇报的统一章节引言"],
     cause: ["process", "受支持的因果链按阅读顺序表达"],
     media: ["media", "图像或视频是主要证据"],
     opening: ["cover", "完整多页材料的封面"],

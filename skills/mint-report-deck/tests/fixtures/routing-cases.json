@@ -1,5 +1,5 @@
 [
-  {"name":"front-middle-back","input":{"relationship":"front-middle-back"},"expected":"architecture-brief"},
+  {"name":"front-middle-back","input":{"relationship":"front-middle-back"},"expected":"capability-chain"},
   {"name":"ordinal-not-process","input":{"relationship":"sequence","numbersAreOrdinal":true,"hasRealOrder":false},"expected":"statement"},
   {"name":"real-process","input":{"relationship":"sequence","hasRealOrder":true},"expected":"process"},
   {"name":"single-roadmap","input":{"relationship":"time"},"expected":"timeline"},
@@ -10,5 +10,7 @@
   {"name":"exact-values","input":{"relationship":"exact-values"},"expected":"table"},
   {"name":"action","input":{"relationship":"action"},"expected":"decision"},
   {"name":"valid-trend","input":{"relationship":"trend","numericEvidence":{"labels":["1月","2月"],"values":[1,2],"unit":"户","period":"2026Q1","subject":"客户数","sourceRefs":["S1"],"orderedTime":true}},"expected":"chart:line"},
-  {"name":"missing-chart-evidence","input":{"relationship":"quantity","numericEvidence":{"labels":["A"],"values":[1]}},"expected":"needs-review"}
+  {"name":"missing-chart-evidence","input":{"relationship":"quantity","numericEvidence":{"labels":["A"],"values":[1]}},"expected":"needs-review"},
+  {"name":"material-risk","input":{"relationship":"risk"},"expected":"risk-spotlight"},
+  {"name":"section-opening","input":{"relationship":"section"},"expected":"section-intro"}
 ]

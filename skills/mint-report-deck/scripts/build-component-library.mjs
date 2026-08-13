@@ -41,7 +41,7 @@ function addChrome(slide, chapter, page) {
   rule(slide, 60, 674, 1160, C.line, 1);
   textbox(slide, "brand", "mint", 60, 680, 90, 24, 16, "42B879", true, sans);
   textbox(slide, "source", "来源：组件母版示例，生成材料时替换", 430, 680, 430, 22, 9, C.muted, false, sans, "center");
-  textbox(slide, "footer-page", `${String(page).padStart(2, "0")} / 15`, 1130, 680, 90, 22, 9, C.muted, false, sans, "right");
+  textbox(slide, "footer-page", `${String(page).padStart(2, "0")} / 18`, 1130, 680, 90, 22, 9, C.muted, false, sans, "right");
 }
 function addTitle(slide, title, lead = "") {
   textbox(slide, "page-title", title, 60, 70, 1160, 66, 30, C.ink, true, serif);
@@ -58,7 +58,7 @@ function addCard(slide, name, left, top, width, height, title, detail, accent = 
 const p = Presentation.create({ slideSize: { width: 1280, height: 720 } });
 const master = p.masters.add("Mint Formal Master");
 
-const recipeNames = ["封面", "管理层总览", "三层合作架构", "双轨路线图", "横向流程", "时间轴", "角色泳道", "方案对比", "二维矩阵", "KPI 与精确表格", "数据图表", "风险行动 Owner", "管理层决策", "章节页", "结尾页"];
+const recipeNames = ["封面", "管理层总览", "三层合作架构", "双轨路线图", "横向流程", "时间轴", "角色泳道", "方案对比", "二维矩阵", "KPI 与精确表格", "数据图表", "风险行动 Owner", "管理层决策", "能力链路", "风险聚焦", "资金决策", "章节页", "结尾页"];
 const layouts = new Map();
 for (const name of recipeNames) {
   const layout = p.layouts.add(`Mint · ${name}`);
@@ -79,7 +79,7 @@ function slideFor(name, page, chapter = "MINT · COMPONENT LIBRARY") {
 {
   const s = p.slides.add(); s.setLayout(layouts.get("封面")); s.background.fill = C.forest;
   shape(s, "cover-light-panel", "rect", 760, 0, 520, 720, C.ivory);
-  textbox(s, "cover-eyebrow", "MINT · REPORT SYSTEM V0.2", 70, 78, 500, 30, 13, C.mint, true);
+  textbox(s, "cover-eyebrow", "MINT · REPORT SYSTEM V0.3", 70, 78, 500, 30, 13, C.mint, true);
   textbox(s, "cover-title", "Mint 汇报组件母版库", 70, 160, 650, 95, 42, C.paper, true, serif);
   textbox(s, "cover-subtitle", "从事实和逻辑出发，生成可编辑 PPTX 与互动 HTML", 70, 270, 610, 70, 20, "DCECE5", false, sans);
   rule(s, 70, 585, 610, "3D6B61", 1); textbox(s, "cover-meta", "16:9  ·  中文管理层材料  ·  2026.08", 70, 605, 600, 28, 12, C.mint, true);
@@ -160,12 +160,40 @@ function slideFor(name, page, chapter = "MINT · COMPONENT LIBRARY") {
   const s=slideFor("管理层决策",13,"决策与下一步");addTitle(s,"管理层只需回答一个决策问题","行动项比背景信息更醒目。");shape(s,"decision-main","rect",60,190,650,390,C.forest);addLabel(s,"DECISION",95,220,160,C.mint);textbox(s,"decision-copy","是否批准进入下一阶段，并以明确的事实和结果标准复盘？",95,280,560,120,29,C.paper,true,serif);textbox(s,"decision-reason","依据 01｜填写关键证据\n依据 02｜填写风险边界",95,430,540,90,14,"DCECE5");["确认范围","落实 Owner","设定验证节点"].forEach((v,i)=>addCard(s,`decision-action-${i}`,750,190+i*130,470,110,v,"填写动作、责任人和时间",[C.jade,C.blue,C.copper][i]));
 }
 
-// 14 Section
+// 14 Capability chain
 {
-  const s=p.slides.add();s.setLayout(layouts.get("章节页"));s.background.fill=C.jade;textbox(s,"section-number","01",70,100,240,140,70,C.paper,false,serif);textbox(s,"section-title","战略与目标",70,270,600,70,34,C.paper,true,serif);textbox(s,"section-en","STRATEGY & DIRECTION",70,340,500,32,15,C.mint,true);rule(s,70,630,1140,"58A28F",1);textbox(s,"section-brand","mint",70,650,100,30,16,C.paper,true);
+  const s=slideFor("能力链路",14,"业务能力链路");addTitle(s,"入口、能力与服务承接形成一条完整链路","重要主体作为视觉锚点，说明文字保持辅助地位。若有重大决策，可使用右侧强调模块。");
+  // Draw the flow behind the nodes first.
+  rule(s,120,397,755,C.jade,4);textbox(s,"chain-arrow-1","→",330,380,42,34,25,C.copper,true,serif,"center");textbox(s,"chain-arrow-2","→",585,380,42,34,25,C.copper,true,serif,"center");
+  const stages=[
+    ["01","前台入口","客户触达","M-PESA\nMint APP","形成双入口",C.copper],
+    ["02","能力协同","流量与风险","Transsion\n微众","流量 + 风险能力",C.jade],
+    ["03","银行承接","金融服务","传音银行\n接入银行","承接银行业务",C.blue]
+  ];
+  stages.forEach((r,i)=>{const x=65+i*260;shape(s,`chain-node-${i}`,"rect",x,210,220,365,C.paper,C.line);shape(s,`chain-node-accent-${i}`,"rect",x,210,220,7,r[5]);textbox(s,`chain-no-${i}`,r[0],x+24,238,55,25,12,r[5],true);textbox(s,`chain-role-${i}`,r[2],x+24,278,170,24,11,C.muted,true);textbox(s,`chain-name-${i}`,r[1],x+24,311,175,48,25,C.ink,true,serif);textbox(s,`chain-entities-${i}`,r[3],x+24,380,175,72,19,C.forest,true,serif);rule(s,x+24,474,172,C.line,1);textbox(s,`chain-capability-${i}`,r[4],x+24,492,175,44,16,C.ink,true);});
+  shape(s,"chain-callout","rect",870,210,350,365,C.forest);addLabel(s,"讨论重点",900,242,140,C.mint);textbox(s,"chain-callout-title","是否继续探索\n三层合作",900,300,285,100,31,C.paper,true,serif);textbox(s,"chain-callout-detail","围绕入口、能力协同与银行承接进一步确认",900,440,270,70,14,"DCECE5");
 }
 
-// 15 Closing
+// 15 Risk spotlight
+{
+  const s=slideFor("风险聚焦",15,"关键风险判断");addTitle(s,"正式合作证据不足，可能影响监管真实性审核","风险页先给出判断，再说明证据、影响和需要推动的动作。");
+  shape(s,"risk-judgment","rect",60,190,670,410,"7B2427");addLabel(s,"KEY RISK",95,225,150,"F0B5A1");textbox(s,"risk-level","高影响",590,220,100,32,13,C.paper,true,sans,"center");textbox(s,"risk-title","合作真实性证据\n仍不充分",95,300,560,115,36,C.paper,true,serif);textbox(s,"risk-summary","重要风险判断应独立成页或进入显著风险模块，不能埋在正文说明中。",95,470,540,70,15,"F4D9CF");
+  [["判断依据","目前仅有意向材料",C.jade],["可能影响","影响监管真实性审核",C.copper],["需要推动","尽快签署正式协议",C.blue]].forEach((r,i)=>{const y=190+i*136;shape(s,`risk-side-${i}`,"rect",755,y,465,118,C.paper,C.line);shape(s,`risk-side-accent-${i}`,"rect",755,y,6,118,r[2]);textbox(s,`risk-side-label-${i}`,r[0],785,y+18,150,25,12,r[2],true);textbox(s,`risk-side-value-${i}`,r[1],785,y+51,390,45,19,C.ink,true,serif);});
+}
+
+// 16 Capital decision
+{
+  const s=slideFor("资金决策",16,"资本与决策");addTitle(s,"启动资金约 5,000 万美元，股权及出资安排仍待明确","资金、规模和审批条件必须从普通说明中单独拎出。");
+  shape(s,"capital-main","rect",60,190,510,400,C.copper);addLabel(s,"CAPITAL",95,225,130,"FFE3CF");textbox(s,"capital-value","5,000",95,285,360,100,65,C.paper,true,serif);textbox(s,"capital-unit","万美元",380,330,130,42,22,C.paper,true,serif);textbox(s,"capital-status","当前状态｜启动资金规模已讨论，具体股权比例与出资安排待定",95,445,405,85,15,"FFF0E6");
+  textbox(s,"capital-decision-label","管理层需要推动",620,205,300,28,13,C.jade,true);["明确资本方案","确认股权结构","锁定出资安排"].forEach((v,i)=>{const y=255+i*105;shape(s,`capital-action-${i}`,"rect",620,y,600,82,C.paper,C.line);textbox(s,`capital-action-no-${i}`,String(i+1).padStart(2,"0"),645,y+20,45,32,13,C.copper,true);textbox(s,`capital-action-title-${i}`,v,710,y+16,250,38,21,C.ink,true,serif);textbox(s,`capital-action-detail-${i}`,"填写 Owner 与确认时间",960,y+18,225,35,12,C.muted);});shape(s,"capital-decision","rect",620,575,600,55,C.forest);textbox(s,"capital-decision-text","决策｜是否按该规模继续细化资本与股权方案",645,585,550,34,16,C.paper,true);
+}
+
+// 17 Section
+{
+  const s=p.slides.add();s.setLayout(layouts.get("章节页"));s.background.fill=C.jade;textbox(s,"section-number","01",70,100,240,140,70,C.paper,false,serif);textbox(s,"section-title","战略与目标",70,270,600,70,34,C.paper,true,serif);textbox(s,"section-claim","先明确本章节需要回答的问题，再进入证据与行动",70,350,720,55,20,"DCECE5",false,sans);textbox(s,"section-en","STRATEGY & DIRECTION",70,430,500,32,15,C.mint,true);rule(s,70,630,1140,"58A28F",1);textbox(s,"section-brand","mint",70,650,100,30,16,C.paper,true);
+}
+
+// 18 Closing
 {
   const s=p.slides.add();s.setLayout(layouts.get("结尾页"));s.background.fill=C.ivory;textbox(s,"closing-brand","Mint",70,65,160,45,24,"42B879",true);textbox(s,"closing-title","谢谢",70,235,430,80,46,C.jade,true,serif);textbox(s,"closing-en","THANK YOU",70,320,360,34,16,C.copper,true);for(let i=0;i<4;i++)shape(s,`closing-wave-${i}`,"ellipse",720+i*55,120+i*50,430-i*35,430-i*35,i===3?C.forest:"none",[C.mint,C.copper,C.blue,C.forest][i]);
 }

@@ -16,13 +16,14 @@ const requireRefs = (items, name) => arr(items).forEach((x, i) => {
   if (!x.sourceRef) errors.push(`${name}[${i}] 缺少 sourceRef`);
 });
 
-if (map.schemaVersion !== "0.2") errors.push("schemaVersion 必须为 0.2");
+if (!new Set(["0.2", "0.3"]).has(map.schemaVersion)) errors.push("schemaVersion 必须为 0.2 或 0.3");
 for (const key of ["audience", "purpose", "desiredOutcome", "managementTakeaway"]) {
   if (!map.communicationJob?.[key]) errors.push(`communicationJob.${key} 缺失`);
 }
 requireRefs(map.facts, "facts");
 requireRefs(map.numbers, "numbers");
 requireRefs(map.actions, "actions");
+requireRefs(map.priorities, "priorities");
 arr(map.entities).forEach((x, i) => { if (!x.id || !x.canonicalName) errors.push(`entities[${i}] 缺少 id 或 canonicalName`); });
 arr(map.relationships).forEach((x, i) => { if (!x.id || !x.type || !x.statement) errors.push(`relationships[${i}] 缺少 id、type 或 statement`); });
 const budget = map.pageBudget || {};

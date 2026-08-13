@@ -1,5 +1,5 @@
 {
-  "version": "0.2",
+  "version": "0.3",
   "principle": "select a visual from the analytical question, data shape and evidence contract; never from page number or visual variety",
   "requiredChartFields": ["labels", "values", "unit", "period", "subject", "sourceRefs"],
   "decisionOrder": [
@@ -10,7 +10,8 @@
     "fall back to a table or takeaway when a chart would mislead"
   ],
   "catalog": {
-    "front-middle-back": ["architecture-brief"],
+    "front-middle-back": ["capability-chain"],
+    "capability-handoff": ["capability-chain"],
     "parallel-paths": ["dual-track-roadmap"],
     "ordered-sequence": ["process"],
     "single-time-path": ["timeline"],
@@ -29,7 +30,9 @@
     "exact-values": ["table", "kpi"],
     "geography": ["map", "ranked-bar"],
     "causality": ["process"],
-    "management-action": ["decision", "action-banner"]
+    "management-action": ["decision", "action-banner"],
+    "material-risk": ["risk-spotlight"],
+    "section-opening": ["section-intro"]
   },
   "hardGuards": {
     "donut": "one part-to-whole series, positive values, 2-5 parts only",
@@ -45,8 +48,8 @@
     "entity": "canonical source names must be preserved; unknown entities cannot be added to fill a layout"
   },
   "fallback": {
-    "component": "table",
+    "component": "needs-layout-review",
     "secondary": "statement",
-    "warning": "No trustworthy chart contract or compatible data shape; do not fabricate a visual."
+    "warning": "No controlled page family expresses this relationship. Split the proposition or request layout review; never force it into a table."
   }
 }

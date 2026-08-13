@@ -9,9 +9,9 @@ if (!process.argv[2] || !fs.existsSync(input)) {
   process.exit(2);
 }
 const deck = JSON.parse(fs.readFileSync(input, "utf8"));
-if (deck.schemaVersion !== "0.2" || !Array.isArray(deck.slides)) throw new Error("deck-spec must use schemaVersion 0.2");
+if (!["0.2", "0.3"].includes(deck.schemaVersion) || !Array.isArray(deck.slides)) throw new Error("deck-spec must use schemaVersion 0.2 or 0.3");
 const content = {
-  schemaVersion: "0.2",
+  schemaVersion: deck.schemaVersion,
   template: "assets/presentation/Mint_Report_Component_Library.pptx",
   deckId: deck.id,
   title: deck.title,

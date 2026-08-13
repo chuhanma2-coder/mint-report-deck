@@ -8,6 +8,7 @@
       {"label":"牌照路径","summary":"DRB → 运营三年 → DFB","items":[{"stage":"第一道审批","title":"取得 SBP NOC","detail":"预计约 2–7 个月"},{"stage":"NOC 后","title":"完成 SECP 注册","detail":"预计约 4–6 个月"},{"stage":"初始牌照","title":"数字零售银行 DRB","detail":"服务个人及中小企业"},{"stage":"硬性运营期","title":"连续运营 3 年","detail":"验证业务、风控、治理与合规"},{"stage":"目标牌照","title":"全功能数字银行 DFB","detail":"形成大型企业服务能力"}]}
     ],
     "actionBanner":[{"label":"正式合作","text":"锁定伙伴并签署正式协议"},{"label":"资本方案","text":"明确 5,000 万美元及股权结构"},{"label":"申报质量","text":"完成监管材料和法律文件纠错"}],
+    "emphasis":{"terms":["5,000 万美元","DRB","DFB"],"callouts":[{"kind":"capital","label":"启动资金","value":"5,000 万美元","detail":"股权及出资安排待定"}]},
     "source":"来源：用户提供的巴基斯坦项目进展","sourceRefs":["USER:1","USER:2","USER:3","USER:4"]
   }]
 }

@@ -8,7 +8,7 @@ import { selectComponent } from "../scripts/select-component.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtures = path.join(root, "tests/fixtures");
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "mint-skill-v02-"));
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "mint-skill-v03-"));
 const run = (script, args) => spawnSync(process.execPath, [path.join(root, "scripts", script), ...args], { encoding: "utf8" });
 const mustRun = (script, args) => { const r = run(script, args); if (r.status !== 0) throw new Error(`${script}\n${r.stdout}${r.stderr}`); return r; };
 
@@ -48,4 +48,19 @@ mustRun("render-deck.mjs", [example, exampleOut]);
 const html = fs.readFileSync(exampleOut, "utf8");
 for (const marker of ["data-mint-chart", "mint-deck-edits:${deckId}:${deckVersion}", "data-lightbox"]) if (!html.includes(marker)) throw new Error(`example missing ${marker}`);
 
-console.log(JSON.stringify({ passed: true, routingCases: routing.length, promptCases: prompts.length, deterministicRuns: routing.length * 3, renderedDecks: 3, output: tmp }, null, 2));
+const fullDeck = path.join(fixtures, "full-deck-three-sections.json");
+const fullDeckOut = path.join(tmp, "full-deck.html");
+mustRun("validate-deck.mjs", [fullDeck]);
+mustRun("render-deck.mjs", [fullDeck, fullDeckOut]);
+const fullHtml = fs.readFileSync(fullDeckOut, "utf8");
+if ((fullHtml.match(/class="section-intro/g) || []).length !== 3) throw new Error("all three sections must use the same section-intro family");
+if (!fullHtml.includes("risk-spotlight")) throw new Error("full deck must render a distinct risk spotlight");
+
+const planned = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "front-middle-back", secondaryBlocks: 1, calloutCount: 1 })]).stdout);
+if (planned.status !== "ready" || planned.family !== "capability-chain" || planned.estimatedVisualShare < 0.55) throw new Error("front-middle-back must plan as a readable capability chain");
+const overloaded = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "front-middle-back", secondaryBlocks: 4, calloutCount: 2 })]).stdout);
+if (overloaded.status !== "split-required") throw new Error("overloaded page must split before shrinking the main visual");
+const unmatched = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "other", preferredFamily: "uncontrolled-freeform" })]).stdout);
+if (unmatched.status !== "needs-layout-review") throw new Error("unknown family must stop for layout review instead of forcing a table");
+
+console.log(JSON.stringify({ passed: true, routingCases: routing.length, promptCases: prompts.length, deterministicRuns: routing.length * 3, renderedDecks: 4, sectionIntros: 3, pageFamilyPlans: 3, output: tmp }, null, 2));

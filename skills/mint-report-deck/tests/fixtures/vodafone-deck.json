@@ -1,18 +1,15 @@
 {
-  "schemaVersion":"0.2","id":"vodafone-mpesa-brief","version":1,"title":"Vodafone 来访与 M-PESA 合作探索","date":"","confidentiality":"内部材料","pageBudget":1,
+  "schemaVersion":"0.3","id":"vodafone-mpesa-brief","version":2,"title":"Vodafone 来访与 M-PESA 合作探索","date":"","confidentiality":"内部材料","pageBudget":1,
   "slides":[{
-    "type":"architecture-brief","chapter":"Vodafone 来访","titleLines":["Vodafone 来访，","可探索与 M-PESA 的三层合作"],
+    "type":"capability-chain","chapter":"Vodafone 来访","titleLines":["Vodafone 来访，","可探索与 M-PESA 的三层合作"],
     "lead":"以 M-PESA 与 Mint APP 为入口，连接流量、风险能力与银行服务承接。",
-    "contextStrip":[
-      {"label":"合作入口","value":"Vodafone 业务体系","detail":"连接 Safaricom 与 Vodacom 的 M-PESA 业务"},
-      {"label":"肯尼亚","value":"Safaricom","detail":"M-PESA"},
-      {"label":"坦桑尼亚","value":"Vodacom","detail":"M-PESA"}
+    "contextRibbon":[{"label":"合作入口","value":"Vodafone 业务体系"},{"label":"肯尼亚","value":"Safaricom · M-PESA"},{"label":"坦桑尼亚","value":"Vodacom · M-PESA"}],
+    "stages":[
+      {"name":"前台入口","role":"客户触达","entities":["M-PESA","Mint APP"],"capability":"形成双入口","detail":"承接客户访问与业务发起"},
+      {"name":"能力协同","role":"流量与风险","entities":["M-PESA / Transsion","微众"],"capability":"流量 + 风险能力","detail":"连接生态流量与风险判断"},
+      {"name":"银行承接","role":"金融服务","entities":["传音银行","其他 Mint 接入银行"],"capability":"承接银行业务","detail":"由接入银行机构提供服务"}
     ],
-    "layers":[
-      {"name":"前台","role":"客户入口","entities":[{"name":"M-PESA","detail":"移动支付入口"},{"name":"Mint APP","detail":"Mint 用户入口"}]},
-      {"name":"中台","role":"流量与风险能力","entities":[{"name":"M-PESA / Transsion","detail":"提供流量"},{"name":"微众","detail":"提供风险能力"}]},
-      {"name":"后台","role":"银行服务承接","entities":[{"name":"传音银行","detail":"银行机构"},{"name":"其他 Mint 接入银行","detail":"银行机构"}]}
-    ],
+    "emphasis":{"terms":["Vodafone","M-PESA","Mint APP","微众"],"callouts":[{"kind":"decision","label":"讨论重点","value":"是否继续探索三层合作","detail":"围绕入口、能力协同与银行承接进一步确认"}]},
     "source":"来源：用户提供的来访信息与合作架构","sourceRefs":["USER:1","USER:2","USER:3"]
   }]
 }

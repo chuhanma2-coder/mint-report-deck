@@ -16,6 +16,7 @@
   "relationships": [{"id":"R1","type":"hierarchy","from":["E1"],"to":[],"statement":"前台—中台—后台"}],
   "numbers": [{"id":"N1","value":5000,"unit":"万美元","period":"未提供","subject":"启动资金","sourceRef":"USER:8"}],
   "actions": [{"id":"A1","action":"签署协议","owner":"待确认","time":"周四","expectedResult":"正式协议","sourceRef":"USER:9"}],
+  "priorities": [{"id":"P1","kind":"capital","subject":"启动资金","level":"material","sourceRef":"USER:8"}],
   "unknowns": [],
   "conflicts": [],
   "pageBudget": {"requested":null,"minimum":1,"planned":1,"reason":"一个背景命题和一个三层关系可在一页讲清"},
@@ -30,4 +31,5 @@ Rules:
 - Relationship types: `hierarchy`, `sequence`, `time`, `cause`, `parallel`, `flow`, `responsibility`, `comparison`, `matrix`, `one-conclusion`.
 - `pageBudget.planned` starts at one and increases only for an independent proposition or verified capacity failure.
 - `unknowns` and `conflicts` are excluded from formal slide copy.
+- `priorities.kind` is `capital`, `risk`, `decision` or `evidence`. Material priorities must map to visible callouts, not ordinary body copy.
 - `riskLevel` is `ordinary` or `confirm-first`. Regulation, legal, capital, credit, pricing and customer-policy material is `confirm-first` unless the user explicitly confirms the relevant facts and wording.
