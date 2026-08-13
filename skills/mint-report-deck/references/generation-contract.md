@@ -15,7 +15,7 @@
 2. Freeze facts, canonical entity names, numeric contracts and relative date strings.
 3. Compile atoms, numeric roles, claim graph, materiality and display requirements before writing any page.
 4. Compile one management takeaway and the dominant relationships.
-5. Begin with a one-page budget. Add pages only for independent propositions or verified capacity failure.
+5. Normalize the page-count contract first. Exact one-page requests cannot be relaxed; recompose or block. Otherwise begin with a one-page budget and add pages only for independent propositions or verified capacity failure.
 6. Give every page a question, answer, one primary visual, no more than two support modules and explicit atom coverage.
 7. Route from relationship, numeric role, audience task and materiality; never from note numbering or page position.
 8. Generate one page or batches of at most three. Apply syntax-only JSON repair once if parsing fails.

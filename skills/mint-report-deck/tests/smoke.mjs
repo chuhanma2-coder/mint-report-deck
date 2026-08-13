@@ -87,11 +87,29 @@ const repairedDeck = JSON.parse(fs.readFileSync(repairedPath, "utf8"));
 if (repairedDeck.slides[0].type !== "quantitative-story" || repairedDeck.slides[0].primaryVisual.kind !== "gap-bridge") throw new Error("repair loop selected the wrong quantitative story");
 mustRun("qa-deck.mjs", [repairedPath, equityMap]);
 
+const forcedMap = path.join(fixtures, "forced-one-page-content-map.json");
+const forcedDeck = path.join(fixtures, "forced-one-page-deck.json");
+const forcedHtml = path.join(tmp, "forced-one-page.html");
+mustRun("qa-deck.mjs", [forcedDeck, forcedMap]);
+mustRun("render-deck.mjs", [forcedDeck, forcedHtml]);
+const forcedOutput = fs.readFileSync(forcedHtml, "utf8");
+if ((forcedOutput.match(/<section class="slide/g) || []).length !== 1) throw new Error("exact one-page contract must render exactly one slide");
+for (const value of ["准备LOI材料", "监管节点决定后续推进节奏", "完成材料核对并提交"]) if (!forcedOutput.includes(value)) throw new Error(`one-page composition lost content: ${value}`);
+const illegalSplit = JSON.parse(fs.readFileSync(forcedDeck, "utf8"));
+illegalSplit.slides.push({ ...illegalSplit.slides[0], id: "P2" });
+illegalSplit.pageBudget = 2;
+const illegalSplitPath = path.join(tmp, "illegal-split.json");
+fs.writeFileSync(illegalSplitPath, JSON.stringify(illegalSplit));
+const splitBlocked = run("qa-deck.mjs", [illegalSplitPath, forcedMap]);
+if (splitBlocked.status === 0 || !splitBlocked.stdout.includes("不得擅自拆页")) throw new Error("exact one-page contract must block a two-page output");
+
 const planned = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "front-middle-back", secondaryBlocks: 1, calloutCount: 1 })]).stdout);
 if (planned.status !== "ready" || planned.family !== "capability-chain" || planned.estimatedVisualShare < 0.55) throw new Error("front-middle-back must plan as a readable capability chain");
 const overloaded = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "front-middle-back", secondaryBlocks: 4, calloutCount: 2 })]).stdout);
 if (overloaded.status !== "split-required") throw new Error("overloaded page must split before shrinking the main visual");
+const forcedOverloaded = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "front-middle-back", secondaryBlocks: 4, calloutCount: 2, pageConstraint: "exact", requestedPages: 1 })]).stdout);
+if (forcedOverloaded.status !== "recompose-required") throw new Error("exact one-page contract must recompose instead of split");
 const unmatched = JSON.parse(mustRun("plan-page-family.mjs", [JSON.stringify({ relationship: "other", preferredFamily: "uncontrolled-freeform" })]).stdout);
 if (unmatched.status !== "needs-layout-review") throw new Error("unknown family must stop for layout review instead of forcing a table");
 
-console.log(JSON.stringify({ passed: true, routingCases: routing.length, promptCases: prompts.length, deterministicRuns: routing.length * 3, renderedDecks: 5, strictBlockedCases: 1, automaticRepairs: 1, sectionIntros: 3, pageFamilyPlans: 3, output: tmp }, null, 2));
+console.log(JSON.stringify({ passed: true, routingCases: routing.length, promptCases: prompts.length, deterministicRuns: routing.length * 3, renderedDecks: 6, strictBlockedCases: 2, automaticRepairs: 1, exactOnePageContracts: 1, sectionIntros: 3, pageFamilyPlans: 4, output: tmp }, null, 2));

@@ -3,7 +3,7 @@ name: mint-report-deck
 description: Create source-grounded Mint management reports from rough Chinese notes or Word, PDF, Excel, PowerPoint, HTML and text. Compile facts and relationships into the minimum necessary pages, route to the right diagram or chart, render editable interactive HTML, and orchestrate the Codex Presentations skill for editable PPTX when available. Use for project updates, operating reviews, decision materials, one-page briefs, chart selection, or repairing unsupported claims, entity drift, repetitive cards and unclear reading order.
 ---
 
-# Mint Report Deck V0.4
+# Mint Report Deck V0.4.1
 
 Mint decides **what the material means and how it should be shown**. The bundled HTML renderer and Codex Presentations are output engines; neither may invent the content model.
 
@@ -22,9 +22,9 @@ Read, in order:
 
 1. Preserve the original notes verbatim. Normalize them into the quick input template; automatically use the full template for finance, regulation, legal, credit, pricing, customer-policy or conflicting-source material.
 2. Freeze facts, exact entity names, numbers, relative dates and source locations. Put missing or conflicting information in `unknowns` / `conflicts`, never on a formal page.
-3. Compile `content-map.json`: audience and intended decision, one management takeaway, content atoms, numeric claims, claim graph, facts, entities, relationships, actions, unknowns, conflicts and page budget. Classify every primary atom with a display requirement.
+3. Compile `content-map.json`: audience and intended decision, one management takeaway, content atoms, numeric claims, claim graph, decision threads, facts, entities, relationships, actions, unknowns, conflicts and page budget. Classify every primary atom with a content role and display requirement. Do not plan pages directly from headings or numbered notes.
 4. For a full report, first create a deck-level narrative and section plan. Give every section the same `section-intro` family and typography; vary content pages by relationship while preserving the deck system.
-5. Start capacity planning at **one page per independent proposition**, not one page per note heading. Add a page only when another proposition or verified capacity failure requires it.
+5. Parse the page-count contract before planning. “必须一页、强制一页、不要拆页、只做一页” means `pageBudget.constraint = "exact"`, `requested = planned = 1`, and `overflowPolicy = "block"`. Under this contract, background, evidence, relationship, risk and action serving the same management decision are zones of one page, not separate propositions. Without an explicit hard request, start at one page per independent proposition.
 6. Define `pageQuestion` and `pageAnswer`, then choose one `primaryVisual` from communication role, relationship, numeric role, density and materiality. Use `node scripts/select-component.mjs '<page-json>'` for deterministic routing. A page may have at most two support modules.
 7. Write shared `deck-spec.json`, then run the strict V0.4 gate:
 
@@ -32,7 +32,7 @@ Read, in order:
    node scripts/qa-deck.mjs /absolute/path/deck-spec.json /absolute/path/content-map.json
    ```
 
-8. If the gate fails, run `node scripts/repair-deck.mjs ...` for at most two rounds. It may promote a numeric module, reroute a quantitative comparison or split an overloaded proposition. If primary information is still not visible, stop without a formal deliverable.
+8. If the gate fails, run `node scripts/repair-deck.mjs ...` for at most two rounds. It may promote a numeric module, reroute a quantitative comparison, shorten supporting copy or reorganize support bands. It may split only when the page contract is flexible. Under an exact one-page contract, an unresolved capacity failure blocks delivery and must never create page two.
 9. Render standalone HTML:
 
    ```bash
@@ -53,6 +53,8 @@ Read, in order:
 - Every `primary` atom and numeric claim must be visible through `atomRefs` / `claimRefs`. A number hidden only in body copy does not satisfy coverage.
 - Do not manufacture “职责、产出、价值、结果” to fill a layout.
 - Default to the fewest pages that communicate the material. Short material is normally one page.
+- A user-specified exact page count overrides automatic splitting. Do not reinterpret “一页” as a preference. A one-page formal deliverable has no separate cover or section page.
+- Notes are independent propositions only when they answer different management questions or require separate decisions. Background, evidence, mechanism, implication, risk and action that support one decision must be composed into one page.
 - One page has one proposition and one obvious reading path. Do not default to card grids, wide bordered tables or dashboard panels.
 - Give important entities and key nouns at least 1.5× the visual weight of their explanatory copy; key numeric values use at least 1.8× the body size. Do not render every text fragment at the same level.
 - Use `capital-callout`, `risk-alert` and `decision-callout` for material items. Do not bury capital, regulatory gates or high-impact risk inside body paragraphs.

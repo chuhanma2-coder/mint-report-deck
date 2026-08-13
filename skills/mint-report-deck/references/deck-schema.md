@@ -12,6 +12,14 @@ Top level keeps the existing deck identity and plan fields. V0.2/V0.3 decks rema
   "date": "原始口径，可为空",
   "confidentiality": "内部材料",
   "pageBudget": 1,
+  "pageConstraint": "exact",
+  "onePagePlan": {
+    "managementQuestion": "这一页回答什么",
+    "pageAnswer": "领导看完记住什么",
+    "primaryRelationship": "唯一主关系",
+    "readingPath": ["answer", "primary-visual", "decision"],
+    "atomPlacement": [{"atomRef":"A1","zone":"primary-visual"}]
+  },
   "deckPlan": {
     "narrativeArc": ["context", "evidence", "action"],
     "introFamily": "section-intro",

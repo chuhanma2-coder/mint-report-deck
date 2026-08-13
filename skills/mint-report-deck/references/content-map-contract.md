@@ -41,6 +41,9 @@
   "claimGraph": [
     {"id":"G1","from":["N1"],"relation":"supports","to":["J1"]}
   ],
+  "decisionThreads": [
+    {"id":"DT1","managementQuestion":"管理层需要判断什么","answer":"已知事实支持的回答","atomRefs":["A1"],"relationshipRefs":["R1"],"roles":["evidence","implication"],"pageAssignment":"P1","independenceTest":{"differentDecision":false,"understandableWithoutOtherThreads":false,"ownEvidenceAndImplication":false,"separationPreservesLogic":false}}
+  ],
   "facts": [{"id":"F1","text":"原始事实","sourceRef":"USER:1"}],
   "entities": [{"id":"E1","canonicalName":"MINT","aliases":[]}],
   "relationships": [{"id":"R1","type":"comparison","from":["E1"],"to":[],"statement":"两个国家的权益承接方式不同"}],
@@ -49,7 +52,7 @@
   "priorities": [{"id":"P1","kind":"risk","subject":"监管上限","level":"material","sourceRef":"USER:KENYA"}],
   "unknowns": [],
   "conflicts": [],
-  "pageBudget": {"requested":null,"minimum":1,"planned":1,"reason":"一个权益结构命题"},
+  "pageBudget": {"requested":1,"minimum":1,"planned":1,"constraint":"exact","overflowPolicy":"block","reason":"用户要求必须一页"},
   "riskLevel": "confirm-first"
 }
 ```
@@ -65,7 +68,11 @@
 - Numeric roles follow [information-architecture.md](information-architecture.md).
 - `canonicalName` is copied from the source and is not silently normalized to another legal entity.
 - Relationships may be `hierarchy`, `sequence`, `time`, `cause`, `parallel`, `flow`, `responsibility`, `comparison`, `matrix`, `composition`, `constraint`, `calculation`, `dependency` or `one-conclusion`.
-- `pageBudget.planned` starts at one and increases only for an independent proposition or verified capacity failure.
+- Every primary atom belongs to exactly one decision thread. A second page requires a second independently decidable management question, not merely another heading or content type.
+- `pageBudget.constraint` is `exact`, `maximum`, `flexible` or `minimum-needed`.
+- `exact` means `planned === requested`; `maximum` means `planned <= requested`. `overflowPolicy` must be `block` for both.
+- Under an exact one-page contract, capacity failure triggers recomposition or blocking, never a second page.
+- When no hard count exists, `pageBudget.planned` starts at one and increases only for an independent proposition or verified capacity failure.
 - `unknowns` and `conflicts` are excluded from formal slide copy.
 - Material priorities must map to visible callouts or a primary visual.
 - A risk judgment atom uses `judgmentType: "risk"` and a `risk` object with `judgment`, `evidence`, `impact`, and `action`; missing fields block formal delivery.

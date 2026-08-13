@@ -24,7 +24,7 @@ Create `presentation-content.json` from the validated deck spec:
 - Use `Mint_Report_Component_Library.pptx` as the source deck. Choose a **page family** from the validated deck plan, then duplicate the closest specimen in that family and populate only its controlled modules.
 - A specimen is not a fixed content template. It defines geometry, hierarchy, typography and allowed modules; the actual module count and content are driven by `deck-spec.json`.
 - If no exact specimen exists, compose from the same family's title, visual, callout and evidence modules. Do not fall back to a wide table merely because it can contain the text.
-- Reserve at least 55% of the usable canvas for the main relationship or quantitative visual. If the proposition does not fit within the family's capacity, split it into two pages with linked titles.
+- Reserve at least 55% of the usable canvas for the main relationship or quantitative visual. Under an exact one-page contract, shorten supporting copy, attach labels to the visual, and move only non-primary detail to notes/drawers; if primary information still cannot fit, block. Split into linked pages only under a flexible contract.
 - For a multi-section deck, duplicate one `section-intro` family for every top-level section. Preserve its geometry, type scale and reading order so introductions never drift into unrelated styles.
 - Replace inherited placeholder text and data; preserve the Mint master/layout/slide relationship.
 - Keep text boxes, simple diagrams, tables and charts editable.

@@ -16,6 +16,8 @@ if (!fs.existsSync(deckFile) || !fs.existsSync(mapFile)) {
 const checks = [
   ["content-map", "validate-content-map.mjs", [mapFile]],
   ["deck-schema", "validate-deck.mjs", [deckFile, mapFile]],
+  ["page-budget", "validate-page-budget.mjs", [deckFile, mapFile]],
+  ["content-structure", "validate-content-structure.mjs", [deckFile, mapFile]],
   ["information-coverage", "validate-information-coverage.mjs", [deckFile, mapFile]],
   ["numeric-integrity", "validate-numeric-integrity.mjs", [deckFile, mapFile]],
   ["visual-salience", "validate-visual-salience.mjs", [deckFile, mapFile]]

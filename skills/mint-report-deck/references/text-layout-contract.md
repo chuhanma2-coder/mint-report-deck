@@ -7,14 +7,14 @@ This contract applies before component selection and again before rendering. A s
 - The title states the page conclusion or the single question being answered. Do not use an isolated field value such as “空值”, “日期”, “客户”, or “渠道” as a page title.
 - A content page has one primary reading direction: top-to-bottom, left-to-right, centre-outward, or chronological. The layout must make that direction visible.
 - Every label belongs to an explicit role: stage, action, evidence, result, owner, risk, or annotation. Unlabelled noun fragments are prohibited.
-- If a relationship graphic cannot be explained in one sentence, split it into more than one page.
+- If a relationship graphic cannot be explained in one sentence, first rewrite the page answer and identify the dominant relationship. Under an exact one-page contract, recompose or block; split only when the page contract permits it.
 
 ## 2. Chinese title rules
 
 - Speaking and leadership pages use one idea per page and normally no more than two title lines.
 - Prefer a semantic line break after `，` `；` `：` or between premise and conclusion. Never allow the browser to produce a one-character orphan line.
 - The first line establishes subject or premise; the second line states action, implication, or conclusion.
-- Recommended title capacity: 12-22 Chinese characters per line and no more than 36 characters for a normal content title. If it is longer, rewrite or split the page.
+- Recommended title capacity: 12-22 Chinese characters per line and no more than 36 characters for a normal content title. If it is longer, rewrite first; split only when the page contract permits it.
 - Use `word-break: keep-all`, explicit `<br>` at the approved semantic boundary, and balanced line wrapping. Font-size reduction is the last resort.
 
 ## 3. Node and body capacity

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.4",
+  "communicationJob": {
+    "audience": "管理层",
+    "purpose": "说明项目推进逻辑并确认下一步",
+    "desiredOutcome": "确认以监管节点为主线推进",
+    "managementTakeaway": "围绕同一监管目标统筹当前进展、风险与行动"
+  },
+  "contentAtoms": [
+    {"id":"A1","kind":"fact","text":"当前正在准备央行LOI材料","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:1"},
+    {"id":"A2","kind":"relationship","text":"获得LOI后再推进公司设立","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:1"},
+    {"id":"A3","kind":"judgment","assertionStatus":"proposal","text":"监管节点决定后续推进节奏","materiality":"primary","displayRequirement":"callout","coverageStatus":"planned","sourceRef":"USER:1"},
+    {"id":"A4","kind":"action","text":"完成材料核对并提交","materiality":"primary","displayRequirement":"callout","coverageStatus":"planned","sourceRef":"USER:1"}
+  ],
+  "numericClaims": [],
+  "claimGraph": [],
+  "decisionThreads": [
+    {"id":"DT1","managementQuestion":"项目应按什么顺序推进？","answer":"以LOI为前置节点，再推进公司设立与后续事项。","atomRefs":["A1","A2","A3","A4"],"relationshipRefs":["R1"],"roles":["background","mechanism","risk","action"],"pageAssignment":"P1","independenceTest":{"differentDecision":false,"understandableWithoutOtherThreads":false,"ownEvidenceAndImplication":false,"separationPreservesLogic":false}}
+  ],
+  "facts": [{"id":"F1","text":"当前正在准备央行LOI材料","sourceRef":"USER:1"}],
+  "entities": [],
+  "relationships": [{"id":"R1","type":"time","from":[],"to":[],"statement":"LOI在公司设立之前"}],
+  "numbers": [],
+  "actions": [{"id":"ACT1","action":"完成材料核对并提交","owner":"待用户补充","time":"待用户补充","expectedResult":"形成可提交版本","sourceRef":"USER:1"}],
+  "priorities": [{"id":"P1","kind":"risk","subject":"监管节点","level":"material","sourceRef":"USER:1"}],
+  "unknowns": ["具体提交时间和Owner未提供"],
+  "conflicts": [],
+  "pageBudget": {"requested":1,"minimum":1,"planned":1,"constraint":"exact","overflowPolicy":"block","reason":"用户明确要求强制一页"},
+  "riskLevel": "confirm-first"
+}

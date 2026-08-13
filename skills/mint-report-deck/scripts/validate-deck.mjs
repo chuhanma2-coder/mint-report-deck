@@ -24,6 +24,8 @@ if (!arr(deck.slides).length) errors.push("至少需要一页 slides");
 if (!Number.isInteger(deck.pageBudget) || deck.pageBudget < 1) errors.push("pageBudget 必须为正整数");
 if (deck.pageBudget !== arr(deck.slides).length) errors.push("pageBudget 必须与实际页数一致");
 if (map && map.pageBudget?.planned !== arr(deck.slides).length) errors.push("deck 页数与 content-map.pageBudget.planned 不一致");
+if (map?.pageBudget?.constraint === "exact" && arr(deck.slides).length !== map.pageBudget.requested) errors.push(`用户要求严格 ${map.pageBudget.requested} 页，不得生成 ${arr(deck.slides).length} 页`);
+if (map?.pageBudget?.constraint === "maximum" && arr(deck.slides).length > map.pageBudget.requested) errors.push(`用户要求最多 ${map.pageBudget.requested} 页`);
 if (deck.schemaVersion === "0.3" && arr(deck.slides).length > 3 && !deck.deckPlan?.sections?.length) errors.push("多页材料必须包含 deckPlan.sections");
 const sectionIntros = arr(deck.slides).filter((s) => s.pageRole === "section-intro");
 if (sectionIntros.some((s) => s.type !== "section-intro")) errors.push("所有章节引言必须统一使用 section-intro 页面家族");

@@ -30,14 +30,15 @@ const family = families[familyName];
 const secondaryBlocks = Number(input.secondaryBlocks || 0);
 const calloutCount = Math.min(Number(input.calloutCount || 0), 2);
 const estimatedVisualShare = Math.max(0.3, 0.72 - secondaryBlocks * 0.08 - calloutCount * 0.06);
+const exactOnePage = input.pageConstraint === "exact" && Number(input.requestedPages) === 1;
 const result = family ? {
-  status: estimatedVisualShare >= 0.55 ? "ready" : "split-required",
+  status: estimatedVisualShare >= 0.55 ? "ready" : exactOnePage ? "recompose-required" : "split-required",
   family: familyName,
   modules: family,
   estimatedVisualShare,
-  reason: estimatedVisualShare >= 0.55 ? selected.reason : "primary relationship would receive less than 55% of the usable canvas"
+  reason: estimatedVisualShare >= 0.55 ? selected.reason : exactOnePage ? "exact one-page contract: shorten supporting copy, demote secondary detail and preserve one primary visual; block if it still cannot fit" : "primary relationship would receive less than 55% of the usable canvas"
 } : {
-  status: "needs-layout-review",
+  status: exactOnePage ? "blocked-one-page" : "needs-layout-review",
   family: null,
   modules: null,
   estimatedVisualShare: 0,

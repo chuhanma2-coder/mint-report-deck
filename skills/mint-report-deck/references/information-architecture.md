@@ -50,7 +50,43 @@ Before layout, write:
 5. `readingOrder`: the intended reading path.
 6. `atomRefs`: every atom represented on the page.
 
-When more than one primary visual competes for attention, split the page. When the page is only a list of modules with no dominant answer, replan it rather than styling it.
+When more than one primary visual competes for attention, first select the one that proves the page answer and demote the other relationship to a support band. Split only under a flexible page contract and only after the decision-thread independence test passes. When the page is only a list of modules with no dominant answer, replan it rather than styling it.
+
+## Decision-thread parsing
+
+Before page planning, assign each primary atom to a `decisionThread`:
+
+```json
+{
+  "id": "DT1",
+  "managementQuestion": "管理层需要理解或决定什么",
+  "answer": "基于已知事实可以说什么",
+  "atomRefs": ["A1", "A2"],
+  "relationshipRefs": ["R1"],
+  "roles": ["background", "evidence", "mechanism", "implication", "risk", "action"],
+  "pageAssignment": "P1",
+  "independenceTest": {
+    "differentDecision": false,
+    "understandableWithoutOtherThreads": false,
+    "ownEvidenceAndImplication": false,
+    "separationPreservesLogic": false
+  }
+}
+```
+
+A new page is allowed only when all four independence checks are true, or when a flexible page contract has a verified capacity failure. Headings, numbering, paragraph breaks, chart opportunities, risk labels and action lists are not independent-page evidence.
+
+Within one decision thread, parse content roles before visual routing:
+
+- `background`: why the topic exists; normally a context ribbon or lead.
+- `evidence`: facts and numbers supporting the answer; normally the primary visual.
+- `mechanism`: flow, architecture, formula or causal relationship; primary visual when it explains the decision.
+- `implication`: what the evidence means; title, conclusion or callout.
+- `risk`: a visible risk callout, not a separate page by default.
+- `action`: decision/action band, not a separate page by default.
+- `boundary`: source footer, annotation or review drawer.
+
+Do not summarize away primary atoms while assigning roles. Parsing changes placement, not evidence coverage.
 
 ## Coverage invariant
 
