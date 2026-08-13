@@ -182,14 +182,61 @@ class MintDeck {
     });
     this.root.querySelectorAll(".slide *").forEach((node) => {
       const tag = node.tagName?.toLowerCase();
+      const structuredValue = node.hasAttribute("data-structured-value");
       const excluded = ["script", "style", "template", "svg", "path", "img", "video", "audio", "button", "input"].includes(tag);
       const isLeafText = node.children.length === 0 && node.textContent.trim().length > 0;
-      if (!excluded && isLeafText && !node.closest("button") && !node.hasAttribute("data-no-edit")) node.setAttribute("data-editable", "");
+      if ((!excluded || structuredValue) && isLeafText && (!node.closest("button") || structuredValue) && !node.hasAttribute("data-no-edit")) node.setAttribute("data-editable", "");
     });
     this.root.querySelectorAll("[data-editable]").forEach((node, i) => {
       if (!node.dataset.editId) node.dataset.editId = `edit-${i + 1}`;
-      node.addEventListener("input", () => this.persistEdits());
+      node.addEventListener("input", () => {
+        if (node.hasAttribute("data-structured-value")) this.updateStructuredNumber(node);
+        this.persistEdits();
+      });
     });
+  }
+
+  updateStructuredNumber(node) {
+    const segment = node.closest(".quant-segment");
+    const group = node.closest(".quant-group");
+    if (!segment || !group) return;
+    const parsed = Number(String(node.textContent).replace(/[^0-9.+-]/g, ""));
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      group.dataset.numericState = "invalid";
+      group.classList.add("has-numeric-error");
+      this.notify("数字格式无效，正式导出前需要修正");
+      return;
+    }
+    const total = Number(group.dataset.total || 100);
+    segment.dataset.value = String(parsed);
+    segment.style.setProperty("--segment", `${Math.max(0, parsed / total * 100)}%`);
+    const sum = [...group.querySelectorAll(".quant-segment")].reduce((value, item) => value + Number(item.dataset.value || 0), 0);
+    const valid = Math.abs(sum - total) < 0.0001;
+    group.dataset.numericState = valid ? "valid" : "invalid";
+    group.classList.toggle("has-numeric-error", !valid);
+    this.updateEmbeddedClaim(segment.dataset.claimRef, parsed);
+    this.notify(valid ? "数字与构成已同步" : `构成合计 ${sum}，应为 ${total}；正式导出将被阻断`);
+  }
+
+  updateEmbeddedClaim(claimId, value) {
+    if (!claimId) return;
+    const dataNode = this.root.querySelector("#mint-deck-data");
+    if (!dataNode) return;
+    try {
+      const model = JSON.parse(dataNode.textContent);
+      for (const slide of model.slides || []) {
+        const visit = (candidate) => {
+          for (const group of candidate?.data?.groups || []) {
+            for (const segment of group.segments || []) if (segment.claimRef === claimId) segment.value = value;
+          }
+        };
+        visit(slide.primaryVisual);
+        for (const module of slide.supportModules || []) visit(module);
+      }
+      dataNode.textContent = JSON.stringify(model).replace(/</g, "\\u003c");
+    } catch {
+      this.notify("结构化数据同步失败，正式导出前需要重新生成");
+    }
   }
 
   toggleEditing(force) {
@@ -221,6 +268,10 @@ class MintDeck {
   }
 
   downloadHtml() {
+    if (this.root.querySelector(".quant-group.has-numeric-error")) {
+      this.notify("数字构成未闭合，已阻止下载正式 HTML");
+      return;
+    }
     this.persistEdits();
     this.toggleEditing(false);
     const source = `<!doctype html>\n${document.documentElement.outerHTML}`;

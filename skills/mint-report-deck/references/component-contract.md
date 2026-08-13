@@ -23,6 +23,11 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 | Time plan | timeline, roadmap, Gantt | milestones or tasks with dates/durations |
 | Geography | map, ranked bar | confirmed geographic key and measure |
 | Exact value or mapping | table, KPI | precise values or lookup relationships |
+| Formula or calculated entitlement | formula band | explicit operands, operator and result |
+| Actual versus cap or floor | threshold bar | actual and confirmed boundary on one scale |
+| Allocation or ownership structure | allocation bar | reconciled parts and known total |
+| Entitlement versus delivered amount | gap bridge | theoretical, direct and compensating gap |
+| Forecast range | range band | confirmed bounds or scenarios |
 | Sequence | process, stage-gate | ordered actions, not decorative numbers |
 | Cause | causal chain, problem tree | supported causal or hypothesis structure |
 | Roles | swimlane, responsibility matrix | actors and responsibilities |
@@ -50,6 +55,8 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 - Use a table only for exact lookup or cell-by-cell comparison. Never use a wide table as the default expression for a business chain.
 - Render entity names, monetary values and decisions as primary anchors; explanations are secondary.
 - Reserve at least 55% of the usable body for the primary relationship visual.
+- A primary number hidden only in a sentence, list or subtitle fails coverage even if its characters appear on the page.
+- Prefer a numeric story over a generic comparison when the conclusion depends on a formula, threshold, allocation, target or gap.
 
 ## Presentation and interaction
 

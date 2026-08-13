@@ -10,6 +10,15 @@ const evidenceContract = (n) => Boolean(
 export function selectComponent(page) {
   const r = page.relationship || "one-conclusion";
   const n = page.numericEvidence;
+  const roles = new Set([...(page.numericRoles || []), ...((page.numericClaims || []).map((claim) => claim.role))]);
+  if (roles.has("formula-result") || roles.has("input")) return result("quantitative-story:formula-band", "结论依赖明确公式和计算结果");
+  if (roles.has("upper-bound") || roles.has("lower-bound")) return result("quantitative-story:threshold-bar", "实际值需要与上限或下限在同一尺度比较");
+  if (roles.has("theoretical") && roles.has("direct") && roles.has("gap")) return result("quantitative-story:gap-bridge", "理论权益、直接承接和差额补偿构成完整决策关系");
+  if (roles.has("actual") && roles.has("target")) return result("quantitative-story:actual-target", "实际值与目标值及差距应直接表达");
+  if (roles.has("part") || roles.has("remainder")) return result("quantitative-story:allocation-bar", "已确认的构成关系需要共同基线");
+  if (roles.has("forecast") || roles.has("range")) return result("quantitative-story:range-band", "预测或区间应展示不确定性边界");
+  if (roles.has("scenario")) return result("quantitative-story:scenario-comparison", "多个互斥情景需要统一维度比较");
+  if (roles.has("distribution") || roles.has("anomaly")) return result("quantitative-story:distribution", "需要展示分布或异常位置");
   if (page.numbersAreOrdinal || page.numbersAreDecorative) {
     return r === "sequence" && page.hasRealOrder
       ? result("process", "编号对应真实的先后动作")
@@ -18,7 +27,7 @@ export function selectComponent(page) {
   const quantitative = new Set(["trend", "quantity", "part-to-whole", "numeric-matrix"]);
   if (quantitative.has(r) && !evidenceContract(n)) return result("needs-review", "数值图表缺少标签、数值、单位、期间、统计对象或来源", "blocked");
   if (r === "trend") return n.orderedTime ? result("chart:line", "连续时间轴用于观察趋势") : result("needs-review", "折线图需要自然有序的时间轴", "blocked");
-  if (r === "quantity") return result("chart:bar", n.longLabels ? "长标签优先横向条形图" : "少量类别按共同零基线比较");
+  if (r === "quantity") return result("quantitative-story:ranked-comparison", n.longLabels ? "长标签优先横向比较" : "少量类别按共同零基线比较");
   if (r === "part-to-whole") {
     if (n.values.some((v) => Number(v) < 0)) return result("needs-review", "构成数据不能含负数", "blocked");
     return n.values.length >= 2 && n.values.length <= 5 ? result("chart:donut", "单一完整整体且仅 2-5 个部分") : result("chart:stacked-bar", "部分较多，使用共同基线更易读");

@@ -16,7 +16,7 @@ const requireRefs = (items, name) => arr(items).forEach((x, i) => {
   if (!x.sourceRef) errors.push(`${name}[${i}] 缺少 sourceRef`);
 });
 
-if (!new Set(["0.2", "0.3"]).has(map.schemaVersion)) errors.push("schemaVersion 必须为 0.2 或 0.3");
+if (!new Set(["0.2", "0.3", "0.4"]).has(map.schemaVersion)) errors.push("schemaVersion 必须为 0.2、0.3 或 0.4");
 for (const key of ["audience", "purpose", "desiredOutcome", "managementTakeaway"]) {
   if (!map.communicationJob?.[key]) errors.push(`communicationJob.${key} 缺失`);
 }
@@ -24,6 +24,28 @@ requireRefs(map.facts, "facts");
 requireRefs(map.numbers, "numbers");
 requireRefs(map.actions, "actions");
 requireRefs(map.priorities, "priorities");
+if (map.schemaVersion === "0.4") {
+  requireRefs(map.contentAtoms, "contentAtoms");
+  requireRefs(map.numericClaims, "numericClaims");
+  const atomKinds = new Set(["fact", "numeric", "relationship", "judgment", "action", "evidence", "boundary"]);
+  const materialities = new Set(["primary", "supporting", "appendix"]);
+  const displayRequirements = new Set(["primary-visual", "callout", "annotation", "source-only"]);
+  const coverageStatuses = new Set(["planned", "visible", "omitted-with-reason"]);
+  arr(map.contentAtoms).forEach((atom, i) => {
+    if (!atomKinds.has(atom.kind)) errors.push(`contentAtoms[${i}] kind 无效`);
+    if (!materialities.has(atom.materiality)) errors.push(`contentAtoms[${i}] materiality 无效`);
+    if (!displayRequirements.has(atom.displayRequirement)) errors.push(`contentAtoms[${i}] displayRequirement 无效`);
+    if (!coverageStatuses.has(atom.coverageStatus)) errors.push(`contentAtoms[${i}] coverageStatus 无效`);
+    if (atom.coverageStatus === "omitted-with-reason" && !atom.omissionReason) errors.push(`contentAtoms[${i}] 省略但缺少 omissionReason`);
+    if (atom.materiality === "primary" && ["source-only"].includes(atom.displayRequirement)) errors.push(`contentAtoms[${i}] 主要信息不得仅作为来源`);
+  });
+  arr(map.numericClaims).forEach((claim, i) => {
+    if (!claim.raw || !Number.isFinite(Number(claim.value))) errors.push(`numericClaims[${i}] 缺少 raw 或有效 value`);
+    if (!claim.role) errors.push(`numericClaims[${i}] 缺少 role`);
+    if (!materialities.has(claim.materiality)) errors.push(`numericClaims[${i}] materiality 无效`);
+    if (!displayRequirements.has(claim.displayRequirement)) errors.push(`numericClaims[${i}] displayRequirement 无效`);
+  });
+}
 arr(map.entities).forEach((x, i) => { if (!x.id || !x.canonicalName) errors.push(`entities[${i}] 缺少 id 或 canonicalName`); });
 arr(map.relationships).forEach((x, i) => { if (!x.id || !x.type || !x.statement) errors.push(`relationships[${i}] 缺少 id、type 或 statement`); });
 const budget = map.pageBudget || {};

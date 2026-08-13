@@ -34,6 +34,7 @@ A specimen PPT page is a tested example, not a fixed page-number template. Selec
 | `section-intro` | chapter number, section claim | one-line question | 1 claim |
 | `capability-chain` | 3–5 linked stages | context ribbon, one callout | 5 stages |
 | `evidence` | claim, evidence visual | one implication | 1 chart/table |
+| `quantitative-story` | one numeric question, one primary numeric visual | formula, threshold, gap, implication | 1 primary + 2 support |
 | `risk` | risk judgment, evidence | impact, action | 2 risks |
 | `decision` | decision | 3 actions, capital callout | 1 decision |
 
@@ -56,6 +57,6 @@ Allowed emphasis modules:
 
 - Reserve 55–70% of the usable body for the primary relationship or evidence visual.
 - Explanatory copy normally occupies no more than 25% of the page.
-- Key entity or amount: 24–38 pt in PPT; supporting explanation: 15–18 pt.
+- Key entity or amount: at least 1.8× body size and normally 34–64 pt in PPT; supporting explanation: 16–20 pt.
 - Prefer labels directly attached to nodes over a separate legend.
 - Use whitespace to separate semantic groups, not to leave an unfinished lower half.

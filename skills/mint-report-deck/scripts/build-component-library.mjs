@@ -41,7 +41,7 @@ function addChrome(slide, chapter, page) {
   rule(slide, 60, 674, 1160, C.line, 1);
   textbox(slide, "brand", "mint", 60, 680, 90, 24, 16, "42B879", true, sans);
   textbox(slide, "source", "来源：组件母版示例，生成材料时替换", 430, 680, 430, 22, 9, C.muted, false, sans, "center");
-  textbox(slide, "footer-page", `${String(page).padStart(2, "0")} / 18`, 1130, 680, 90, 22, 9, C.muted, false, sans, "right");
+  textbox(slide, "footer-page", `${String(page).padStart(2, "0")} / 25`, 1130, 680, 90, 22, 9, C.muted, false, sans, "right");
 }
 function addTitle(slide, title, lead = "") {
   textbox(slide, "page-title", title, 60, 70, 1160, 66, 30, C.ink, true, serif);
@@ -54,11 +54,27 @@ function addCard(slide, name, left, top, width, height, title, detail, accent = 
   textbox(slide, `${name}-title`, title, left + 22, top + 16, width - 44, 34, 18, C.ink, true, serif);
   textbox(slide, `${name}-detail`, detail, left + 22, top + 54, width - 44, height - 66, 12, C.muted, false, sans);
 }
+function addQuantBar(slide, name, left, top, width, height, segments, total = 100, threshold = null) {
+  let x = left;
+  for (const [index, segment] of segments.entries()) {
+    const segmentWidth = width * Number(segment.value) / total;
+    const compact = segmentWidth < 70;
+    shape(slide, `${name}-segment-${index}`, "rect", x, top, segmentWidth, height, segment.fill);
+    if (!compact) textbox(slide, `${name}-segment-label-${index}`, segment.label, x + 8, top + 8, Math.max(25, segmentWidth - 16), 22, 11, segment.textColor || C.paper, true, sans, "center");
+    if (segment.showValue !== false) textbox(slide, `${name}-segment-value-${index}`, `${segment.value}${segment.unit || ""}`, x + (compact ? 1 : 8), top + (compact ? 15 : 31), Math.max(25, segmentWidth - (compact ? 2 : 16)), compact ? Math.max(28, height - 30) : 34, compact ? 13 : 20, segment.textColor || C.paper, true, sans, "center");
+    x += segmentWidth;
+  }
+  if (threshold) {
+    const tx = left + width * Number(threshold.value) / total;
+    shape(slide, `${name}-threshold`, "rect", tx, top - 22, 2, height + 35, C.copper);
+    textbox(slide, `${name}-threshold-label`, `${threshold.label} ${threshold.value}${threshold.unit || ""}`, Math.max(left, tx - 190), top - 45, 185, 24, 11, C.copper, true, sans, "right");
+  }
+}
 
 const p = Presentation.create({ slideSize: { width: 1280, height: 720 } });
 const master = p.masters.add("Mint Formal Master");
 
-const recipeNames = ["封面", "管理层总览", "三层合作架构", "双轨路线图", "横向流程", "时间轴", "角色泳道", "方案对比", "二维矩阵", "KPI 与精确表格", "数据图表", "风险行动 Owner", "管理层决策", "能力链路", "风险聚焦", "资金决策", "章节页", "结尾页"];
+const recipeNames = ["封面", "管理层总览", "三层合作架构", "双轨路线图", "横向流程", "时间轴", "角色泳道", "方案对比", "二维矩阵", "KPI 与精确表格", "数据图表", "风险行动 Owner", "管理层决策", "能力链路", "风险聚焦", "资金决策", "关键数字", "实际与目标", "阈值与监管上限", "构成与权益分配", "公式与差额桥", "定量双对象比较", "情景与预测", "章节页", "结尾页"];
 const layouts = new Map();
 for (const name of recipeNames) {
   const layout = p.layouts.add(`Mint · ${name}`);
@@ -79,7 +95,7 @@ function slideFor(name, page, chapter = "MINT · COMPONENT LIBRARY") {
 {
   const s = p.slides.add(); s.setLayout(layouts.get("封面")); s.background.fill = C.forest;
   shape(s, "cover-light-panel", "rect", 760, 0, 520, 720, C.ivory);
-  textbox(s, "cover-eyebrow", "MINT · REPORT SYSTEM V0.3", 70, 78, 500, 30, 13, C.mint, true);
+  textbox(s, "cover-eyebrow", "MINT · REPORT SYSTEM V0.4", 70, 78, 500, 30, 13, C.mint, true);
   textbox(s, "cover-title", "Mint 汇报组件母版库", 70, 160, 650, 95, 42, C.paper, true, serif);
   textbox(s, "cover-subtitle", "从事实和逻辑出发，生成可编辑 PPTX 与互动 HTML", 70, 270, 610, 70, 20, "DCECE5", false, sans);
   rule(s, 70, 585, 610, "3D6B61", 1); textbox(s, "cover-meta", "16:9  ·  中文管理层材料  ·  2026.08", 70, 605, 600, 28, 12, C.mint, true);
@@ -188,12 +204,54 @@ function slideFor(name, page, chapter = "MINT · COMPONENT LIBRARY") {
   textbox(s,"capital-decision-label","管理层需要推动",620,205,300,28,13,C.jade,true);["明确资本方案","确认股权结构","锁定出资安排"].forEach((v,i)=>{const y=255+i*105;shape(s,`capital-action-${i}`,"rect",620,y,600,82,C.paper,C.line);textbox(s,`capital-action-no-${i}`,String(i+1).padStart(2,"0"),645,y+20,45,32,13,C.copper,true);textbox(s,`capital-action-title-${i}`,v,710,y+16,250,38,21,C.ink,true,serif);textbox(s,`capital-action-detail-${i}`,"填写 Owner 与确认时间",960,y+18,225,35,12,C.muted);});shape(s,"capital-decision","rect",620,575,600,55,C.forest);textbox(s,"capital-decision-text","决策｜是否按该规模继续细化资本与股权方案",645,585,550,34,16,C.paper,true);
 }
 
-// 17 Section
+// 17 Hero metrics
+{
+  const s=slideFor("关键数字",17,"关键数字");addTitle(s,"关键数字先回答管理问题，再补充口径","只突出真正影响判断的 1–4 个数字；说明文字保持辅助地位。");
+  [["21%","直接持股","肯尼亚结构示例",C.jade],["25%","示例上限","边界标记",C.copper],["20%","直接持股","坦桑尼亚结构示例",C.blue],["5.5%","权益补足","理论权益与直接持股差额",C.forest]].forEach((r,i)=>{const x=60+i*290;shape(s,`metric-${i}`,"rect",x,210,270,320,i===3?C.forest:C.paper,i===3?"none":C.line);shape(s,`metric-top-${i}`,"rect",x,210,270,7,r[3]);textbox(s,`metric-value-${i}`,r[0],x+25,260,220,82,48,i===3?C.paper:r[3],true,serif);textbox(s,`metric-label-${i}`,r[1],x+25,365,220,42,21,i===3?C.paper:C.ink,true,serif);textbox(s,`metric-note-${i}`,r[2],x+25,430,220,60,13,i===3?"DCECE5":C.muted);});
+}
+
+// 18 Actual vs target
+{
+  const s=slideFor("实际与目标",18,"实际—目标");addTitle(s,"实际值与目标值的差距需要被直接看见","显示实际、目标、差距和管理含义，不把数字埋进说明文字。");
+  shape(s,"at-panel","rect",60,205,1160,330,C.paper,C.line);textbox(s,"at-actual-label","实际",105,245,140,28,13,C.jade,true);textbox(s,"at-actual","72",105,285,230,92,58,C.jade,true,serif);textbox(s,"at-target-label","目标",400,245,140,28,13,C.blue,true);textbox(s,"at-target","80",400,285,230,92,58,C.blue,true,serif);textbox(s,"at-gap-label","差距",700,245,140,28,13,C.copper,true);textbox(s,"at-gap","-8",700,285,230,92,58,C.copper,true,serif);shape(s,"at-callout","rect",950,235,220,235,C.forest);textbox(s,"at-callout-kicker","IMPLICATION",980,265,165,24,11,C.mint,true);textbox(s,"at-callout-title","差距尚未收口",980,315,165,60,24,C.paper,true,serif);textbox(s,"at-callout-note","填写需要推动的动作与 Owner",980,395,165,52,12,"DCECE5");addQuantBar(s,"at-progress",105,430,765,32,[{label:"实际",value:72,fill:C.jade},{label:"差距",value:8,fill:"DDE6E2"}],80,{value:80,label:"目标",unit:""});
+}
+
+// 19 Threshold
+{
+  const s=slideFor("阈值与监管上限",19,"阈值与边界");addTitle(s,"21% 低于 25% 示例上限，结构在示例边界内","实际值、阈值和结论必须在同一视觉中完成核对。");
+  shape(s,"threshold-main","rect",60,200,1160,340,C.paper,C.line);textbox(s,"threshold-formula","70%  ×  30%  =  21%",95,245,720,70,39,C.ink,true,serif);textbox(s,"threshold-result","21%",930,235,220,88,52,C.jade,true,serif,"right");addQuantBar(s,"threshold-bar",95,365,1050,56,[{label:"直接持股",value:21,fill:C.jade},{label:"距上限",value:4,fill:"DDE6E2"}],25,{value:25,label:"示例上限",unit:"%"});textbox(s,"threshold-boundary","示例上限 25%",920,435,225,30,15,C.copper,true,sans,"right");shape(s,"threshold-implication","rect",95,485,1050,62,C.forest);textbox(s,"threshold-implication-text","结论｜21% 低于示例上限，可按方案直接承接",120,497,1000,38,18,C.paper,true);
+}
+
+// 20 Allocation
+{
+  const s=slideFor("构成与权益分配",20,"权益构成");addTitle(s,"直接持股 20%，另以 5.5% 经济权益补足","构成条保持总量一致，重点展示直接承接、差额与剩余权益。");
+  textbox(s,"allocation-country","坦桑尼亚",65,205,260,40,24,C.ink,true,serif);textbox(s,"allocation-headline","理论权益 25.5%",930,205,260,40,20,C.jade,true,serif,"right");addQuantBar(s,"allocation-bar",65,285,1130,86,[{label:"直接持股 20%",value:20,fill:C.jade},{label:"补足 5.5%",value:5.5,fill:C.copper},{label:"其余股权",value:74.5,fill:"DDE6E2"}],100,null);textbox(s,"allocation-formula","85%  ×  30%  =  25.5%",65,420,520,55,28,C.ink,true,serif);shape(s,"allocation-gap","rect",700,410,495,95,C.forest);textbox(s,"allocation-gap-value","5.5%",730,430,120,42,28,C.paper,true,serif);textbox(s,"allocation-gap-note","超出直接持股方案的部分，以等额经济权益补足",870,425,290,58,14,"DCECE5",true);
+}
+
+// 21 Formula and gap bridge
+{
+  const s=slideFor("公式与差额桥",21,"公式与差额");addTitle(s,"从理论权益到直接持股，5.5% 差额需要被单独解释","公式、结构安排和业务含义沿单一阅读路径展开。");
+  [["85%","可控股份"],["30%","合作权益系数"],["25.5%","理论权益"],["20%","直接持股"],["5.5%","权益补足"]].forEach((r,i)=>{const x=60+i*232;const dark=i===2||i===4;shape(s,`bridge-${i}`,"rect",x,245,205,200,i===4?C.copper:(i===2?C.forest:C.paper),dark?"none":C.line);textbox(s,`bridge-value-${i}`,r[0],x+20,280,165,65,36,dark?C.paper:([C.jade,C.blue,C.ink,C.jade][i]||C.ink),true,serif,"center");textbox(s,`bridge-label-${i}`,r[1],x+20,360,165,45,14,dark?"DCECE5":C.muted,true,sans,"center");if(i<4)textbox(s,`bridge-op-${i}`,["×","=","−","="][i],x+198,315,34,34,21,C.copper,true,serif,"center");});shape(s,"bridge-note","rect",60,500,1130,68,"EEF4F1");textbox(s,"bridge-note-text","解释｜理论权益由公式计算；直接持股之外的差额，以用户确认的经济权益安排补足。",85,513,1080,42,16,C.ink,true);
+}
+
+// 22 Quantitative comparison
+{
+  const s=slideFor("定量双对象比较",22,"双对象定量比较");addTitle(s,"两国权益结构差异集中在阈值与差额处理","国家只是组织方式；主逻辑是公式、构成、边界和结论。");
+  [["肯尼亚","70% × 30% = 21%","21% 低于 25% 示例上限",[{label:"直接持股 21%",value:21,fill:C.jade},{label:"其余股权",value:79,fill:"DDE6E2"}],null],["坦桑尼亚","85% × 30% = 25.5%","20% 直接持股 + 5.5% 权益补足",[{label:"直接持股 20%",value:20,fill:C.jade},{label:"补足 5.5%",value:5.5,fill:C.copper},{label:"其余股权",value:74.5,fill:"DDE6E2"}],null]].forEach((r,i)=>{const y=205+i*180;shape(s,`qcmp-${i}`,"rect",60,y,1160,160,C.paper,C.line);textbox(s,`qcmp-country-${i}`,r[0],90,y+23,170,40,23,C.ink,true,serif);textbox(s,`qcmp-formula-${i}`,r[1],285,y+20,400,44,25,C.jade,true,serif);textbox(s,`qcmp-conclusion-${i}`,r[2],760,y+25,420,40,17,i?C.copper:C.forest,true,sans,"right");addQuantBar(s,`qcmp-bar-${i}`,285,y+88,895,40,r[3],100,null);});
+}
+
+// 23 Scenario and forecast
+{
+  const s=slideFor("情景与预测",23,"情景与预测");addTitle(s,"预测用区间和情景表达，不把不确定值包装成承诺","基准、保守、乐观情景必须共享同一口径与期间。");
+  [["保守情景",18,"下行假设",C.blue],["基准情景",21,"当前主要判断",C.jade],["乐观情景",24,"上行假设",C.copper]].forEach((r,i)=>{const x=80+i*385;shape(s,`scenario-${i}`,"rect",x,210,345,330,i===1?C.forest:C.paper,i===1?"none":C.line);textbox(s,`scenario-label-${i}`,r[0],x+28,245,280,35,18,i===1?C.mint:r[3],true,serif);textbox(s,`scenario-value-${i}`,String(r[1]),x+28,305,230,90,58,i===1?C.paper:r[3],true,serif);textbox(s,`scenario-unit-${i}`,"万户",x+225,350,80,32,18,i===1?C.paper:C.ink,true,serif,"right");rule(s,x+28,420,285,i===1?"4F746A":C.line,1);textbox(s,`scenario-note-${i}`,r[2],x+28,445,285,52,14,i===1?"DCECE5":C.muted);});
+}
+
+// 24 Section
 {
   const s=p.slides.add();s.setLayout(layouts.get("章节页"));s.background.fill=C.jade;textbox(s,"section-number","01",70,100,240,140,70,C.paper,false,serif);textbox(s,"section-title","战略与目标",70,270,600,70,34,C.paper,true,serif);textbox(s,"section-claim","先明确本章节需要回答的问题，再进入证据与行动",70,350,720,55,20,"DCECE5",false,sans);textbox(s,"section-en","STRATEGY & DIRECTION",70,430,500,32,15,C.mint,true);rule(s,70,630,1140,"58A28F",1);textbox(s,"section-brand","mint",70,650,100,30,16,C.paper,true);
 }
 
-// 18 Closing
+// 25 Closing
 {
   const s=p.slides.add();s.setLayout(layouts.get("结尾页"));s.background.fill=C.ivory;textbox(s,"closing-brand","Mint",70,65,160,45,24,"42B879",true);textbox(s,"closing-title","谢谢",70,235,430,80,46,C.jade,true,serif);textbox(s,"closing-en","THANK YOU",70,320,360,34,16,C.copper,true);for(let i=0;i<4;i++)shape(s,`closing-wave-${i}`,"ellipse",720+i*55,120+i*50,430-i*35,430-i*35,i===3?C.forest:"none",[C.mint,C.copper,C.blue,C.forest][i]);
 }

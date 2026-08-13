@@ -1,13 +1,15 @@
 {
   "name": "mint-report-deck",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node skills/mint-report-deck/tests/smoke.mjs",
     "example": "node skills/mint-report-deck/scripts/render-deck.mjs skills/mint-report-deck/assets/examples/example-deck.json outputs/example/report.html",
     "build:presentation-library": "node skills/mint-report-deck/scripts/build-component-library.mjs",
-    "preflight:presentations": "node skills/mint-report-deck/scripts/preflight-presentations.mjs"
+    "preflight:presentations": "node skills/mint-report-deck/scripts/preflight-presentations.mjs",
+    "qa:v04": "node skills/mint-report-deck/scripts/qa-deck.mjs",
+    "repair:v04": "node skills/mint-report-deck/scripts/repair-deck.mjs"
   },
   "license": "MIT"
 }

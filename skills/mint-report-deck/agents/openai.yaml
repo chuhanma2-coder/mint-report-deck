@@ -2,6 +2,6 @@ interface:
   display_name: "Mint 中文汇报"
   short_description: "粗略笔记生成最少页数的 Mint PPTX 与互动 HTML"
   brand_color: "#1C7866"
-  default_prompt: "请把我的粗略笔记整理成 Mint 汇报材料。先识别业务逻辑和信息层级，再选择正确的架构图、流程图、时间轴、矩阵、表格或图表；不要简单堆砌文字和卡片。默认用最少页数，同时生成可编辑 PPTX 和互动 HTML。只使用我提供的事实，未知内容标记待确认。"
+  default_prompt: "请把我的粗略笔记整理成 Mint 汇报材料。先逐项冻结事实、实体、数字、公式、阈值、风险和行动，再判断每条信息的管理重要性与视觉角色。用最少页数选择正确的数字结构、架构图、流程图、时间轴、矩阵、表格或图表；重要数字不得只藏在正文，任何主要信息未清晰展示时不得交付正式版。只使用我提供的事实，同时生成可编辑 PPTX 和互动 HTML。"
 policy:
   allow_implicit_invocation: true

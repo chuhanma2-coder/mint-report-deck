@@ -7,6 +7,7 @@ const families = {
   cover: { required: ["title"], optional: ["subtitle", "brand-visual"] },
   "section-intro": { required: ["section-number", "section-claim"], optional: ["section-question"] },
   statement: { required: ["claim"], optional: ["evidence-note", "decision-callout"] },
+  "quantitative-story": { required: ["numeric-question", "numeric-primary-visual"], optional: ["formula-band", "threshold-bar", "gap-bridge", "implication"] },
   "capability-chain": { required: ["linked-stages"], optional: ["context-ribbon", "capital-callout", "risk-alert", "decision-callout"] },
   "architecture-brief": { required: ["layers"], optional: ["context-ribbon"] },
   process: { required: ["ordered-steps"], optional: ["focus-step"] },
@@ -23,7 +24,8 @@ const families = {
   decision: { required: ["decision"], optional: ["actions", "capital-callout", "risk-alert"] }
 };
 const requestedFamily = input.preferredFamily || selected.component;
-const familyName = String(requestedFamily).split(":")[0] === "chart" ? "chart" : requestedFamily;
+const familyPrefix = String(requestedFamily).split(":")[0];
+const familyName = ["chart", "quantitative-story"].includes(familyPrefix) ? familyPrefix : requestedFamily;
 const family = families[familyName];
 const secondaryBlocks = Number(input.secondaryBlocks || 0);
 const calloutCount = Math.min(Number(input.calloutCount || 0), 2);

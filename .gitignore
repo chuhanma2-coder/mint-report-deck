@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+.work/
 outputs/
 *.log
 skills/mint-report-deck/assets/presentation/qa/

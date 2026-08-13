@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "0.4",
+  "id": "mint-equity-rights-v04",
+  "version": 1,
+  "title": "入股前权益锁定方案",
+  "subtitle": "股权 Option、MINT 品牌与差额分红权",
+  "date": "",
+  "confidentiality": "内部讨论材料",
+  "pageBudget": 2,
+  "deckPlan": {"narrativeArc":["economic-structure","agreement-rights"],"introFamily":"section-intro","sections":[{"id":"S1","title":"权益结构","accentTone":"jade"},{"id":"S2","title":"协议锁定","accentTone":"orange"}]},
+  "slides": [
+    {
+      "id":"S1-01","type":"quantitative-story","chapter":"权益结构","sectionId":"S1","pageRole":"evidence",
+      "titleLines":["肯尼亚可直接承接21%权益","坦桑尼亚以5.5%分红权补足差额"],
+      "lead":"同一30%合作权益系数下，两国的权益承接方式不同。",
+      "pageQuestion":"两国理论权益如何换算，监管或方案限制下如何承接？",
+      "pageAnswer":"肯尼亚21%可直接承接；坦桑尼亚25.5%理论权益由20%直接持股与5.5%分红权共同承接。",
+      "primaryVisual":{"kind":"gap-bridge","visualShare":0.66,"claimRefs":["N-K-70","N-K-30","N-K-21","N-K-25","N-T-85","N-T-30","N-T-25-5","N-T-20","N-T-5-5"],"atomRefs":["A-K-FORMULA","A-K-LIMIT","A-T-FORMULA","A-T-GAP"],"data":{"groups":[
+        {"id":"KENYA","label":"肯尼亚","kicker":"直接承接","headline":"直接持股21%","formulaLabel":"权益换算","formula":"70% × 30% = 21%","total":100,"segments":[{"label":"直接持股","value":21,"unit":"%","tone":"jade","claimRef":"N-K-21"},{"label":"其余股权","value":79,"unit":"%","tone":"remainder","showValue":false}],"threshold":{"value":25,"unit":"%","label":"单一股东上限原则","claimRef":"N-K-25"},"actual":21,"unit":"%","implication":"21%低于示例上限，按方案全部直接入股。"},
+        {"id":"TANZANIA","label":"坦桑尼亚","kicker":"直接持股 + 经济补偿","headline":"理论权益25.5%","formulaLabel":"权益换算","formula":"85% × 30% = 25.5%","total":100,"segments":[{"label":"直接持股","value":20,"unit":"%","tone":"jade","claimRef":"N-T-20"},{"label":"分红权补足","value":5.5,"unit":"%","tone":"gap","claimRef":"N-T-5-5"},{"label":"其余股权","value":74.5,"unit":"%","tone":"remainder","showValue":false}],"theoretical":25.5,"direct":20,"gap":5.5,"implication":"超过直接持股方案的5.5%以等额分红权补足。"}
+      ]}},
+      "supportModules":[{"kind":"boundary-note","atomRefs":["A-LEGAL"],"claimRefs":[],"data":{"label":"法律边界","value":"交易结构示例，不是监管批准结果","detail":"表决权、分红权、期权行权与税务处理需专项法律意见"}}],
+      "readingOrder":["title","formula","allocation","threshold-gap","boundary"],"atomRefs":["A-K-FORMULA","A-K-LIMIT","A-T-FORMULA","A-T-GAP","A-LEGAL"],
+      "emphasis":{"terms":["21%","5.5%","25.5%","20%"]},"sourceRefs":["USER:KENYA","USER:TANZANIA","USER:LEGAL-NOTE"],"source":"来源：用户提供的交易结构示例；比例不代表监管批准结果"
+    },
+    {
+      "id":"S2-01","type":"capability-chain","chapter":"协议锁定","sectionId":"S2","pageRole":"decision",
+      "titleLines":["入股前先锁定三项权益","避免资源投入只剩模糊合作承诺"],
+      "lead":"WeFi投入申牌资源、科技与流量前，先形成可执行的股权、品牌与经济补偿安排。",
+      "pageQuestion":"在投入资源前，哪些权益必须写进协议？",
+      "pageAnswer":"股权Option、MINT品牌优先和收益差额补足应形成连续保护链。",
+      "primaryVisual":{"kind":"capability-chain","visualShare":0.64,"claimRefs":[],"atomRefs":["A-RIGHT-OPTION","A-RIGHT-BRAND","A-RIGHT-GAP"],"data":{}},
+      "supportModules":[{"kind":"boundary-note","atomRefs":["A-LEGAL"],"claimRefs":[],"data":{"label":"法律边界","value":"具体安排需专项法律意见"}}],
+      "readingOrder":["title","rights-chain","legal-boundary"],"atomRefs":["A-RIGHT-OPTION","A-RIGHT-BRAND","A-RIGHT-GAP","A-LEGAL"],
+      "stages":[
+        {"name":"股权Option","role":"锁定未来可入股比例","entities":["微众"],"capability":"牌照获批后按约定条件参股或购买股份","detail":"比例不高于当地单一外资股东上限"},
+        {"name":"MINT品牌优先","role":"沉淀用户心智与品牌资产","entities":["MINT"],"capability":"本地银行APP优先采用MINT品牌展业","detail":"品牌资产进入可持续经营载体"},
+        {"name":"收益差额补足","role":"补偿权益承接差额","entities":["WeFi"],"capability":"实际持股不足时以等额分红权等安排补足","detail":"具体法律与税务处理需专项意见"}
+      ],
+      "sourceRefs":["USER:RIGHTS","USER:LEGAL-NOTE"],"source":"来源：用户提供的三项权益原则；具体法律安排待专项意见"
+    }
+  ]
+}

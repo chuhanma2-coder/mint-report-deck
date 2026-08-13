@@ -11,12 +11,12 @@ const deck = JSON.parse(fs.readFileSync(file, "utf8"));
 const mapFile = process.argv[3] ? path.resolve(process.argv[3]) : null;
 const map = mapFile && fs.existsSync(mapFile) ? JSON.parse(fs.readFileSync(mapFile, "utf8")) : null;
 const errors = [], warnings = [];
-const allowed = new Set(["cover", "section-intro", "statement", "capability-chain", "architecture-brief", "process", "timeline", "dual-track-roadmap", "swimlane", "comparison", "matrix", "table", "chart", "heatmap", "media", "risk-spotlight", "decision"]);
+const allowed = new Set(["cover", "section-intro", "statement", "quantitative-story", "capability-chain", "architecture-brief", "process", "timeline", "dual-track-roadmap", "swimlane", "comparison", "matrix", "table", "chart", "heatmap", "media", "risk-spotlight", "decision"]);
 const vague = ["赋能", "抓手", "闭环", "体系化", "战略期权"];
 const arr = (v) => Array.isArray(v) ? v : [];
 const text = (v) => typeof v === "string" ? v : Array.isArray(v) ? v.map(text).join(" ") : v && typeof v === "object" ? Object.values(v).map(text).join(" ") : "";
 
-if (!new Set(["0.2", "0.3"]).has(deck.schemaVersion)) errors.push("schemaVersion 必须为 0.2 或 0.3");
+if (!new Set(["0.2", "0.3", "0.4"]).has(deck.schemaVersion)) errors.push("schemaVersion 必须为 0.2、0.3 或 0.4");
 if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(deck.id || "")) errors.push("id 必须是 3–64 位小写 slug");
 if (!Number.isInteger(deck.version) || deck.version < 1) errors.push("version 必须是正整数");
 if (!deck.title) errors.push("缺少 title");
@@ -37,7 +37,11 @@ if (map) {
   const known = new Set(arr(map.entities).flatMap((x) => [x.canonicalName, ...arr(x.aliases)]));
   for (const banned of ["Sinova", "Twende", "BaaS"]) if (fullText.includes(banned) && !known.has(banned)) errors.push(`出现来源未提供实体：${banned}`);
   for (const priority of arr(map.priorities).filter((p) => p.level === "material")) {
-    const represented = arr(deck.slides).some((s) => arr(s.emphasis?.callouts).some((c) => c.kind === priority.kind && text(c).includes(priority.subject)));
+    const represented = arr(deck.slides).some((s) =>
+      arr(s.emphasis?.callouts).some((c) => c.kind === priority.kind && text(c).includes(priority.subject)) ||
+      text(s.primaryVisual).includes(priority.subject) ||
+      arr(s.supportModules).some((module) => text(module).includes(priority.subject))
+    );
     if (!represented) errors.push(`重要信息未突出展示：${priority.kind} · ${priority.subject}`);
   }
 }
@@ -52,6 +56,21 @@ arr(deck.slides).forEach((slide, index) => {
   if (/无真实数列|不生成图表|请在此|占位|TBD|TODO|待确认|制作说明|点击编辑/i.test(all)) errors.push(`${at}：正式页出现提示语、制作说明或待确认占位`);
   vague.forEach((word) => { if (all.includes(word)) warnings.push(`${at}：抽象词“${word}”需要来源或具体定义`); });
   if (!arr(slide.sourceRefs).length) errors.push(`${at}：缺少 sourceRefs`);
+  if (deck.schemaVersion === "0.4") {
+    if (!slide.pageQuestion) errors.push(`${at}：缺少 pageQuestion`);
+    if (!slide.pageAnswer) errors.push(`${at}：缺少 pageAnswer`);
+    if (!slide.primaryVisual?.kind) errors.push(`${at}：缺少 primaryVisual.kind`);
+    if (!arr(slide.readingOrder).length) errors.push(`${at}：缺少 readingOrder`);
+    if (!arr(slide.atomRefs).length) errors.push(`${at}：缺少 atomRefs`);
+    if (arr(slide.supportModules).length > 2) errors.push(`${at}：supportModules 不得超过两个`);
+  }
+  if (slide.type === "quantitative-story") {
+    const pv = slide.primaryVisual || {};
+    const allowedNumeric = new Set(["hero-metric", "metric-strip", "threshold-bar", "allocation-bar", "formula-band", "gap-bridge", "actual-target", "range-band", "ranked-comparison", "trend-chart", "waterfall", "distribution", "scenario-comparison"]);
+    if (!allowedNumeric.has(pv.kind)) errors.push(`${at}：quantitative-story 的 primaryVisual.kind 无效`);
+    if (!arr(pv.claimRefs).length) errors.push(`${at}：quantitative-story 缺少 claimRefs`);
+    if (!["hero-metric", "metric-strip"].includes(pv.kind) && !arr(pv.data?.groups).length && !pv.data?.chart) errors.push(`${at}：quantitative-story 缺少 groups 或 chart 数据`);
+  }
   if (slide.type === "process" && (arr(slide.items).length < 3 || arr(slide.items).length > 6)) errors.push(`${at}：流程应为 3–6 个真实有序步骤`);
   if (slide.type === "capability-chain" && (arr(slide.stages).length < 3 || arr(slide.stages).length > 5)) errors.push(`${at}：能力链路应为 3–5 个阶段`);
   if (slide.type === "architecture-brief" && (arr(slide.layers).length < 3 || arr(slide.layers).length > 5)) errors.push(`${at}：分层架构应为 3–5 层`);

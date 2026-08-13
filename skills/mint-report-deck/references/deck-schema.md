@@ -1,10 +1,10 @@
-# Deck spec contract V0.3
+# Deck spec contract V0.4
 
-Top level:
+Top level keeps the existing deck identity and plan fields. V0.2/V0.3 decks remain renderable; all new work uses V0.4.
 
 ```json
 {
-  "schemaVersion": "0.3",
+  "schemaVersion": "0.4",
   "id": "unique-project-slug",
   "version": 1,
   "title": "汇报标题",
@@ -21,38 +21,58 @@ Top level:
 }
 ```
 
-Every slide has `type`, `chapter`, `titleLines`, `sourceRefs[]` and optional `sectionId`, `pageRole`, `emphasis`, `lead`, `source`. `titleLines` contains one or two intentional semantic lines. Do not insert HTML.
+Every V0.4 slide has:
 
-`emphasis` may contain:
+- `type`, `chapter`, `titleLines`, `sourceRefs[]`.
+- `pageQuestion`: the audience question.
+- `pageAnswer`: the one-sentence takeaway.
+- `primaryVisual`: `{kind, claimRefs[], atomRefs[], data}`.
+- `supportModules[]`: at most two `{kind, atomRefs[], claimRefs[], data}` modules.
+- `readingOrder[]`: ordered ids such as `title`, `formula`, `allocation`, `implication`.
+- `atomRefs[]`: all content atoms represented on the page.
+- Optional `sectionId`, `pageRole`, `emphasis`, `lead`, `source`.
+
+`primaryVisual.kind` may be:
+
+`hero-metric`, `metric-strip`, `threshold-bar`, `allocation-bar`, `formula-band`, `gap-bridge`, `actual-target`, `range-band`, `ranked-comparison`, `trend-chart`, `waterfall`, `distribution`, `scenario-comparison`, `capability-chain`, `architecture`, `process`, `timeline`, `roadmap`, `swimlane`, `comparison`, `matrix`, `table`, `heatmap`, `media`, `risk` or `decision`.
+
+`supportModules.kind` may be `formula-band`, `threshold-bar`, `gap-bridge`, `risk-alert`, `decision-callout`, `capital-callout`, `implication`, `action-banner`, `evidence-note` or `boundary-note`.
+
+## Quantitative story
+
+Use `type: quantitative-story` for formula, threshold, allocation, gap, target, scenario or range-led pages. The renderer consumes `primaryVisual.data.groups[]`:
 
 ```json
 {
-  "terms": ["M-PESA", "风险能力"],
-  "callouts": [
-    {"kind":"capital","label":"启动资金","value":"5,000 万美元","detail":"股权及出资安排待定"},
-    {"kind":"risk","label":"关键风险","value":"缺少正式合作协议","detail":"可能影响监管真实性审核"}
-  ]
+  "type": "quantitative-story",
+  "primaryVisual": {
+    "kind": "allocation-bar",
+    "claimRefs": ["N1", "N2"],
+    "atomRefs": ["A1", "A2"],
+    "data": {
+      "groups": [
+        {
+          "id": "KENYA",
+          "label": "肯尼亚",
+          "headline": "直接持股 21%",
+          "formula": "70% × 30% = 21%",
+          "segments": [
+            {"label":"直接持股","value":21,"unit":"%","tone":"jade"},
+            {"label":"其余股权","value":79,"unit":"%","tone":"remainder"}
+          ],
+          "threshold": {"value":25,"unit":"%","label":"单一股东上限原则"},
+          "implication": "21%低于示例上限，按方案全部直接入股"
+        }
+      ]
+    }
+  }
 }
 ```
 
-## Page recipes
+Segments sharing a bar must reconcile to `total`, default 100 for percentage allocation. A compensation or gap segment must remain visually and semantically distinct from direct ownership.
 
-- `cover`: `subtitle`, `meta[]`, `visual` (`phone-card`, `waves`, `product-flow`).
-- `section-intro`: `sectionNumber`, `sectionTitle`, `sectionClaim`, optional `sectionQuestion`, `accentTone`.
-- `statement`: `statementLines[]`, `support[]`.
-- `capability-chain`: optional `contextRibbon[{label,value}]`; `stages[{name,role,entities[],capability,detail}]`, 3–5 stages; optional one `emphasis.callout`.
-- `architecture-brief`: optional `contextStrip[{label,value,detail}]`; `layers[{name,role,entities[{name,detail}],detail}]`, 3–5 layers. Do not require a manufactured output column.
-- `process`: `items[{title,detail}]`, 3–6 genuinely ordered steps, optional `focusIndex`.
-- `timeline`: `items[{time,title,detail}]`, 3–6 milestones.
-- `dual-track-roadmap`: `tracks[{label,summary,items[{stage,title,detail}]}]` exactly 2; optional `actionBanner[{label,text}]`.
-- `swimlane`: `lanes[{actor,items[{title,detail}]}]`, 2–5 actors.
-- `comparison`: `columns[{title,subtitle,items[]}]`, 2–4 columns.
-- `matrix`: `rows[]`, `columns[]`, `cells[][]` for categorical content.
-- `table`: `columns[]`, `rows[][]`, maximum 7 columns and 8 rows.
-- `chart`: `chart{title,labels[],unit,period,subject,series[{name,type,values[]}],sourceRefs[]}`; HTML supports `bar` or `line` and Presentations may use editable native variants allowed by routing.
-- `heatmap`: `heatmap{rows[],columns[],values[][],unit,period,subject,sourceRefs[]}`.
-- `media`: `image`, `caption`, `body[]`.
-- `risk-spotlight`: `risk{label,judgment,severity,evidence[],impacts[],actions[]}`.
-- `decision`: `decision`, `why[]`, `actions[{owner,action,time}]`.
+## Legacy recipes
+
+Keep the V0.3 recipes for `cover`, `section-intro`, `statement`, `capability-chain`, `architecture-brief`, `process`, `timeline`, `dual-track-roadmap`, `swimlane`, `comparison`, `matrix`, `table`, `chart`, `heatmap`, `media`, `risk-spotlight`, and `decision`. V0.4 metadata is mandatory for newly generated slides even when a legacy renderer family is used.
 
 Visible `source` is a concise source line. Detailed locators live in evidence artifacts. Unknowns, conflicts, prompts and QA text never enter a slide.

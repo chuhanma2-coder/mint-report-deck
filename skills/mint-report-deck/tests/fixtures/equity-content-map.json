@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "0.4",
+  "communicationJob": {
+    "audience": "合作谈判与决策相关方",
+    "purpose": "说明两国权益换算及入股前应锁定的权益",
+    "desiredOutcome": "推动把股权 Option、MINT 品牌优先与收益差额补足写入协议",
+    "managementTakeaway": "先锁定可入股比例与监管限制下的经济补偿，再投入申牌资源、科技与流量"
+  },
+  "contentAtoms": [
+    {"id":"A-K-FORMULA","kind":"numeric","text":"肯尼亚70%×30%=21%","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:KENYA"},
+    {"id":"A-K-LIMIT","kind":"boundary","text":"肯尼亚单一股东上限原则上不超过25%","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:KENYA"},
+    {"id":"A-T-FORMULA","kind":"numeric","text":"坦桑尼亚85%×30%=25.5%","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:TANZANIA"},
+    {"id":"A-T-GAP","kind":"numeric","text":"坦桑尼亚直接持股20%，差额5.5%以分红权补足","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:TANZANIA"},
+    {"id":"A-RIGHT-OPTION","kind":"judgment","assertionStatus":"proposal","text":"本地银行股权 Option","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:RIGHTS"},
+    {"id":"A-RIGHT-BRAND","kind":"judgment","assertionStatus":"proposal","text":"MINT 品牌优先","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:RIGHTS"},
+    {"id":"A-RIGHT-GAP","kind":"judgment","assertionStatus":"proposal","text":"收益差额补足","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:RIGHTS"},
+    {"id":"A-LEGAL","kind":"boundary","text":"交易结构示例，不是监管批准结果","materiality":"supporting","displayRequirement":"annotation","coverageStatus":"planned","sourceRef":"USER:LEGAL-NOTE"}
+  ],
+  "numericClaims": [
+    {"id":"N-K-70","raw":"70%","value":70,"unit":"%","period":"未提供","subject":"肯尼亚可控股份","role":"input","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"KENYA","groupLabel":"肯尼亚","sourceRef":"USER:KENYA"},
+    {"id":"N-K-30","raw":"30%","value":30,"unit":"%","period":"未提供","subject":"合作权益系数","role":"input","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"KENYA","groupLabel":"肯尼亚","sourceRef":"USER:KENYA"},
+    {"id":"N-K-21","raw":"70% × 30% = 21%","value":21,"unit":"%","period":"未提供","subject":"直接持股","role":"formula-result","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"KENYA","groupLabel":"肯尼亚","formula":{"operator":"multiply","operands":[70,30],"operandUnits":["%","%"],"result":21},"visual":{"segment":true,"label":"直接持股","tone":"jade","total":100},"implication":"21%低于示例上限，按方案全部直接入股","sourceRef":"USER:KENYA"},
+    {"id":"N-K-25","raw":"25%","value":25,"unit":"%","period":"未提供","subject":"单一股东上限原则","role":"upper-bound","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"KENYA","groupLabel":"肯尼亚","sourceRef":"USER:KENYA"},
+    {"id":"N-T-85","raw":"85%","value":85,"unit":"%","period":"未提供","subject":"坦桑尼亚可控股份","role":"input","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"TANZANIA","groupLabel":"坦桑尼亚","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-30","raw":"30%","value":30,"unit":"%","period":"未提供","subject":"合作权益系数","role":"input","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"TANZANIA","groupLabel":"坦桑尼亚","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-25-5","raw":"85% × 30% = 25.5%","value":25.5,"unit":"%","period":"未提供","subject":"理论权益","role":"theoretical","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"TANZANIA","groupLabel":"坦桑尼亚","formula":{"operator":"multiply","operands":[85,30],"operandUnits":["%","%"],"result":25.5},"sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-20","raw":"20%","value":20,"unit":"%","period":"未提供","subject":"直接持股","role":"direct","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"TANZANIA","groupLabel":"坦桑尼亚","visual":{"segment":true,"label":"直接持股","tone":"jade","total":100},"sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-5-5","raw":"5.5%","value":5.5,"unit":"%","period":"未提供","subject":"分红权补足","role":"gap","materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","groupId":"TANZANIA","groupLabel":"坦桑尼亚","visual":{"segment":true,"label":"分红权补足","tone":"gap","total":100},"implication":"超过直接持股方案的5.5%以等额分红权补足","sourceRef":"USER:TANZANIA"}
+  ],
+  "claimGraph": [
+    {"id":"G1","from":["N-K-70","N-K-30"],"relation":"calculates","to":["N-K-21"]},
+    {"id":"G2","from":["N-K-21"],"relation":"compares-with","to":["N-K-25"]},
+    {"id":"G3","from":["N-T-85","N-T-30"],"relation":"calculates","to":["N-T-25-5"]},
+    {"id":"G4","from":["N-T-25-5","N-T-20"],"relation":"leaves-gap","to":["N-T-5-5"]}
+  ],
+  "facts": [
+    {"id":"F1","text":"肯尼亚示例理论权益为21%并按方案直接入股","sourceRef":"USER:KENYA"},
+    {"id":"F2","text":"坦桑尼亚示例理论权益为25.5%，直接持股20%，差额5.5%以分红权补足","sourceRef":"USER:TANZANIA"},
+    {"id":"F3","text":"三项权益为股权Option、MINT品牌优先和收益差额补足","sourceRef":"USER:RIGHTS"}
+  ],
+  "entities": [
+    {"id":"E1","canonicalName":"WeFi","aliases":[],"requiredOnSlides":true},
+    {"id":"E2","canonicalName":"MINT","aliases":[],"requiredOnSlides":true},
+    {"id":"E3","canonicalName":"微众","aliases":[],"requiredOnSlides":true},
+    {"id":"E4","canonicalName":"肯尼亚","aliases":[],"requiredOnSlides":true},
+    {"id":"E5","canonicalName":"坦桑尼亚","aliases":[],"requiredOnSlides":true}
+  ],
+  "relationships": [
+    {"id":"R1","type":"comparison","from":["E4","E5"],"to":[],"statement":"两国理论权益按同一系数换算，但承接方式不同"},
+    {"id":"R2","type":"parallel","from":["E1","E2","E3"],"to":[],"statement":"三项权益应并列写入协议"}
+  ],
+  "numbers": [
+    {"id":"N-K-70","value":70,"unit":"%","period":"未提供","subject":"肯尼亚可控股份","sourceRef":"USER:KENYA"},
+    {"id":"N-K-30","value":30,"unit":"%","period":"未提供","subject":"合作权益系数","sourceRef":"USER:KENYA"},
+    {"id":"N-K-21","value":21,"unit":"%","period":"未提供","subject":"肯尼亚直接持股","sourceRef":"USER:KENYA"},
+    {"id":"N-K-25","value":25,"unit":"%","period":"未提供","subject":"肯尼亚单一股东上限原则","sourceRef":"USER:KENYA"},
+    {"id":"N-T-85","value":85,"unit":"%","period":"未提供","subject":"坦桑尼亚可控股份","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-30","value":30,"unit":"%","period":"未提供","subject":"合作权益系数","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-25-5","value":25.5,"unit":"%","period":"未提供","subject":"坦桑尼亚理论权益","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-20","value":20,"unit":"%","period":"未提供","subject":"坦桑尼亚直接持股","sourceRef":"USER:TANZANIA"},
+    {"id":"N-T-5-5","value":5.5,"unit":"%","period":"未提供","subject":"坦桑尼亚收益差额","sourceRef":"USER:TANZANIA"}
+  ],
+  "actions": [
+    {"id":"ACT1","action":"在入股前把三项权益写入协议","owner":"协议相关方","time":"入股前","expectedResult":"形成可执行的股权、品牌与经济补偿安排","sourceRef":"USER:RIGHTS"}
+  ],
+  "priorities": [
+    {"id":"P1","kind":"risk","subject":"单一股东上限原则","level":"material","sourceRef":"USER:KENYA"}
+  ],
+  "unknowns": ["当地单一外资股东上限及适用条件需专项核验","表决权、分红权、期权行权与税务处理的具体法律安排未提供"],
+  "conflicts": [],
+  "pageBudget": {"requested":null,"minimum":2,"planned":2,"reason":"权益数字结构和协议保护链是两个独立命题"},
+  "riskLevel": "confirm-first"
+}

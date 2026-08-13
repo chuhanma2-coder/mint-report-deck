@@ -12,5 +12,13 @@
   {"name":"valid-trend","input":{"relationship":"trend","numericEvidence":{"labels":["1月","2月"],"values":[1,2],"unit":"户","period":"2026Q1","subject":"客户数","sourceRefs":["S1"],"orderedTime":true}},"expected":"chart:line"},
   {"name":"missing-chart-evidence","input":{"relationship":"quantity","numericEvidence":{"labels":["A"],"values":[1]}},"expected":"needs-review"},
   {"name":"material-risk","input":{"relationship":"risk"},"expected":"risk-spotlight"},
-  {"name":"section-opening","input":{"relationship":"section"},"expected":"section-intro"}
+  {"name":"section-opening","input":{"relationship":"section"},"expected":"section-intro"},
+  {"name":"formula-result","input":{"relationship":"comparison","numericRoles":["input","formula-result"]},"expected":"quantitative-story:formula-band"},
+  {"name":"threshold","input":{"relationship":"comparison","numericRoles":["actual","upper-bound"]},"expected":"quantitative-story:threshold-bar"},
+  {"name":"entitlement-gap","input":{"relationship":"comparison","numericRoles":["theoretical","direct","gap"]},"expected":"quantitative-story:gap-bridge"},
+  {"name":"actual-target","input":{"relationship":"quantity","numericRoles":["actual","target"]},"expected":"quantitative-story:actual-target"},
+  {"name":"allocation","input":{"relationship":"composition","numericRoles":["part","remainder"]},"expected":"quantitative-story:allocation-bar"},
+  {"name":"forecast-range","input":{"relationship":"time","numericRoles":["forecast","range"]},"expected":"quantitative-story:range-band"},
+  {"name":"scenario","input":{"relationship":"comparison","numericRoles":["scenario"]},"expected":"quantitative-story:scenario-comparison"},
+  {"name":"distribution","input":{"relationship":"quantity","numericRoles":["distribution","anomaly"]},"expected":"quantitative-story:distribution"}
 ]
