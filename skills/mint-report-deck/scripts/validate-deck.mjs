@@ -4,41 +4,53 @@ import path from "node:path";
 
 const file = path.resolve(process.argv[2] || "");
 if (!process.argv[2] || !fs.existsSync(file)) {
-  console.error("Usage: node validate-deck.mjs /absolute/path/deck.json");
+  console.error("Usage: node validate-deck.mjs /absolute/path/deck-spec.json [/absolute/path/content-map.json]");
   process.exit(2);
 }
-
 const deck = JSON.parse(fs.readFileSync(file, "utf8"));
-const errors = [];
-const warnings = [];
-const allowed = new Set(["cover", "statement", "process", "architecture", "cycle", "timeline", "comparison", "table", "chart", "heatmap", "media", "decision"]);
+const mapFile = process.argv[3] ? path.resolve(process.argv[3]) : null;
+const map = mapFile && fs.existsSync(mapFile) ? JSON.parse(fs.readFileSync(mapFile, "utf8")) : null;
+const errors = [], warnings = [];
+const allowed = new Set(["cover", "statement", "architecture-brief", "process", "timeline", "dual-track-roadmap", "swimlane", "comparison", "matrix", "table", "chart", "heatmap", "media", "decision"]);
 const vague = ["赋能", "抓手", "闭环", "体系化", "战略期权"];
 const arr = (v) => Array.isArray(v) ? v : [];
 const text = (v) => typeof v === "string" ? v : Array.isArray(v) ? v.map(text).join(" ") : v && typeof v === "object" ? Object.values(v).map(text).join(" ") : "";
 
+if (deck.schemaVersion !== "0.2") errors.push("schemaVersion 必须为 0.2");
 if (!/^[a-z0-9][a-z0-9-]{2,63}$/.test(deck.id || "")) errors.push("id 必须是 3–64 位小写 slug");
 if (!Number.isInteger(deck.version) || deck.version < 1) errors.push("version 必须是正整数");
 if (!deck.title) errors.push("缺少 title");
 if (!arr(deck.slides).length) errors.push("至少需要一页 slides");
-if (deck.slides?.length > 20) warnings.push("超过 20 页，建议拆分汇报");
+if (!Number.isInteger(deck.pageBudget) || deck.pageBudget < 1) errors.push("pageBudget 必须为正整数");
+if (deck.pageBudget !== arr(deck.slides).length) errors.push("pageBudget 必须与实际页数一致");
+if (map && map.pageBudget?.planned !== arr(deck.slides).length) errors.push("deck 页数与 content-map.pageBudget.planned 不一致");
+
+const fullText = text(deck);
+if (map) {
+  for (const entity of arr(map.entities)) {
+    if (entity.requiredOnSlides && !fullText.includes(entity.canonicalName)) errors.push(`缺少关键实体：${entity.canonicalName}`);
+  }
+  const known = new Set(arr(map.entities).flatMap((x) => [x.canonicalName, ...arr(x.aliases)]));
+  for (const banned of ["Sinova", "Twende", "BaaS"]) if (fullText.includes(banned) && !known.has(banned)) errors.push(`出现来源未提供实体：${banned}`);
+}
 
 arr(deck.slides).forEach((slide, index) => {
   const at = `第 ${index + 1} 页`;
   if (!allowed.has(slide.type)) errors.push(`${at}：不支持组件 ${slide.type}`);
-  const titleLines = arr(slide.titleLines);
-  if (slide.type !== "cover" && (titleLines.length < 1 || titleLines.length > 2)) errors.push(`${at}：titleLines 必须为 1–2 行`);
-  titleLines.forEach((line) => {
-    const n = [...String(line).replace(/\s/g, "")].length;
-    if (n > 24) warnings.push(`${at}：标题单行 ${n} 字，建议语义改写或换行`);
-  });
+  const lines = arr(slide.titleLines);
+  if (slide.type !== "cover" && (lines.length < 1 || lines.length > 2)) errors.push(`${at}：titleLines 必须为 1–2 行`);
+  lines.forEach((line) => { const n = [...String(line).replace(/\s/g, "")].length; if (n > 24) warnings.push(`${at}：标题单行 ${n} 字，应在标点或语义边界换行`); });
   const all = text(slide);
-  if (/无真实数列|不生成图表|请在此|占位|TBD|TODO|待确认/i.test(all)) errors.push(`${at}：正式页出现提示语或待确认占位`);
+  if (/无真实数列|不生成图表|请在此|占位|TBD|TODO|待确认|制作说明|点击编辑/i.test(all)) errors.push(`${at}：正式页出现提示语、制作说明或待确认占位`);
   vague.forEach((word) => { if (all.includes(word)) warnings.push(`${at}：抽象词“${word}”需要来源或具体定义`); });
-  if (slide.type === "process" && (arr(slide.items).length < 3 || arr(slide.items).length > 6)) errors.push(`${at}：流程应为 3–6 步`);
-  if (slide.type === "architecture" && (arr(slide.items).length < 3 || arr(slide.items).length > 5)) errors.push(`${at}：架构应为 3–5 层`);
+  if (!arr(slide.sourceRefs).length) errors.push(`${at}：缺少 sourceRefs`);
+  if (slide.type === "process" && (arr(slide.items).length < 3 || arr(slide.items).length > 6)) errors.push(`${at}：流程应为 3–6 个真实有序步骤`);
+  if (slide.type === "architecture-brief" && (arr(slide.layers).length < 3 || arr(slide.layers).length > 5)) errors.push(`${at}：分层架构应为 3–5 层`);
+  if (slide.type === "dual-track-roadmap" && arr(slide.tracks).length !== 2) errors.push(`${at}：双轨路线图必须正好两条路径`);
+  if (slide.type === "swimlane" && (arr(slide.lanes).length < 2 || arr(slide.lanes).length > 5)) errors.push(`${at}：泳道应为 2–5 个角色`);
   if (slide.type === "chart") {
     const c = slide.chart || {};
-    if (!arr(c.labels).length || !c.unit || !c.period || !arr(c.sourceRefs).length) errors.push(`${at}：图表缺少 labels、unit、period 或 sourceRefs`);
+    if (!arr(c.labels).length || !c.unit || !c.period || !c.subject || !arr(c.sourceRefs).length) errors.push(`${at}：图表缺少 labels、unit、period、subject 或 sourceRefs`);
     arr(c.series).forEach((s, i) => {
       if (!new Set(["bar", "line"]).has(s.type)) errors.push(`${at}：series ${i + 1} 仅支持 bar/line`);
       if (arr(s.values).length !== arr(c.labels).length || arr(s.values).some((v) => !Number.isFinite(Number(v)))) errors.push(`${at}：series ${i + 1} 数值必须与 labels 对齐`);
@@ -46,11 +58,10 @@ arr(deck.slides).forEach((slide, index) => {
   }
   if (slide.type === "heatmap") {
     const h = slide.heatmap || {};
-    if (!arr(h.rows).length || !arr(h.columns).length || !h.unit || !h.period || !arr(h.sourceRefs).length) errors.push(`${at}：热力图缺少完整证据合同`);
+    if (!arr(h.rows).length || !arr(h.columns).length || !h.unit || !h.period || !h.subject || !arr(h.sourceRefs).length) errors.push(`${at}：热力图缺少完整证据合同`);
     if (arr(h.values).length !== arr(h.rows).length || arr(h.values).some((row) => arr(row).length !== arr(h.columns).length)) errors.push(`${at}：热力图矩阵不完整`);
   }
 });
 
-const result = { passed: errors.length === 0, errors, warnings };
-console.log(JSON.stringify(result, null, 2));
-process.exit(result.passed ? 0 : 1);
+console.log(JSON.stringify({ passed: errors.length === 0, errors, warnings }, null, 2));
+process.exit(errors.length ? 1 : 0);

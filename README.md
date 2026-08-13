@@ -1,55 +1,42 @@
-# Mint Report Deck
+# Mint Report Deck V0.2
 
-把粗略中文笔记、主题或附件整理成统一 Mint 风格的可交互 HTML 汇报材料。
+把粗略中文笔记编译为来源可追溯、最少页数的 Mint 管理层材料：互动 HTML 由内置渲染器生成；可编辑 PPTX 由 Codex `Presentations` Skill 使用内置组件母版生成。
 
-这不是一个让 AI 自由写 HTML/CSS 的提示词包。Agent 只生成受控的 `deck.json`；模板、中文排版、组件、导航、编辑、图表互动和下载能力由 Skill 内置渲染器负责。
+## 安装
 
-## 最简单的安装方式
+把本仓库链接发给支持 Skills 的 Agent，并说：
 
-把下面这个链接发给支持 Skill 的 Agent，并说：
-
-> 帮我安装这个 Skill：  
-> https://github.com/chuhanma2-coder/mint-report-deck/tree/main/skills/mint-report-deck
-
-Codex 重新启动后即可使用。也可以在终端安装：
-
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo chuhanma2-coder/mint-report-deck \
-  --path skills/mint-report-deck \
-  --method git
+```text
+帮我安装这个 Skill：https://github.com/chuhanma2-coder/mint-report-deck
 ```
 
-## 日常使用
+Codex 也可以按其 Skill 安装流程从 GitHub 仓库安装。安装后重新打开任务或刷新 Skills 列表。
 
-安装后，把粗略文字或附件发给 Agent：
+## 使用
 
-> 使用 `$mint-report-deck`，根据下面的笔记直接生成一份 6 页 Mint 中文汇报。没有依据的数字不要补写，最后给我可下载并能直接改字的 HTML。
+```text
+使用 Mint 汇报 Skill，把下面的粗略笔记生成可编辑 PPTX 和互动 HTML。
+如果一页能讲清，就只做一页。只使用我提供的事实。
 
-Agent 会完成内容提炼、页纲组织、图示选择、生成和校验。正式 HTML 支持：
+【材料主题】
+……
 
-- 键盘、滚轮、触屏翻页；
-- 悬停导航查看每页标题；
-- 点击图片或视频放大；
-- 点击“✎”后修改页面文字；
-- 互动图表的数值提示、图例筛选和时间窗口滑动；
-- 下载修改后的单文件 HTML；
-- 浏览器打印为 PDF。
+【给谁看 / 希望推动什么】
+……
 
-如果结果需要修改，可以直接描述页码和问题，也可以截图后让 Agent 调整。
+【已知事实】
+……
 
-## 运行条件与边界
-
-- 安装需要能访问 GitHub；使用时生成 HTML 只需要 Node.js 18+，不需要外接硬盘。
-- 生成后的 `report.html` 可在现代 Chrome、Edge、Safari 中离线打开；在线字体加载失败时自动使用系统中文字体。
-- Skill 不联网补写业务事实，不生成虚构图表，不输出可编辑 PPTX。
-- 仓库不包含内部附件、历史汇报正文或真实经营数据。
-
-## 开发验证
-
-```bash
-npm test
-npm run example
+【下一步】
+……
 ```
 
-核心知识借鉴了 MIT 许可的 [frontend-slides](https://github.com/zarazhangrui/frontend-slides)；具体采用范围和许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+复杂监管、法律、资本、信贷、定价或客户政策材料会先列出待确认项。当前 Agent 没有 `Presentations` 时，只生成内容结构和 HTML，并明确提示 PPTX 未生成。
+
+## 设计原则
+
+- 先冻结事实和实体名称，再判断逻辑关系。
+- 默认从一页开始，不机械拆页。
+- 前台—中台—后台使用分层架构；并行路径使用双轨路线图；真实时间演进使用时间轴。
+- 无完整数值、单位、期间、统计对象和来源时不生成图表。
+- PPTX 与 HTML 共用 `content-map.json` 和 `deck-spec.json`。

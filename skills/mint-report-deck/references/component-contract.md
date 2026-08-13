@@ -27,6 +27,9 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 | Cause | causal chain, problem tree | supported causal or hypothesis structure |
 | Roles | swimlane, responsibility matrix | actors and responsibilities |
 | Hierarchy | tree, treemap, layered architecture | parent-child or nested quantity structure |
+| Front-middle-back or ecosystem layers | architecture-brief | 3-5 layers with explicit entities and roles |
+| Two parallel evolution paths | dual-track-roadmap | exactly two tracks with ordered stages |
+| Management actions | decision, action banner | action, owner, time and expected result |
 
 ## Hard guards
 
@@ -39,6 +42,9 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 - A scatter plot can show association but must not state causation without evidence.
 - Prefer ranked bars over maps when precise comparison is more important than location.
 - Prefer a table when the audience must read exact values.
+- A numbered list is not a process unless the items form a real sequence.
+- Architecture layers do not require invented outputs. Show only supplied entities, roles and relationships.
+- Page recipes are selected from content, not assigned to fixed page numbers.
 
 ## Presentation and interaction
 

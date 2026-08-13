@@ -1,7 +1,7 @@
 {
   "name": "mint-report-deck",
-  "version": "0.1.1",
-  "description": "Generate source-grounded, editable and interactive Mint HTML reports from rough Chinese notes or attachments.",
+  "version": "0.2.0",
+  "description": "Compile rough notes into source-grounded Mint reports, render interactive HTML, and orchestrate Presentations for editable PPTX.",
   "author": { "name": "Mint project team" },
   "license": "MIT",
   "skills": "./skills/"

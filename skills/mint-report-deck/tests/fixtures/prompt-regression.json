@@ -1,0 +1,14 @@
+[
+  {"name":"Vodafone 三层合作","prompt":"前台 M-PESA、Mint APP；中台 M-PESA / Transsion 提供流量、微众提供风险能力；后台银行承接。","relationship":"front-middle-back","pageBudget":1},
+  {"name":"巴基斯坦双轨","prompt":"业务先生态后现金；牌照 DRB 运营三年后申请 DFB；底部列合作、资本、文件动作。","relationship":"parallel","pageBudget":1},
+  {"name":"五步业务处理","prompt":"输入资料后依次核对事实、形成判断、执行行动并验证结果。","relationship":"sequence","hasRealOrder":true,"pageBudget":1},
+  {"name":"季度里程碑","prompt":"Q1 完成需求，Q2 试点，Q3 推广。","relationship":"time","pageBudget":1},
+  {"name":"部门职责","prompt":"业务、风险、数据和合作方分别承担哪些动作。","relationship":"roles","pageBudget":1},
+  {"name":"方案差异","prompt":"比较方案 A 和 B 的成本、速度、风险与适用场景。","relationship":"comparison","pageBudget":1},
+  {"name":"机会矩阵","prompt":"按业务价值和实施可行性判断九个场景。","relationship":"matrix","pageBudget":1},
+  {"name":"精确口径","prompt":"列出指标名称、定义、分子、分母、期间和来源。","relationship":"exact-values","pageBudget":1},
+  {"name":"管理层决策","prompt":"请决定是否批准试点，并明确 Owner 和四周复盘节点。","relationship":"action","pageBudget":1},
+  {"name":"月度趋势","prompt":"给出 1-6 月实际值与目标值、单位、统计对象和来源。","relationship":"trend","pageBudget":1},
+  {"name":"类别规模","prompt":"比较四个国家的已确认客户数，包含单位、期间、统计对象和来源。","relationship":"quantity","pageBudget":1},
+  {"name":"编号并列事项","prompt":"1 监管 2 合作 3 资本 4 文件，四项没有先后顺序。","relationship":"sequence","numbersAreOrdinal":true,"hasRealOrder":false,"pageBudget":1}
+]

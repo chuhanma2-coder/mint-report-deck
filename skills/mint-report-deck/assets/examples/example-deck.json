@@ -1,10 +1,12 @@
 {
+  "schemaVersion": "0.2",
   "id": "mint-skill-public-example",
   "version": 1,
   "title": "项目进展与下一步",
   "subtitle": "从已完成事项，走向可验证交付",
   "date": "2026.08",
   "confidentiality": "示例材料",
+  "pageBudget": 4,
   "slides": [
     {
       "type": "cover",
@@ -13,6 +15,7 @@
       "subtitle": "从已完成事项，走向可验证交付",
       "meta": ["示例材料", "2026.08"],
       "visual": "phone-card"
+      ,"sourceRefs": ["public-example-00"]
     },
     {
       "type": "process",
@@ -28,6 +31,7 @@
         {"title": "跟踪结果", "detail": "记录结果并形成下一轮输入。"}
       ],
       "source": "来源：公开示例数据"
+      ,"sourceRefs": ["public-example-01"]
     },
     {
       "type": "chart",
@@ -39,6 +43,7 @@
         "labels": ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"],
         "unit": "小时",
         "period": "示例八周",
+        "subject": "示例处理时长",
         "window": 6,
         "sourceRefs": ["public-example-01"],
         "series": [
@@ -46,7 +51,8 @@
           {"name": "目标", "type": "line", "values": [36, 35, 34, 31, 29, 27, 25, 23]}
         ]
       },
-      "source": "来源：虚构示例，仅用于展示交互"
+      "source": "来源：虚构示例，仅用于展示交互",
+      "sourceRefs": ["public-example-01"]
     },
     {
       "type": "decision",
@@ -60,7 +66,8 @@
         {"owner": "项目团队", "action": "执行并记录过程数据", "time": "第 2–3 周"},
         {"owner": "评审组", "action": "复盘结果并决定是否推广", "time": "第 4 周"}
       ],
-      "source": "来源：公开示例内容"
+      "source": "来源：公开示例内容",
+      "sourceRefs": ["public-example-02"]
     }
   ]
 }

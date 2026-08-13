@@ -1,7 +1,7 @@
 interface:
   display_name: "Mint 中文汇报"
-  short_description: "将粗略笔记生成统一、可编辑、可交互的 Mint HTML 汇报"
+  short_description: "粗略笔记生成最少页数的 Mint PPTX 与互动 HTML"
   brand_color: "#1C7866"
-  default_prompt: "Use $mint-report-deck to turn my rough Chinese notes or attachments into a source-grounded, editable Mint HTML report."
+  default_prompt: "请把我的粗略笔记整理成 Mint 汇报材料。先识别业务逻辑和信息层级，再选择正确的架构图、流程图、时间轴、矩阵、表格或图表；不要简单堆砌文字和卡片。默认用最少页数，同时生成可编辑 PPTX 和互动 HTML。只使用我提供的事实，未知内容标记待确认。"
 policy:
   allow_implicit_invocation: true

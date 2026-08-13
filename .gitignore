@@ -2,3 +2,5 @@
 node_modules/
 outputs/
 *.log
+skills/mint-report-deck/assets/presentation/qa/
+skills/mint-report-deck/assets/presentation/*.inspect.ndjson

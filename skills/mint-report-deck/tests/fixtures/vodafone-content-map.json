@@ -1,0 +1,21 @@
+{
+  "schemaVersion":"0.2",
+  "communicationJob":{"audience":"管理层","purpose":"说明合作架构","desiredOutcome":"判断是否值得继续讨论","managementTakeaway":"可围绕 M-PESA 与 Mint 的前台入口、流量和风险能力、银行承接形成三层合作架构"},
+  "facts":[
+    {"id":"F1","text":"Vodafone 是肯尼亚 Safaricom 和坦桑尼亚 Vodacom 的大股东","sourceRef":"USER:1"},
+    {"id":"F2","text":"两家运营主体分别运营 M-PESA","sourceRef":"USER:2"}
+  ],
+  "entities":[
+    {"id":"E1","canonicalName":"Vodafone","aliases":[],"requiredOnSlides":true},
+    {"id":"E2","canonicalName":"Safaricom","aliases":[]},
+    {"id":"E3","canonicalName":"Vodacom","aliases":[]},
+    {"id":"E4","canonicalName":"M-PESA","aliases":["M-pesa"]},
+    {"id":"E5","canonicalName":"Mint APP","aliases":[]},
+    {"id":"E6","canonicalName":"Transsion","aliases":["传音"]},
+    {"id":"E7","canonicalName":"微众","aliases":[]}
+  ],
+  "relationships":[{"id":"R1","type":"hierarchy","from":["E4","E5"],"to":["E6","E7"],"statement":"前台—中台—后台三层合作架构"}],
+  "numbers":[],"actions":[],"unknowns":[],"conflicts":[],
+  "pageBudget":{"requested":null,"minimum":1,"planned":1,"reason":"一个背景命题和一个三层合作关系可在一页讲清"},
+  "riskLevel":"ordinary"
+}

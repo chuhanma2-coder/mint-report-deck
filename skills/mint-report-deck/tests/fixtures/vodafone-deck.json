@@ -1,0 +1,18 @@
+{
+  "schemaVersion":"0.2","id":"vodafone-mpesa-brief","version":1,"title":"Vodafone 来访与 M-PESA 合作探索","date":"","confidentiality":"内部材料","pageBudget":1,
+  "slides":[{
+    "type":"architecture-brief","chapter":"Vodafone 来访","titleLines":["Vodafone 来访，","可探索与 M-PESA 的三层合作"],
+    "lead":"以 M-PESA 与 Mint APP 为入口，连接流量、风险能力与银行服务承接。",
+    "contextStrip":[
+      {"label":"合作入口","value":"Vodafone 业务体系","detail":"连接 Safaricom 与 Vodacom 的 M-PESA 业务"},
+      {"label":"肯尼亚","value":"Safaricom","detail":"M-PESA"},
+      {"label":"坦桑尼亚","value":"Vodacom","detail":"M-PESA"}
+    ],
+    "layers":[
+      {"name":"前台","role":"客户入口","entities":[{"name":"M-PESA","detail":"移动支付入口"},{"name":"Mint APP","detail":"Mint 用户入口"}]},
+      {"name":"中台","role":"流量与风险能力","entities":[{"name":"M-PESA / Transsion","detail":"提供流量"},{"name":"微众","detail":"提供风险能力"}]},
+      {"name":"后台","role":"银行服务承接","entities":[{"name":"传音银行","detail":"银行机构"},{"name":"其他 Mint 接入银行","detail":"银行机构"}]}
+    ],
+    "source":"来源：用户提供的来访信息与合作架构","sourceRefs":["USER:1","USER:2","USER:3"]
+  }]
+}
