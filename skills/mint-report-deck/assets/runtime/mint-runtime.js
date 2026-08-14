@@ -101,6 +101,8 @@ class MintDeck {
       if (event.key === "End") this.show(this.slides.length - 1, "keyboard");
       if ((event.key === "e" || event.key === "E") && !event.metaKey && !event.ctrlKey) this.toggleEditing();
       if ((event.key === "f" || event.key === "F") && !event.metaKey && !event.ctrlKey) this.toggleFullscreen();
+      if ((event.key === "p" || event.key === "P") && !event.metaKey && !event.ctrlKey) this.toggleExportMenu();
+      if (event.key === "Escape") this.toggleExportMenu(false);
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
         event.preventDefault();
         this.persistEdits();
@@ -167,7 +169,9 @@ class MintDeck {
 
   bindEditing() {
     this.root.querySelector("#editButton")?.addEventListener("click", () => this.toggleEditing());
-    this.root.querySelector("#downloadButton")?.addEventListener("click", () => this.downloadHtml());
+    this.root.querySelector("#downloadButton")?.addEventListener("click", () => this.toggleExportMenu());
+    this.root.querySelector("#exportHtmlButton")?.addEventListener("click", () => this.downloadHtml());
+    this.root.querySelector("#exportPdfButton")?.addEventListener("click", () => this.exportPdf());
     this.root.querySelector("#fullscreenButton")?.addEventListener("click", () => this.toggleFullscreen());
     const textSelectors = [
       ".slide h1", ".slide h2", ".slide h3", ".slide h4", ".slide p", ".slide li",
@@ -282,6 +286,27 @@ class MintDeck {
     link.click();
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
     this.notify("已下载修改后的 HTML");
+  }
+
+  toggleExportMenu(force) {
+    const menu = this.root.querySelector("#exportMenu");
+    if (!menu) return;
+    const open = typeof force === "boolean" ? force : !menu.classList.contains("is-open");
+    menu.classList.toggle("is-open", open);
+    this.root.querySelector("#downloadButton")?.classList.toggle("is-active", open);
+  }
+
+  exportPdf() {
+    if (this.root.querySelector(".quant-group.has-numeric-error")) {
+      this.notify("数字构成未闭合，已阻止导出正式 PDF");
+      return;
+    }
+    this.persistEdits();
+    this.toggleEditing(false);
+    this.closeModals();
+    this.toggleExportMenu(false);
+    this.notify("请在打印窗口中选择“存储为 PDF”");
+    setTimeout(() => window.print(), 60);
   }
 
   async toggleFullscreen() {

@@ -46,7 +46,7 @@ const exampleOut = path.join(tmp, "example.html");
 mustRun("validate-deck.mjs", [example]);
 mustRun("render-deck.mjs", [example, exampleOut]);
 const html = fs.readFileSync(exampleOut, "utf8");
-for (const marker of ["data-mint-chart", "mint-deck-edits:${deckId}:${deckVersion}", "data-lightbox"]) if (!html.includes(marker)) throw new Error(`example missing ${marker}`);
+for (const marker of ["data-mint-chart", "mint-deck-edits:${deckId}:${deckVersion}", "data-lightbox", "exportPdfButton", "exportHtmlButton", "@media print"]) if (!html.includes(marker)) throw new Error(`example missing ${marker}`);
 
 const fullDeck = path.join(fixtures, "full-deck-three-sections.json");
 const fullDeckOut = path.join(tmp, "full-deck.html");
