@@ -40,7 +40,8 @@ Read, in order:
    ```
 
 10. If PPTX is requested, first check whether the `Presentations` skill is available. If available, load it and follow [presentations-integration.md](references/presentations-integration.md), using the bundled `assets/presentation/Mint_Report_Component_Library.pptx`. If unavailable, deliver HTML plus the validated content artifacts and explicitly say PPTX was not produced. Never hand-roll a substitute PPTX.
-11. Inspect every HTML and PPTX page at 16:9. Fix text, data or component choice before reducing font size. Verify entity names, facts, numbers, formulas, page count and reading order agree across outputs.
+11. Keep the HTML export menu enabled: `导出 PDF` opens the browser print dialog with fixed 16:9 print CSS, and `下载 HTML` preserves editing and interaction. PDF is the static delivery version; HTML remains the interactive version.
+12. Inspect every HTML, PDF and PPTX page at 16:9. Fix text, data or component choice before reducing font size. Verify entity names, facts, numbers, formulas, page count and reading order agree across outputs.
 
 ## Non-negotiable rules
 
