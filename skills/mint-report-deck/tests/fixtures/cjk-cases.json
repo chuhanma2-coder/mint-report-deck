@@ -1,0 +1,11 @@
+{
+  "titleCases": [
+    {"id":"short","text":"周报系统覆盖140页，三项能力并列升级","status":"fit"},
+    {"id":"semantic-break","text":"先确认事实范围，再形成管理层判断","status":"fit"},
+    {"id":"boss-failed-title","text":"巴基斯坦市场将通过DRB牌照开展业务，牌照稀缺但获得监管大力支持，后续将深入调研以确认投资价值","status":"rewrite-required"},
+    {"id":"opening-punctuation","lines":["业务范围（","监管要求）"],"valid":false},
+    {"id":"closing-punctuation","lines":["业务范围","，监管要求"],"valid":false}
+  ],
+  "protectedText":"知识库已有36,868个区块，投入261.53元，二次复核约58%，高风险内容调用DeepSeek V4 Pro与M-PESA规则。",
+  "protectedTokens":["36,868个","261.53元","58%","DeepSeek V4 Pro","M-PESA"]
+}

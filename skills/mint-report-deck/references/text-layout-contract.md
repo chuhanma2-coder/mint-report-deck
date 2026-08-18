@@ -11,11 +11,12 @@ This contract applies before component selection and again before rendering. A s
 
 ## 2. Chinese title rules
 
-- Speaking and leadership pages use one idea per page and normally no more than two title lines.
+- Every page, including cover and section pages, uses one idea and no more than two rendered title lines. This is a hard delivery gate, not a preference.
 - Prefer a semantic line break after `，` `；` `：` or between premise and conclusion. Never allow the browser to produce a one-character orphan line.
 - The first line establishes subject or premise; the second line states action, implication, or conclusion.
-- Recommended title capacity: 12-22 Chinese characters per line and no more than 36 characters for a normal content title. If it is longer, rewrite first; split only when the page contract permits it.
+- Hard title capacity: no more than 22 Chinese-character widths per semantic line and no more than 36 in total. Latin letters and digits count by visual width. If it is longer, rewrite the proposition first; never shrink the title merely to pass.
 - Use `word-break: keep-all`, explicit `<br>` at the approved semantic boundary, and balanced line wrapping. Font-size reduction is the last resort.
+- Apply the detailed static and rendered requirements in `cjk-typography-contract.md`. Percentages, amounts, numbers with units, acronyms and mixed Latin product names are indivisible reading tokens.
 
 ## 3. Node and body capacity
 
@@ -48,5 +49,6 @@ This contract applies before component selection and again before rendering. A s
 
 - Inspect every page as an image, not only with DOM `scrollHeight` checks.
 - Verify 1920x1080 and 1280x720 rendering plus one phone viewport using uniform stage scaling.
-- Check semantic title breaks, orphan characters, overflow, panel overlap, font fallback, repeated layouts, and minimum readable body size.
+- Measure the rendered title in a real browser at every required viewport. More than two visible lines blocks delivery even when `titleLines` contains only one or two strings.
+- Check semantic title breaks, orphan characters, overflow, empty primary visuals, panel overlap, font fallback, repeated layouts, and minimum readable body size.
 - Seed the legacy localStorage key during automated tests and confirm that it cannot alter the current deck.

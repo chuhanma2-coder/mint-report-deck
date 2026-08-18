@@ -4,7 +4,7 @@ Use this contract for multi-page or multi-section reports.
 
 ## 1. Plan the whole story before selecting pages
 
-Create `deck-plan.json` with:
+Create `deck-plan.json` only after the V0.6 semantic graph and the content plan pass validation. Keep confirmed page ids, action titles, questions, answers and evidence references unchanged. Then add strict `pageContracts[]` before layout selection:
 
 ```json
 {
@@ -17,7 +17,21 @@ Create `deck-plan.json` with:
 }
 ```
 
+Each page contract must declare:
+
+- one `pageQuestion` and one `pageAnswer`;
+- one visible `proofObject` with a primary atom and evidence references;
+- `relationGraphRefs[]` for any semantic relationship used on the page;
+- one `readingAxis`, an ordered `contentOrder[]`, and a unique `focalAnchor`;
+- `densityProfile`, `sectionId`, transition and page-necessity rationale.
+
+Run `build-page-contracts.mjs` and `validate-page-contracts.mjs`. A page without a primary atom or proof object is an invalid empty page, even if it contains a title or decoration.
+
 Do not select pages independently. Every page must answer a question created by the prior page or prepare the next decision.
+
+After semantic-compatible Pattern selection, apply `deck-rhythm-contract.md` across the whole deck. Pattern variation is only a secondary choice among candidates that already satisfy relation, capacity, evidence, reading-axis and connector contracts; it must never change the real business relationship.
+
+Before layout selection, read the action titles in order without any body copy. If they do not form a coherent argument, revise the ghost deck. Do not attempt to repair a broken story with visual styling.
 
 ### Exact one-page contract
 

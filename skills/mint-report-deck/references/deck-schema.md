@@ -1,10 +1,12 @@
-# Deck spec contract V0.4
+# Deck spec contract V0.6
 
-Top level keeps the existing deck identity and plan fields. V0.2/V0.3 decks remain renderable; all new work uses V0.4.
+Top level keeps the existing deck identity and plan fields. V0.2–V0.5 decks remain renderable; all new work uses V0.6.
+
+For V0.6, `deckPlan` is the validated output of `build-page-contracts.mjs`, not a loose outline. Every rendered slide id, title, question, answer and atom set must match one `deckPlan.pageContracts[]` entry.
 
 ```json
 {
-  "schemaVersion": "0.4",
+  "schemaVersion": "0.6",
   "id": "unique-project-slug",
   "version": 1,
   "title": "汇报标题",
@@ -29,7 +31,7 @@ Top level keeps the existing deck identity and plan fields. V0.2/V0.3 decks rema
 }
 ```
 
-Every V0.4 slide has:
+Every V0.6 slide has:
 
 - `type`, `chapter`, `titleLines`, `sourceRefs[]`.
 - `pageQuestion`: the audience question.
@@ -38,7 +40,28 @@ Every V0.4 slide has:
 - `supportModules[]`: at most two `{kind, atomRefs[], claimRefs[], data}` modules.
 - `readingOrder[]`: ordered ids such as `title`, `formula`, `allocation`, `implication`.
 - `atomRefs[]`: all content atoms represented on the page.
+- `visibleClaims[]`: exact visible statements, each `{text, atomRefs[]}`. Every primary atom on the page appears in at least one visible claim.
+- `visualBrief`: `{relationship, focalPoint, readingDirection}`. It guides layout and is never shown as body copy.
+- Optional `speakerNotes[]`: spoken detail that is not counted as visible evidence.
 - Optional `sectionId`, `pageRole`, `emphasis`, `lead`, `source`.
+- `elementIds[]`: every visual object that may be an endpoint of a connector.
+- `connectors[]`: explicit connector declarations. Empty is valid; renderer-added arrows are forbidden.
+
+```json
+{
+  "elementIds": ["step-1", "step-2"],
+  "connectors": [{
+    "id": "C1",
+    "relationRef": "SGE-001",
+    "connectorType": "arrow",
+    "direction": "forward",
+    "fromElementId": "step-1",
+    "toElementId": "step-2"
+  }]
+}
+```
+
+See `references/connector-contract.md`. A connector is allowed only when the matching `content-map.semanticGraph.edges[]` relation explicitly authorizes it.
 
 `primaryVisual.kind` may be:
 
@@ -83,4 +106,4 @@ Segments sharing a bar must reconcile to `total`, default 100 for percentage all
 
 Keep the V0.3 recipes for `cover`, `section-intro`, `statement`, `capability-chain`, `architecture-brief`, `process`, `timeline`, `dual-track-roadmap`, `swimlane`, `comparison`, `matrix`, `table`, `chart`, `heatmap`, `media`, `risk-spotlight`, and `decision`. V0.4 metadata is mandatory for newly generated slides even when a legacy renderer family is used.
 
-Visible `source` is a concise source line. Detailed locators live in evidence artifacts. Unknowns, conflicts, prompts and QA text never enter a slide.
+Visible `source` is a concise source line. Detailed locators live in evidence artifacts. Unknowns, conflicts, prompts, visual instructions and QA text never enter a slide.

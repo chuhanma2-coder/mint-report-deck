@@ -6,7 +6,8 @@ import { fileURLToPath } from "node:url";
 const arr = (v) => Array.isArray(v) ? v : [];
 const allowedZones = new Set(["title", "primary-visual", "support-band", "risk-callout", "decision-callout", "source-footer", "source-drawer"]);
 
-export function validatePageBudget(deck, map) {
+export function validatePageBudget(deck, map, plan = null) {
+  if (!plan && deck?.deckPlan?.schemaVersion === "0.6") plan = deck.deckPlan;
   const errors = [], warnings = [];
   const budget = map.pageBudget || {};
   const constraint = budget.constraint || (budget.requested == null ? "minimum-needed" : "flexible");
@@ -32,6 +33,14 @@ export function validatePageBudget(deck, map) {
     for (const placement of placements) if (!allowedZones.has(placement.zone)) errors.push(`onePagePlan 使用未知区域：${placement.zone}`);
   }
   if (constraint === "flexible" && budget.requested != null && actual !== budget.requested) warnings.push(`实际页数 ${actual} 与偏好页数 ${budget.requested} 不同；应记录容量理由`);
+  if (map.schemaVersion === "0.6") {
+    if (!plan || plan.schemaVersion !== "0.6") errors.push("V0.6 页数校验必须提供 deck-plan.json");
+    else {
+      if (arr(plan.pageContracts).length !== actual) errors.push(`deck-plan 页面合同 ${arr(plan.pageContracts).length} 页与实际 ${actual} 页不一致`);
+      if (plan.pageBudget?.constraint !== constraint) errors.push("deck-plan 与 content-map 的页数约束不一致");
+      if (constraint === "exact" && plan.pageContracts?.length !== budget.requested) errors.push("强制页数下 pageContracts 不得拆页或增页");
+    }
+  }
   return { passed: errors.length === 0, errors, warnings, metrics: { requested: budget.requested ?? null, planned: budget.planned ?? null, actual, constraint } };
 }
 
@@ -42,7 +51,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error("Usage: node validate-page-budget.mjs /absolute/path/deck-spec.json /absolute/path/content-map.json");
     process.exit(2);
   }
-  const result = validatePageBudget(JSON.parse(fs.readFileSync(deckFile, "utf8")), JSON.parse(fs.readFileSync(mapFile, "utf8")));
+  const planFile = process.argv[4] ? path.resolve(process.argv[4]) : null;
+  const plan = planFile && fs.existsSync(planFile) ? JSON.parse(fs.readFileSync(planFile, "utf8")) : null;
+  const result = validatePageBudget(JSON.parse(fs.readFileSync(deckFile, "utf8")), JSON.parse(fs.readFileSync(mapFile, "utf8")), plan);
   console.log(JSON.stringify(result, null, 2));
   process.exit(result.passed ? 0 : 1);
 }

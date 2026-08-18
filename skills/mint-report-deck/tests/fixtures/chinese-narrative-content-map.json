@@ -1,0 +1,35 @@
+{
+  "schemaVersion":"0.5",
+  "communicationJob":{"audience":"管理层","purpose":"说明三个市场的推进差异","desiredOutcome":"确认差异化资源安排","managementTakeaway":"不同阶段需要不同验证动作"},
+  "discourseUnits":[
+    {"id":"D1","sectionId":"S1","text":"三个市场当前所处阶段不同。","subject":"三个市场","subjectResolution":"explicit","predicate":"所处阶段不同","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"starts","entityRefs":["E1"],"numericClaimRefs":[],"sourceRef":"USER:1"},
+    {"id":"D2","sectionId":"S1","text":"因此不应按照同一节奏推进。","subject":"三个市场","subjectResolution":"inherited","inheritedFrom":"D1","predicate":"不应按照同一节奏推进","polarity":"negative","modality":"confirmed","role":"claim","relationToPrevious":"concludes","entityRefs":["E1"],"numericClaimRefs":[],"sourceRef":"USER:1"},
+    {"id":"D3","sectionId":"S1","text":"下一步优先投入已具备验证条件的市场。","subject":"管理团队","subjectResolution":"explicit","predicate":"优先投入已具备验证条件的市场","polarity":"affirmative","modality":"plan","role":"action","relationToPrevious":"results-in","entityRefs":["E1"],"numericClaimRefs":[],"sourceRef":"USER:2"}
+  ],
+  "narrativeCommitment":{"audienceShift":"从同步推进转为按阶段配置资源","coreThesis":"三个市场阶段不同，应采用差异化验证动作","decision":"确认优先验证顺序与负责人","mustShowAtomRefs":["A1","A2","A3"],"mustNotInfer":["市场已经获得监管批准","所有时间节点已经确认"],"narrativeSpine":["evidence","decision"],"deEmphasizeAtomRefs":[],"pageBudgetPriority":"minimum-needed"},
+  "ghostDeck":[
+    {"pageId":"P1","actionTitle":"三个市场阶段不同，需要设置差异化验证重点","pageRole":"evidence","managementQuestion":"三个市场为什么不能同步推进？","answer":"三个市场所处阶段不同，需要分别验证监管、合作和经营条件。","atomRefs":["A1","A2"],"evidenceRefs":["F1"],"relationshipRefs":["R1"],"transitionFromPrevious":{"fromPageId":null,"bridge":"开篇先建立组合判断"},"pageNecessity":{"type":"opening","reason":"先说明资源不能平均配置的依据","removalTest":{"losesPrimaryEvidence":true,"breaksDecisionChain":true,"exceedsCapacityElsewhere":false}}},
+    {"pageId":"P2","actionTitle":"资源优先投入具备验证条件的市场","pageRole":"decision","managementQuestion":"管理层下一步应如何配置资源？","answer":"优先推进具备验证条件的市场，并为其他市场保留明确验证门槛。","atomRefs":["A3"],"evidenceRefs":["F1"],"relationshipRefs":["R2"],"transitionFromPrevious":{"fromPageId":"P1","bridge":"由阶段差异转入资源决策"},"pageNecessity":{"type":"independent-decision","reason":"该页承接组合判断并形成管理动作","removalTest":{"losesPrimaryEvidence":false,"breaksDecisionChain":true,"exceedsCapacityElsewhere":false}}}
+  ],
+  "contentAtoms":[
+    {"id":"A1","kind":"fact","text":"三个市场所处阶段不同","discourseRefs":["D1"],"materiality":"primary","displayRequirement":"primary-visual","coverageStatus":"planned","sourceRef":"USER:1"},
+    {"id":"A2","kind":"judgment","text":"三个市场需要差异化验证","discourseRefs":["D1","D2"],"assertionStatus":"formal","materiality":"primary","displayRequirement":"callout","coverageStatus":"planned","sourceRef":"USER:1"},
+    {"id":"A3","kind":"action","text":"优先投入具备验证条件的市场","discourseRefs":["D3"],"materiality":"primary","displayRequirement":"callout","coverageStatus":"planned","sourceRef":"USER:2"}
+  ],
+  "numericClaims":[],
+  "claimGraph":[{"id":"G1","from":["A1"],"relation":"supports","to":["A2"]}],
+  "decisionThreads":[],
+  "facts":[{"id":"F1","text":"三个市场当前阶段不同","sourceRef":"USER:1"}],
+  "entities":[{"id":"E1","canonicalName":"三个市场","aliases":[]}],
+  "relationships":[
+    {"id":"R1","type":"comparison","from":["E1"],"to":[],"statement":"市场阶段和验证重点不同"},
+    {"id":"R2","type":"constraint","from":["E1"],"to":[],"statement":"资源优先配置给具备验证条件的市场"}
+  ],
+  "numbers":[],
+  "actions":[{"id":"ACT1","action":"确认优先验证顺序","owner":"管理团队","time":"下一阶段","expectedResult":"形成差异化资源安排","sourceRef":"USER:2"}],
+  "priorities":[],
+  "unknowns":[],
+  "conflicts":[],
+  "pageBudget":{"requested":null,"minimum":1,"planned":2,"constraint":"minimum-needed","overflowPolicy":"recompose-then-split","reason":"组合判断与资源决策是连续但独立的管理问题"},
+  "riskLevel":"ordinary"
+}

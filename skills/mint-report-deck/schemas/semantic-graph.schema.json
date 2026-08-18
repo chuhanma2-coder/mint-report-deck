@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mint.local/schemas/semantic-graph.schema.json",
+  "title": "Mint semantic relation graph V0.6",
+  "type": "object",
+  "required": ["schemaVersion", "sourceContentMapVersion", "nodes", "edges", "migrationWarnings"],
+  "properties": {
+    "schemaVersion": { "const": "0.6" },
+    "sourceContentMapVersion": { "type": "string", "minLength": 1 },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    },
+    "migrationWarnings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "label", "sourceRefs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["atom", "entity", "numeric-claim", "action", "decision-thread", "unknown"]
+        },
+        "label": { "type": "string", "minLength": 1 },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "materiality": { "enum": ["primary", "supporting", "appendix", "unknown"] },
+        "needsReview": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": ["id", "source", "target", "relationType", "direction", "evidenceRefs", "confidence", "orderBasis", "connectorPolicy"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "target": { "type": "string", "minLength": 1 },
+        "relationType": {
+          "enum": ["parallel", "sequence", "temporal", "causal", "comparison", "hierarchy", "composition", "flow", "evidence", "before-after", "problem-cause-solution", "dependency"]
+        },
+        "direction": { "enum": ["directed", "undirected", "none"] },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "orderBasis": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": { "enum": ["none", "explicit-marker", "timestamp", "dependency", "input-output-handoff"] },
+            "evidenceRef": { "type": "string", "minLength": 1 },
+            "note": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "connectorPolicy": { "enum": ["none", "branch", "line", "arrow", "bracket", "axis"] },
+        "assertionStatus": { "enum": ["confirmed", "proposal", "hypothesis"] },
+        "needsReview": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

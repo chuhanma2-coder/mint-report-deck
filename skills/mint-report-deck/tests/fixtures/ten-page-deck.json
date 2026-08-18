@@ -1,0 +1,14 @@
+{
+  "pages": [
+    {"id":"P1","relation":"none","role":"opening","axis":"top-to-bottom","shape":"text","proof":"source-backed-claim","nodes":1},
+    {"id":"P2","relation":"parallel","role":"evidence","axis":"left-to-right","shape":"independent-items","proof":"semantic-relationship","nodes":3},
+    {"id":"P3","relation":"sequence","role":"mechanism","axis":"left-to-right","shape":"ordered-actions","proof":"semantic-relationship","nodes":4},
+    {"id":"P4","relation":"comparison","role":"contrast","axis":"left-to-right","shape":"paired-objects","proof":"semantic-relationship","nodes":2},
+    {"id":"P5","relation":"composition","role":"evidence","axis":"left-to-right","shape":"numeric","proof":"numeric-evidence","nodes":3},
+    {"id":"P6","relation":"none","role":"risk","axis":"top-to-bottom","shape":"text","proof":"decision-evidence","nodes":2},
+    {"id":"P7","relation":"none","role":"evidence","axis":"left-to-right","shape":"media","proof":"media-evidence","nodes":2},
+    {"id":"P8","relation":"temporal","role":"action","axis":"left-to-right","shape":"milestones","proof":"semantic-relationship","nodes":4},
+    {"id":"P9","relation":"hierarchy","role":"mechanism","axis":"top-to-bottom","shape":"hierarchy","proof":"semantic-relationship","nodes":3},
+    {"id":"P10","relation":"none","role":"summary","axis":"top-to-bottom","shape":"text","proof":"decision-evidence","nodes":2}
+  ]
+}

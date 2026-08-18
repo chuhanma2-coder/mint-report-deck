@@ -11,7 +11,7 @@ export function validateVisualSalience(deck, map) {
   const claimMap = new Map(arr(map.numericClaims).map((claim) => [claim.id, claim]));
   for (const [index, slide] of arr(deck.slides).entries()) {
     const at = `第 ${index + 1} 页`;
-    if (deck.schemaVersion === "0.4") {
+    if (["0.4", "0.5"].includes(deck.schemaVersion)) {
       if (!slide.pageQuestion) errors.push(`${at} 缺少 pageQuestion`);
       if (!slide.pageAnswer) errors.push(`${at} 缺少 pageAnswer`);
       if (!slide.primaryVisual?.kind) errors.push(`${at} 缺少 primaryVisual.kind`);

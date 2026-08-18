@@ -40,6 +40,9 @@ Every quantitative visual requires aligned labels and values, unit, period, stat
 
 ## Hard guards
 
+- Renderers may draw only connectors declared in `slide.connectors[]`; item order, numbering, component family or CSS must never create an arrow implicitly.
+- Every connector must pass `references/connector-contract.md` and reference a confirmed semantic edge plus registered `elementIds[]` endpoints.
+
 - Use a donut only for one positive whole with 2-5 parts.
 - Use a line only for a naturally ordered continuous axis, normally time.
 - Use a heatmap only when every cell uses one comparable scale.

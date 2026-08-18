@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mint.local/schemas/layout-plan.schema.json",
+  "title": "Mint Layout Plan V0.6",
+  "type": "object",
+  "required": ["schemaVersion", "canvas", "safeArea", "grid", "pages"],
+  "properties": {
+    "schemaVersion": {"const": "0.6"},
+    "canvas": {"$ref": "#/$defs/rectSize"},
+    "safeArea": {"$ref": "#/$defs/rect"},
+    "grid": {
+      "type": "object",
+      "required": ["columns", "rows", "columnGap", "rowGap"],
+      "properties": {
+        "columns": {"type": "integer", "minimum": 4},
+        "rows": {"type": "integer", "minimum": 4},
+        "columnGap": {"type": "number", "minimum": 0},
+        "rowGap": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/page"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "rectSize": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {"width":{"type":"number","exclusiveMinimum":0},"height":{"type":"number","exclusiveMinimum":0}},
+      "additionalProperties": false
+    },
+    "rect": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "properties": {"x":{"type":"number"},"y":{"type":"number"},"width":{"type":"number","exclusiveMinimum":0},"height":{"type":"number","exclusiveMinimum":0}},
+      "additionalProperties": false
+    },
+    "gridPlacement": {
+      "type": "object",
+      "required": ["col", "colSpan", "row", "rowSpan"],
+      "properties": {"col":{"type":"integer","minimum":1},"colSpan":{"type":"integer","minimum":1},"row":{"type":"integer","minimum":1},"rowSpan":{"type":"integer","minimum":1}},
+      "additionalProperties": false
+    },
+    "zone": {
+      "type": "object",
+      "required": ["id", "role", "grid", "bounds", "readingOrder", "minArea", "maxArea", "alignment"],
+      "properties": {
+        "id": {"type":"string","minLength":1},
+        "role": {"enum":["title","page-answer","primary","support","source"]},
+        "grid": {"$ref":"#/$defs/gridPlacement"},
+        "bounds": {"$ref":"#/$defs/rect"},
+        "readingOrder": {"type":"integer","minimum":1},
+        "minArea": {"type":"number","exclusiveMinimum":0},
+        "maxArea": {"type":"number","exclusiveMinimum":0},
+        "alignment": {"enum":["start","center","stretch"]},
+        "optional": {"type":"boolean"}
+      },
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "required": ["pageId", "patternId", "layoutTemplateId", "status", "readingAxis", "focalZoneId", "primaryVisualShare", "zones", "readingPath", "semanticZoneBindings", "constraints"],
+      "properties": {
+        "pageId": {"type":"string","minLength":1},
+        "patternId": {"type":"string","minLength":1},
+        "layoutTemplateId": {"type":"string","minLength":1},
+        "status": {"enum":["planned","layout-blocked"]},
+        "readingAxis": {"enum":["left-to-right","top-to-bottom","center-out","numbered-path"]},
+        "focalZoneId": {"const":"primary"},
+        "primaryVisualShare": {"type":"number","minimum":0.55,"maximum":0.70},
+        "zones": {"type":"array","items":{"$ref":"#/$defs/zone"}},
+        "readingPath": {"type":"array","items":{"type":"object","required":["zoneId","order","x","y"],"properties":{"zoneId":{"type":"string"},"order":{"type":"integer","minimum":1},"x":{"type":"number"},"y":{"type":"number"}},"additionalProperties":false}},
+        "semanticZoneBindings": {"type":"object","additionalProperties":{"type":"string"}},
+        "constraints": {"type":"array","minItems":1,"items":{"type":"string","minLength":1}},
+        "blockedReasons": {"type":"array","items":{"type":"string"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

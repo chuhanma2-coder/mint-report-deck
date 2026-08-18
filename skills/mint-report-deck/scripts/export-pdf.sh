@@ -18,6 +18,16 @@
 # Perfect for email attachments, printing, or embedding in documents.
 set -euo pipefail
 
+# V0.6 compatibility entrypoint. Keep the historical implementation below for
+# rollback reference, but all normal calls delegate to the deterministic
+# browser-PDF exporter and never install dependencies during export.
+SCRIPT_DIR_V06="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT_V06="$(cd "$SCRIPT_DIR_V06/../../.." && pwd)"
+export TMPDIR="${TMPDIR:-$PROJECT_ROOT_V06/.work/tmp}"
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$PROJECT_ROOT_V06/.cache/playwright}"
+mkdir -p "$TMPDIR" "$PLAYWRIGHT_BROWSERS_PATH"
+exec node "$SCRIPT_DIR_V06/export-pdf.mjs" "$@"
+
 # ─── Colors ────────────────────────────────────────────────
 RED='\033[0;31m'
 GREEN='\033[0;32m'

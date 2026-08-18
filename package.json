@@ -1,15 +1,20 @@
 {
   "name": "mint-report-deck",
-  "version": "0.4.1",
+  "version": "0.6.0",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node skills/mint-report-deck/tests/smoke.mjs",
+    "test:pptx": "node skills/mint-report-deck/tests/pptx.smoke.mjs",
+    "test:v06": "node skills/mint-report-deck/tests/v06-regression.mjs",
     "example": "node skills/mint-report-deck/scripts/render-deck.mjs skills/mint-report-deck/assets/examples/example-deck.json outputs/example/report.html",
     "build:presentation-library": "node skills/mint-report-deck/scripts/build-component-library.mjs",
+    "render:pptx": "node skills/mint-report-deck/scripts/render-pptx.mjs",
+    "qa:pptx": "node skills/mint-report-deck/scripts/qa-pptx-editability.mjs",
     "preflight:presentations": "node skills/mint-report-deck/scripts/preflight-presentations.mjs",
-    "qa:v04": "node skills/mint-report-deck/scripts/qa-deck.mjs",
-    "repair:v04": "node skills/mint-report-deck/scripts/repair-deck.mjs"
+    "qa:v06": "node skills/mint-report-deck/scripts/qa-deck.mjs",
+    "repair:v06": "node skills/mint-report-deck/scripts/repair-deck.mjs",
+    "export:pdf": "node skills/mint-report-deck/scripts/export-pdf.mjs"
   },
   "license": "MIT"
 }

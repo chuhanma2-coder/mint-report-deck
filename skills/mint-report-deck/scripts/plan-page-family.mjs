@@ -1,5 +1,11 @@
 #!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { selectComponent } from "./select-component.mjs";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const registry = JSON.parse(fs.readFileSync(path.resolve(here, "../assets/layout-patterns.json"), "utf8"));
 
 const input = JSON.parse(process.argv[2] || "{}");
 const selected = selectComponent(input);
@@ -27,6 +33,7 @@ const requestedFamily = input.preferredFamily || selected.component;
 const familyPrefix = String(requestedFamily).split(":")[0];
 const familyName = ["chart", "quantitative-story"].includes(familyPrefix) ? familyPrefix : requestedFamily;
 const family = families[familyName];
+const candidatePatterns = registry.patterns.filter((pattern) => pattern.rendererKeys.html === familyName || pattern.rendererKeys.html === familyPrefix).map((pattern) => pattern.id);
 const secondaryBlocks = Number(input.secondaryBlocks || 0);
 const calloutCount = Math.min(Number(input.calloutCount || 0), 2);
 const estimatedVisualShare = Math.max(0.3, 0.72 - secondaryBlocks * 0.08 - calloutCount * 0.06);
@@ -36,12 +43,14 @@ const result = family ? {
   family: familyName,
   modules: family,
   estimatedVisualShare,
+  candidatePatterns,
   reason: estimatedVisualShare >= 0.55 ? selected.reason : exactOnePage ? "exact one-page contract: shorten supporting copy, demote secondary detail and preserve one primary visual; block if it still cannot fit" : "primary relationship would receive less than 55% of the usable canvas"
 } : {
   status: exactOnePage ? "blocked-one-page" : "needs-layout-review",
   family: null,
   modules: null,
   estimatedVisualShare: 0,
+  candidatePatterns: [],
   reason: "no controlled page family expresses this relationship; do not fall back to a table or card grid"
 };
 console.log(JSON.stringify(result, null, 2));

@@ -1,0 +1,52 @@
+{
+  "map": {
+    "schemaVersion": "0.6",
+    "pageBudget": {"planned": 1},
+    "contentAtoms": [
+      {"id":"A1","kind":"action","text":"发现变化","materiality":"primary","sourceRef":"USER:1"},
+      {"id":"A2","kind":"action","text":"验证变化","materiality":"primary","sourceRef":"USER:1"}
+    ],
+    "entities": [],
+    "priorities": [],
+    "semanticGraph": {
+      "schemaVersion":"0.6","sourceContentMapVersion":"0.6",
+      "nodes":[
+        {"id":"DU:D1","kind":"atom","label":"发现变化","sourceRefs":["USER:1"]},
+        {"id":"DU:D2","kind":"atom","label":"验证变化","sourceRefs":["USER:1"]}
+      ],
+      "edges":[
+        {"id":"SGE-001","source":"DU:D1","target":"DU:D2","relationType":"sequence","direction":"directed","evidenceRefs":["USER:1"],"confidence":0.99,"orderBasis":{"type":"explicit-marker","evidenceRef":"USER:1"},"connectorPolicy":"arrow","needsReview":false}
+      ],
+      "migrationWarnings":[]
+    }
+  },
+  "deck": {
+    "schemaVersion":"0.6","id":"connector-valid-deck","version":1,"title":"变化处理","pageBudget":1,
+    "deckPlan": {
+      "schemaVersion":"0.6",
+      "communicationJob":{},
+      "narrativeSpine":["evidence"],
+      "pageBudget":{"requested":null,"planned":1,"constraint":"minimum-needed","overflowPolicy":"recompose-then-split"},
+      "sectionIntroFamily":"section-intro",
+      "sections":[{"id":"S1","title":"处理逻辑","introFamily":"section-intro","pageIds":["P1"]}],
+      "pageContracts":[{
+        "id":"P1","sectionId":"S1","actionTitle":"先发现变化，再验证影响","titleLines":["先发现变化，再验证影响"],
+        "pageQuestion":"变化如何处理？","pageAnswer":"先发现变化，再验证影响。","pageRole":"evidence",
+        "proofObject":{"kind":"semantic-relationship","primaryAtomRef":"A1","atomRefs":["A1","A2"],"evidenceRefs":["USER:1"],"description":"用处理顺序说明变化如何验证"},
+        "atomRefs":["A1","A2"],"relationGraphRefs":["SGE-001"],"primaryRelationRef":"SGE-001","readingAxis":"left-to-right",
+        "contentOrder":["title","page-answer","proof-object","implication"],"focalAnchor":"proof-object","densityProfile":"focused",
+        "transitionFromPrevious":null,"pageNecessity":{"type":"opening","reason":"回答处理顺序"}
+      }]
+    },
+    "slides":[{
+      "id":"P1","type":"statement","chapter":"处理逻辑","titleLines":["先发现变化，再验证影响"],
+      "pageQuestion":"变化如何处理？","pageAnswer":"先发现变化，再验证影响。",
+      "primaryVisual":{"kind":"process","atomRefs":["A1","A2"],"claimRefs":[]},"supportModules":[],
+      "readingOrder":["step-1","step-2"],"atomRefs":["A1","A2"],"sourceRefs":["USER:1"],
+      "visibleClaims":[{"text":"发现变化","atomRefs":["A1"]},{"text":"验证变化","atomRefs":["A2"]}],
+      "visualBrief":{"relationship":"sequence","focalPoint":"验证影响","readingDirection":"left-to-right"},
+      "elementIds":["step-1","step-2"],
+      "connectors":[{"id":"C1","relationRef":"SGE-001","connectorType":"arrow","direction":"forward","fromElementId":"step-1","toElementId":"step-2"}]
+    }]
+  }
+}

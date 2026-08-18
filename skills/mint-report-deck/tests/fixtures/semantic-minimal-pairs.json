@@ -1,0 +1,82 @@
+[
+  {
+    "name": "numbered-upgrades-are-parallel",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"（1）覆盖面扩大到140个贷款页面。","subject":"周报系统","subjectResolution":"explicit","predicate":"覆盖面扩大","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","text":"（2）分析深度从利率扩展到各项成本费用。","subject":"周报系统","subjectResolution":"explicit","predicate":"分析深度扩展","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"elaborates","sourceRef":"USER:2"},
+      {"id":"D3","sectionId":"S1","text":"（3）每次运行都会全量复查并输出累计报告。","subject":"周报系统","subjectResolution":"explicit","predicate":"全量复查并输出累计报告","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"elaborates","sourceRef":"USER:3"}
+    ],
+    "expectedRelations": ["parallel", "parallel"],
+    "expectedArrowEdges": 0,
+    "expectedReviewItems": 0
+  },
+  {
+    "name": "actual-actions-are-sequence",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"首先抓取Google Play评论。","subject":"评论系统","subjectResolution":"explicit","predicate":"抓取评论","polarity":"affirmative","modality":"confirmed","role":"action","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","text":"其次识别哪些评论真正发生了变化。","subject":"评论系统","subjectResolution":"explicit","predicate":"识别变化","polarity":"affirmative","modality":"confirmed","role":"action","relationToPrevious":"sequences","sourceRef":"USER:2"},
+      {"id":"D3","sectionId":"S1","text":"随后保留用户原文、时间和评论链接。","subject":"评论系统","subjectResolution":"explicit","predicate":"保留证据","polarity":"affirmative","modality":"confirmed","role":"action","relationToPrevious":"sequences","sourceRef":"USER:3"},
+      {"id":"D4","sectionId":"S1","text":"最后转化为Mint的产品检查和验证项。","subject":"评论系统","subjectResolution":"explicit","predicate":"转化为产品检查项","polarity":"affirmative","modality":"confirmed","role":"action","relationToPrevious":"sequences","sourceRef":"USER:4"}
+    ],
+    "expectedRelations": ["sequence", "sequence", "sequence"],
+    "expectedArrowEdges": 3,
+    "expectedReviewItems": 0
+  },
+  {
+    "name": "sequence-words-without-actions-need-review",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"首先是覆盖范围。","subject":"周报系统","subjectResolution":"explicit","predicate":"覆盖范围","polarity":"affirmative","modality":"confirmed","role":"context","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","text":"其次是分析深度。","subject":"周报系统","subjectResolution":"explicit","predicate":"分析深度","polarity":"affirmative","modality":"confirmed","role":"context","relationToPrevious":"elaborates","sourceRef":"USER:2"}
+    ],
+    "expectedRelations": ["parallel"],
+    "expectedArrowEdges": 0,
+    "expectedReviewItems": 1
+  },
+  {
+    "name": "v1-v2-is-before-after",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"V1按关键词命中后截取部分段落。","subject":"知识库V1","subjectResolution":"explicit","predicate":"按关键词截取","polarity":"affirmative","modality":"confirmed","role":"contrast","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","text":"V2先把页面、段落、表格和OCR内容拆成原文区块。","subject":"知识库V2","subjectResolution":"explicit","predicate":"全文拆成原文区块","polarity":"affirmative","modality":"confirmed","role":"contrast","relationToPrevious":"contrasts","sourceRef":"USER:2"}
+    ],
+    "expectedRelations": ["before-after"],
+    "expectedArrowEdges": 1,
+    "expectedReviewItems": 0
+  },
+  {
+    "name": "therefore-is-causal",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"二次复核占当前成本约58%。","subject":"二次复核","subjectResolution":"explicit","predicate":"占成本约58%","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","text":"因此计划把复核改为低、中、高三级。","subject":"团队","subjectResolution":"explicit","predicate":"改为三级复核","polarity":"affirmative","modality":"plan","role":"action","relationToPrevious":"results-in","sourceRef":"USER:2"}
+    ],
+    "expectedRelations": ["causal"],
+    "expectedArrowEdges": 1,
+    "expectedReviewItems": 0,
+    "expectedAssertionStatus": "hypothesis"
+  },
+  {
+    "name": "unknown-subject-cross-section-is-not-guessed",
+    "units": [
+      {"id":"D1","sectionId":"S1","text":"知识库已完成83份文件解析。","subject":"知识库","subjectResolution":"explicit","predicate":"完成83份文件解析","polarity":"affirmative","modality":"confirmed","role":"evidence","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S2","text":"可以随时回到原始证据复核。","subject":"待确认","subjectResolution":"unknown","unknownRef":"U1","predicate":"可以回到原始证据复核","polarity":"affirmative","modality":"unknown","role":"claim","relationToPrevious":"starts","sourceRef":"USER:2"}
+    ],
+    "expectedRelations": [],
+    "expectedArrowEdges": 0,
+    "expectedReviewItems": 2
+  },
+  {
+    "name": "same-list-group-is-parallel",
+    "units": [
+      {"id":"D1","sectionId":"S1","listGroup":"MCP","text":"搜索正式知识。","subject":"MCP","subjectResolution":"explicit","predicate":"搜索正式知识","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"starts","sourceRef":"USER:1"},
+      {"id":"D2","sectionId":"S1","listGroup":"MCP","text":"搜索文件名和全文。","subject":"MCP","subjectResolution":"explicit","predicate":"搜索文件名和全文","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:2"},
+      {"id":"D3","sectionId":"S1","listGroup":"MCP","text":"读取文件Section和原文位置。","subject":"MCP","subjectResolution":"explicit","predicate":"读取原文位置","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:3"},
+      {"id":"D4","sectionId":"S1","listGroup":"MCP","text":"浏览动态知识树。","subject":"MCP","subjectResolution":"explicit","predicate":"浏览知识树","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:4"},
+      {"id":"D5","sectionId":"S1","listGroup":"MCP","text":"按市场过滤。","subject":"MCP","subjectResolution":"explicit","predicate":"按市场过滤","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:5"},
+      {"id":"D6","sectionId":"S1","listGroup":"MCP","text":"限定指定文件或分析范围。","subject":"MCP","subjectResolution":"explicit","predicate":"限定分析范围","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:6"},
+      {"id":"D7","sectionId":"S1","listGroup":"MCP","text":"返回治理规则。","subject":"MCP","subjectResolution":"explicit","predicate":"返回治理规则","polarity":"affirmative","modality":"confirmed","role":"claim","relationToPrevious":"elaborates","sourceRef":"USER:7"},
+      {"id":"D8","sectionId":"S1","listGroup":"MCP","text":"只读，不开放上传、发布、驳回和删除。","subject":"MCP","subjectResolution":"explicit","predicate":"保持只读边界","polarity":"negative","modality":"confirmed","role":"boundary","relationToPrevious":"elaborates","sourceRef":"USER:8"}
+    ],
+    "expectedRelations": ["parallel", "parallel", "parallel", "parallel", "parallel", "parallel", "parallel"],
+    "expectedArrowEdges": 0,
+    "expectedReviewItems": 0
+  }
+]

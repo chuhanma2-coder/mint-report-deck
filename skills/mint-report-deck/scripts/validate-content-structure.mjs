@@ -11,7 +11,7 @@ export function validateContentStructure(deck, map) {
   const threads = arr(map.decisionThreads);
   const primaryAtoms = arr(map.contentAtoms).filter((atom) => atom.materiality === "primary");
   if (!threads.length) {
-    warnings.push("缺少 decisionThreads；旧输入继续兼容，但新生成不得直接按标题分页面");
+    if (map.schemaVersion !== "0.5") warnings.push("缺少 decisionThreads；旧输入继续兼容，但新生成不得直接按标题分页面");
     return { passed: true, errors, warnings, metrics: { threads: 0, assignedPrimaryAtoms: 0, primaryAtoms: primaryAtoms.length } };
   }
   const counts = new Map();

@@ -1,4 +1,4 @@
-# Mint Report Deck V0.4.1
+# Mint Report Deck V0.6.0
 
 把粗略中文笔记编译为来源可追溯、最少页数的 Mint 管理层材料：互动 HTML 由内置渲染器生成；可编辑 PPTX 由 Codex `Presentations` Skill 使用内置组件母版生成。
 
@@ -11,6 +11,8 @@
 ```
 
 Codex 也可以按其 Skill 安装流程从 GitHub 仓库安装。安装后重新打开任务或刷新 Skills 列表。
+
+V0.6 支持 macOS 与 Windows Agent 的标准 Skill 安装方式；Agent 必须具备读取本地文件和执行脚本的权限。生成 PDF 需要本机 Chromium/Chrome 与 Playwright，生成可编辑 PPTX 需要 Codex Presentations；依赖不可用时会明确阻断或降级，不会声称文件已经生成。
 
 ## 使用
 

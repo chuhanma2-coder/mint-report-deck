@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.6",
+  "sourceContentMapVersion": "0.6",
+  "nodes": [
+    {"id":"A1","kind":"atom","label":"覆盖140个贷款页面","sourceRefs":["USER:WEEKLY:1"],"materiality":"primary","needsReview":false},
+    {"id":"A2","kind":"atom","label":"分析扩展到各项成本费用","sourceRefs":["USER:WEEKLY:2"],"materiality":"primary","needsReview":false},
+    {"id":"A3","kind":"atom","label":"识别评论变化","sourceRefs":["USER:REVIEW:1"],"materiality":"primary","needsReview":false},
+    {"id":"A4","kind":"atom","label":"保留原文与链接","sourceRefs":["USER:REVIEW:2"],"materiality":"primary","needsReview":false}
+  ],
+  "edges": [
+    {"id":"E1","source":"A1","target":"A2","relationType":"parallel","direction":"none","evidenceRefs":["USER:WEEKLY:1","USER:WEEKLY:2"],"confidence":1,"orderBasis":{"type":"none"},"connectorPolicy":"none","needsReview":false},
+    {"id":"E2","source":"A3","target":"A4","relationType":"sequence","direction":"directed","evidenceRefs":["USER:REVIEW:1","USER:REVIEW:2"],"confidence":0.98,"orderBasis":{"type":"input-output-handoff","evidenceRef":"USER:REVIEW:2"},"connectorPolicy":"arrow","needsReview":false}
+  ],
+  "migrationWarnings": []
+}

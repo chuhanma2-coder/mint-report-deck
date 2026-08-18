@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { validateSemanticGraph } from "./validate-semantic-graph.mjs";
 
 const file = path.resolve(process.argv[2] || "");
 if (!process.argv[2] || !fs.existsSync(file)) {
@@ -16,7 +17,7 @@ const requireRefs = (items, name) => arr(items).forEach((x, i) => {
   if (!x.sourceRef) errors.push(`${name}[${i}] 缺少 sourceRef`);
 });
 
-if (!new Set(["0.2", "0.3", "0.4"]).has(map.schemaVersion)) errors.push("schemaVersion 必须为 0.2、0.3 或 0.4");
+if (!new Set(["0.2", "0.3", "0.4", "0.5", "0.6"]).has(map.schemaVersion)) errors.push("schemaVersion 必须为 0.2、0.3、0.4、0.5 或 0.6");
 for (const key of ["audience", "purpose", "desiredOutcome", "managementTakeaway"]) {
   if (!map.communicationJob?.[key]) errors.push(`communicationJob.${key} 缺失`);
 }
@@ -24,7 +25,7 @@ requireRefs(map.facts, "facts");
 requireRefs(map.numbers, "numbers");
 requireRefs(map.actions, "actions");
 requireRefs(map.priorities, "priorities");
-if (map.schemaVersion === "0.4") {
+if (new Set(["0.4", "0.5", "0.6"]).has(map.schemaVersion)) {
   requireRefs(map.contentAtoms, "contentAtoms");
   requireRefs(map.numericClaims, "numericClaims");
   const atomKinds = new Set(["fact", "numeric", "relationship", "judgment", "action", "evidence", "boundary"]);
@@ -45,6 +46,16 @@ if (map.schemaVersion === "0.4") {
     if (!materialities.has(claim.materiality)) errors.push(`numericClaims[${i}] materiality 无效`);
     if (!displayRequirements.has(claim.displayRequirement)) errors.push(`numericClaims[${i}] displayRequirement 无效`);
   });
+}
+if (map.schemaVersion === "0.6") {
+  const graphResult = validateSemanticGraph(map);
+  errors.push(...graphResult.errors.map((message) => `semanticGraph: ${message}`));
+  warnings.push(...graphResult.warnings.map((message) => `semanticGraph: ${message}`));
+}
+if (map.schemaVersion === "0.5") {
+  if (!arr(map.discourseUnits).length) errors.push("V0.5 缺少 discourseUnits");
+  if (!map.narrativeCommitment) errors.push("V0.5 缺少 narrativeCommitment");
+  if (!arr(map.ghostDeck).length) errors.push("V0.5 缺少 ghostDeck");
 }
 arr(map.entities).forEach((x, i) => { if (!x.id || !x.canonicalName) errors.push(`entities[${i}] 缺少 id 或 canonicalName`); });
 arr(map.relationships).forEach((x, i) => { if (!x.id || !x.type || !x.statement) errors.push(`relationships[${i}] 缺少 id、type 或 statement`); });

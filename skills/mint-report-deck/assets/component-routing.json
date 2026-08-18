@@ -1,5 +1,7 @@
 {
-  "version": "0.4",
+  "version": "0.6",
+  "patternRegistry": "assets/layout-patterns.json",
+  "routingStage": "legacy component routing only; V0.6 must hard-filter Layout Patterns before scoring",
   "principle": "select a visual from the analytical question, data shape and evidence contract; never from page number or visual variety",
   "requiredChartFields": ["labels", "values", "unit", "period", "subject", "sourceRefs"],
   "decisionOrder": [
@@ -64,7 +66,7 @@
   },
   "fallback": {
     "component": "needs-layout-review",
-    "secondary": "statement",
+    "secondary": null,
     "warning": "No controlled page family expresses this relationship. Split the proposition or request layout review; never force it into a table."
   }
 }

@@ -13,6 +13,7 @@ class MintDeck {
     this.wheelLocked = false;
     this.touchStart = null;
     this.editing = false;
+    this.pdfDirty = false;
     this.nav = root.querySelector("#deckNav");
     this.navList = root.querySelector("#navList");
     this.lightbox = root.querySelector("#lightbox");
@@ -25,6 +26,7 @@ class MintDeck {
     this.bindDisclosure();
     this.bindEditing();
     this.restoreEdits();
+    this.updatePdfExportState();
     this.renderCharts();
     this.fit();
     this.show(this.index, "init");
@@ -106,6 +108,7 @@ class MintDeck {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
         event.preventDefault();
         this.persistEdits();
+        this.updatePdfExportState();
         this.notify("文字修改已保存在当前浏览器");
       }
     });
@@ -194,8 +197,10 @@ class MintDeck {
     this.root.querySelectorAll("[data-editable]").forEach((node, i) => {
       if (!node.dataset.editId) node.dataset.editId = `edit-${i + 1}`;
       node.addEventListener("input", () => {
+        this.pdfDirty = true;
         if (node.hasAttribute("data-structured-value")) this.updateStructuredNumber(node);
         this.persistEdits();
+        this.updatePdfExportState();
       });
     });
   }
@@ -258,7 +263,31 @@ class MintDeck {
     this.root.querySelectorAll("[data-editable][data-edit-id]").forEach((node) => {
       edits[node.dataset.editId] = node.innerHTML;
     });
-    localStorage.setItem(this.storageKey, JSON.stringify(edits));
+    try { localStorage.setItem(this.storageKey, JSON.stringify(edits)); }
+    catch { this.pdfDirty = true; }
+  }
+
+  hasPersistedEdits() {
+    if (this.pdfDirty) return true;
+    try { return Object.keys(JSON.parse(localStorage.getItem(this.storageKey) || "{}")).length > 0; }
+    catch { return true; }
+  }
+
+  updatePdfExportState() {
+    const button = this.root.querySelector("#exportPdfButton");
+    if (!button) return;
+    const available = this.root.querySelector('meta[name="mint-pdf-state"]')?.content === "available";
+    const pdfUrl = this.root.querySelector('meta[name="mint-pdf-url"]')?.content;
+    const edited = this.hasPersistedEdits();
+    if (available && pdfUrl && !edited) {
+      button.dataset.pdfMode = "download";
+      button.innerHTML = "下载 PDF<small>一键下载已生成的正式版 PDF</small>";
+    } else {
+      button.dataset.pdfMode = "print";
+      button.innerHTML = edited
+        ? "打印 / 导出当前编辑版<small>当前修改尚未生成匹配的 PDF</small>"
+        : "打印 / 导出当前版本<small>在打印窗口中选择“存储为 PDF”</small>";
+    }
   }
 
   restoreEdits() {
@@ -305,8 +334,18 @@ class MintDeck {
     this.toggleEditing(false);
     this.closeModals();
     this.toggleExportMenu(false);
-    this.notify("请在打印窗口中选择“存储为 PDF”");
-    setTimeout(() => window.print(), 60);
+    const button = this.root.querySelector("#exportPdfButton");
+    const pdfUrl = this.root.querySelector('meta[name="mint-pdf-url"]')?.content;
+    if (button?.dataset.pdfMode === "download" && pdfUrl) {
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = pdfUrl.split("/").pop() || "report.pdf";
+      link.click();
+      this.notify("PDF 已开始下载");
+      return;
+    }
+    this.notify("将打开打印窗口；请选择“存储为 PDF”保存当前编辑版");
+    setTimeout(() => window.print(), 80);
   }
 
   async toggleFullscreen() {

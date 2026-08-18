@@ -1,0 +1,17 @@
+[
+  {"name":"三项并列","relationType":"parallel","nodeCount":3,"dataShape":"independent-items","pageRole":"evidence","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"none","expected":"parallel-columns"},
+  {"name":"五项并列带状","relationType":"parallel","nodeCount":5,"dataShape":"independent-items","pageRole":"evidence","densityProfile":"compact","readingAxis":"top-to-bottom","connectorPolicy":"none","expected":"parallel-bands"},
+  {"name":"横向真实流程","relationType":"sequence","nodeCount":4,"dataShape":"ordered-actions","pageRole":"mechanism","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"arrow","expected":"horizontal-sequence"},
+  {"name":"纵向真实流程","relationType":"flow","nodeCount":4,"dataShape":"ordered-actions","pageRole":"mechanism","densityProfile":"compact","readingAxis":"top-to-bottom","connectorPolicy":"arrow","expected":"vertical-sequence"},
+  {"name":"时间轴","relationType":"temporal","nodeCount":4,"dataShape":"milestones","pageRole":"evidence","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"axis","expected":"timeline"},
+  {"name":"前后变化","relationType":"before-after","nodeCount":2,"dataShape":"paired-objects","pageRole":"contrast","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"arrow","expected":"before-after"},
+  {"name":"无方向对比","relationType":"comparison","nodeCount":3,"dataShape":"paired-objects","pageRole":"contrast","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"none","expected":"comparison"},
+  {"name":"问题原因方案","relationType":"causal","nodeCount":4,"dataShape":"causal-claims","pageRole":"diagnosis","densityProfile":"compact","readingAxis":"left-to-right","connectorPolicy":"arrow","expected":"problem-cause-solution"},
+  {"name":"组织层级","relationType":"hierarchy","nodeCount":5,"dataShape":"hierarchy","pageRole":"context","densityProfile":"compact","readingAxis":"top-to-bottom","connectorPolicy":"branch","expected":"hierarchy"},
+  {"name":"前中后台能力链","relationType":"flow","nodeCount":3,"dataShape":"hierarchy","pageRole":"mechanism","densityProfile":"balanced","readingAxis":"top-to-bottom","connectorPolicy":"arrow","expected":"layered-capability-chain"},
+  {"name":"单一大数字","relationType":"none","nodeCount":1,"dataShape":"numeric","pageRole":"claim","densityProfile":"focused","readingAxis":"top-to-bottom","connectorPolicy":"none","expected":"numeric-story"},
+  {"name":"图表加解读","relationType":"temporal","nodeCount":6,"dataShape":"chart-series","pageRole":"evidence","densityProfile":"compact","readingAxis":"left-to-right","connectorPolicy":"axis","expected":"chart-insight"},
+  {"name":"图文证据","relationType":"evidence","nodeCount":2,"dataShape":"media","pageRole":"evidence","densityProfile":"balanced","readingAxis":"left-to-right","connectorPolicy":"line","expected":"media-evidence"},
+  {"name":"章节引言","relationType":"none","nodeCount":1,"dataShape":"text","pageRole":"section-intro","densityProfile":"focused","readingAxis":"top-to-bottom","connectorPolicy":"none","expected":"section-intro"},
+  {"name":"无兼容模式","relationType":"parallel","nodeCount":5,"dataShape":"ordered-actions","pageRole":"evidence","densityProfile":"compact","readingAxis":"left-to-right","connectorPolicy":"none","expectedStatus":"needs-layout-review"}
+]

@@ -1,4 +1,4 @@
-# V0.4 content compilation transaction
+# V0.5 content compilation transaction
 
 ## Stable artifacts
 
@@ -13,15 +13,15 @@
 
 1. Copy original notes into the source pack without rewriting.
 2. Freeze facts, canonical entity names, numeric contracts and relative date strings.
-3. Compile atoms, numeric roles, claim graph, materiality and display requirements before writing any page.
-4. Compile one management takeaway and the dominant relationships.
-5. Normalize the page-count contract first. Exact one-page requests cannot be relaxed; recompose or block. Otherwise begin with a one-page budget and add pages only for independent propositions or verified capacity failure.
-6. Give every page a question, answer, one primary visual, no more than two support modules and explicit atom coverage.
+3. Compile clauses with explicit/inherited subject, predicate, polarity, modality and rhetorical relation; then compile atoms, numeric roles, claim graph, materiality and display requirements.
+4. Freeze one narrative commitment and build a title-only ghost deck. Run critic and judge checks before selecting layouts.
+5. Normalize the page-count contract first. Exact one-page requests cannot be relaxed; recompose or block. Otherwise begin with a one-page budget and add pages only for independent propositions or verified capacity failure confirmed by the removal test.
+6. Give every page a question, answer, exact visible claims, one visual brief, one primary visual, no more than two support modules and explicit atom coverage.
 7. Route from relationship, numeric role, audience task and materiality; never from note numbering or page position.
 8. Generate one page or batches of at most three. Apply syntax-only JSON repair once if parsing fails.
-9. Run the strict QA gate for evidence, atom coverage, numeric integrity, entity preservation, date anchoring, page budget, relationship/component compatibility, language, visual salience and capacity.
+9. Run the strict pre-render QA gate for Chinese compilation, narrative commitment, ghost-deck flow, evidence, atom coverage, numeric integrity, component field contracts, entity preservation, date anchoring, page budget, relationship compatibility, language, visual salience and capacity.
 10. Auto-repair only failed pages, at most twice. If primary information remains invisible or invalid, block formal output.
 11. Merge valid pages by `order`, then render HTML and, when available, native PPTX from the same spec.
-12. Compare outputs for facts, entities, numbers, formulas, page count and reading order.
+12. Run rendered-contract QA: compare actual visible claims, primary visual population, facts, entities, numbers, formulas, page count and reading order. Then inspect screenshots at required viewports.
 
 The browser never assembles unvalidated model fragments. The deterministic merge step owns ordering, duplicate IDs and serialization.

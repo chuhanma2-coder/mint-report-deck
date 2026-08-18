@@ -1,0 +1,22 @@
+{
+  "schemaVersion":"0.5","id":"chinese-narrative-regression","version":1,"title":"三个市场推进与资源安排","date":"","confidentiality":"内部材料","pageBudget":2,
+  "deckPlan":{"narrativeArc":["组合判断","资源决策"],"introFamily":"section-intro","sections":[{"id":"S1","title":"组合判断与行动","accentTone":"jade"}]},
+  "slides":[
+    {
+      "id":"P1","type":"comparison","chapter":"组合判断","titleLines":["三个市场阶段不同，","需要设置差异化验证重点"],"lead":"资源配置应跟随监管、合作和经营验证阶段，而不是平均分配。",
+      "columns":[
+        {"title":"市场甲","subtitle":"监管验证","items":["确认准入条件","明确时间依赖"]},
+        {"title":"市场乙","subtitle":"合作验证","items":["确认合作主体","明确能力边界"]},
+        {"title":"市场丙","subtitle":"经营验证","items":["验证产品空间","测算投入产出"]}
+      ],
+      "pageQuestion":"三个市场为什么不能同步推进？","pageAnswer":"三个市场所处阶段不同，需要分别验证监管、合作和经营条件。","primaryVisual":{"kind":"comparison","visualShare":0.64,"claimRefs":[],"atomRefs":["A1"],"data":{"objects":["市场甲","市场乙","市场丙"]}},"supportModules":[{"kind":"decision-callout","atomRefs":["A2"],"claimRefs":[],"data":{"label":"组合判断","text":"按阶段设置验证重点"}}],"readingOrder":["title","comparison","decision"],"atomRefs":["A1","A2"],"threadRefs":[],"sourceRefs":["USER:1"],"source":"来源：用户提供的项目材料"
+      ,"visibleClaims":[{"text":"三个市场阶段不同","atomRefs":["A1"]},{"text":"需要设置差异化验证重点","atomRefs":["A2"]}],"visualBrief":{"relationship":"comparison","focalPoint":"三类验证重点差异","readingDirection":"left-to-right"},"speakerNotes":["说明资源配置应跟随验证阶段"]
+    },
+    {
+      "id":"P2","type":"decision","chapter":"资源决策","titleLines":["资源优先投入","具备验证条件的市场"],"lead":"其他市场保留明确门槛，条件满足后再进入下一阶段。",
+      "decision":"确认优先验证顺序与负责人","why":["避免资源平均配置","把投入与可验证结果绑定"],"actions":[{"action":"明确优先市场","owner":"管理团队","time":"下一阶段"},{"action":"设置验证门槛","owner":"项目负责人","time":"推进前"}],
+      "pageQuestion":"管理层下一步应如何配置资源？","pageAnswer":"优先推进具备验证条件的市场，并为其他市场保留明确验证门槛。","primaryVisual":{"kind":"decision","visualShare":0.62,"claimRefs":[],"atomRefs":["A3"],"data":{"headline":"确认优先验证顺序"}},"supportModules":[],"readingOrder":["title","decision","actions"],"atomRefs":["A3"],"threadRefs":[],"sourceRefs":["USER:2"],"source":"来源：用户提供的下一步要求"
+      ,"visibleClaims":[{"text":"资源优先投入具备验证条件的市场","atomRefs":["A3"]}],"visualBrief":{"relationship":"decision","focalPoint":"优先验证顺序与负责人","readingDirection":"top-to-bottom"},"speakerNotes":["其他市场满足门槛后再进入下一阶段"]
+    }
+  ]
+}

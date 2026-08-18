@@ -1,5 +1,5 @@
 const has = (v) => v !== undefined && v !== null && v !== "";
-const result = (component, reason, confidence = "high") => ({ component, reason, confidence });
+const result = (component, reason, confidence = "high") => ({ component, reason, confidence, routingLayer:"legacy-adapter", patternRegistryRequired:true });
 const evidenceContract = (n) => Boolean(
   Array.isArray(n?.labels) && n.labels.length &&
   Array.isArray(n?.values) && n.values.length === n.labels.length &&

@@ -1,21 +1,49 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { validateInformationCoverage } from "./validate-information-coverage.mjs";
 import { validateNumericIntegrity } from "./validate-numeric-integrity.mjs";
 import { validateVisualSalience } from "./validate-visual-salience.mjs";
+import { applyRepairRound, classifyQaMessages, orchestrateRepairs } from "./repair-layout.mjs";
 
 const deckFile = path.resolve(process.argv[2] || "");
 const mapFile = path.resolve(process.argv[3] || "");
 const output = path.resolve(process.argv[4] || "");
 if (!fs.existsSync(deckFile) || !fs.existsSync(mapFile) || !process.argv[4]) {
-  console.error("Usage: node repair-deck.mjs /absolute/path/deck-spec.json /absolute/path/content-map.json /absolute/path/repaired-deck.json");
+  console.error("Usage: node repair-deck.mjs deck-spec.json content-map.json repaired-deck.json [qa-report.json] [layout-plan.json]");
   process.exit(2);
 }
 
 const deck = JSON.parse(fs.readFileSync(deckFile, "utf8"));
 const map = JSON.parse(fs.readFileSync(mapFile, "utf8"));
 const arr = (v) => Array.isArray(v) ? v : [];
+
+if (deck.schemaVersion === "0.6" || map.schemaVersion === "0.6") {
+  const qaFile = process.argv[5] ? path.resolve(process.argv[5]) : null;
+  const layoutFile = process.argv[6] ? path.resolve(process.argv[6]) : null;
+  if (!qaFile || !fs.existsSync(qaFile)) {
+    console.error("V0.6 repair requires an explicit qa-report.json; the repairer must not guess failures");
+    process.exit(2);
+  }
+  const report = JSON.parse(fs.readFileSync(qaFile, "utf8"));
+  const registry = JSON.parse(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../assets/layout-patterns.json"), "utf8"));
+  const initialBundle = { deck, map, deckPlan:deck.deckPlan, layoutSelection:deck.layoutSelection, layoutPlan:layoutFile && fs.existsSync(layoutFile) ? JSON.parse(fs.readFileSync(layoutFile,"utf8")) : null };
+  const roundReports = arr(report.roundReports);
+  const orchestration = roundReports.length ? orchestrateRepairs(initialBundle, roundReports, registry, 2) : null;
+  const issues = arr(report.repairIssues).length ? report.repairIssues : classifyQaMessages([...(report.errors || []), ...(report.warnings || [])]);
+  const result = orchestration ? {bundle:orchestration.bundle,status:orchestration.status,repairs:orchestration.history.flatMap((item)=>item.repairs),blockedReasons:orchestration.blockedReasons || orchestration.history.flatMap((item)=>item.blockedReasons),diff:orchestration.history.map((item)=>item.diff),rounds:orchestration.rounds} : {...applyRepairRound(initialBundle, issues, registry, 1),rounds:1};
+  const repaired = result.bundle.deck;
+  repaired.deckPlan = result.bundle.deckPlan;
+  repaired.layoutSelection = result.bundle.layoutSelection;
+  if (result.bundle.layoutPlan) repaired.layoutPlan = result.bundle.layoutPlan;
+  repaired.version = Number(repaired.version || 0) + 1;
+  repaired.repairLog = [...arr(repaired.repairLog), ...result.repairs];
+  repaired.repairState = { status:result.status, rounds:result.rounds, blockedReasons:result.blockedReasons, diff:result.diff, requiredNextChecks:result.status === "repair-required" ? ["render-html","visual-qa","qa-deck"] : [] };
+  fs.writeFileSync(output, `${JSON.stringify(repaired, null, 2)}\n`);
+  console.log(JSON.stringify({passed:result.status==="formal-ready",status:result.status,rounds:result.rounds,repairs:result.repairs,blockedReasons:result.blockedReasons,diff:result.diff,requiredNextChecks:repaired.repairState.requiredNextChecks},null,2));
+  process.exit(result.status === "formal-ready" ? 0 : 1);
+}
 const claimsByGroup = new Map();
 for (const claim of arr(map.numericClaims)) {
   const groupId = claim.groupId || "UNGROUPED";

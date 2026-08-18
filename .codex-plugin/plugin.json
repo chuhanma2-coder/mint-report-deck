@@ -1,6 +1,6 @@
 {
   "name": "mint-report-deck",
-  "version": "0.3.0",
+  "version": "0.6.0",
   "description": "Compile rough notes into source-grounded Mint reports, render interactive HTML, and orchestrate Presentations for editable PPTX.",
   "author": { "name": "Mint project team" },
   "license": "MIT",

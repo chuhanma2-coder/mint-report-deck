@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mint.local/schemas/page-contract.schema.json",
+  "title": "Mint deck plan and page contracts V0.6",
+  "type": "object",
+  "required": ["schemaVersion", "communicationJob", "narrativeSpine", "pageBudget", "sectionIntroFamily", "sections", "pageContracts"],
+  "properties": {
+    "schemaVersion": {"const": "0.6"},
+    "communicationJob": {"type": "object"},
+    "narrativeSpine": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "pageBudget": {"type": "object"},
+    "sectionIntroFamily": {"type": "string", "minLength": 1},
+    "sections": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/section"}},
+    "onePagePlan": {"type": "object"},
+    "pageContracts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/page"}}
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "required": ["id", "title", "introFamily", "pageIds"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "introFamily": {"type": "string", "minLength": 1},
+        "pageIds": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": true
+    },
+    "page": {
+      "type": "object",
+      "required": ["id", "sectionId", "actionTitle", "titleLines", "pageQuestion", "pageAnswer", "pageRole", "proofObject", "atomRefs", "relationGraphRefs", "readingAxis", "contentOrder", "focalAnchor", "densityProfile", "transitionFromPrevious", "pageNecessity"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "sectionId": {"type": "string", "minLength": 1},
+        "actionTitle": {"type": "string", "minLength": 1},
+        "titleLines": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "string", "minLength": 1}},
+        "pageQuestion": {"type": "string", "minLength": 1},
+        "pageAnswer": {"type": "string", "minLength": 1},
+        "pageRole": {"enum": ["opening", "section-intro", "context", "claim", "evidence", "contrast", "diagnosis", "mechanism", "risk", "decision", "action", "summary"]},
+        "proofObject": {"$ref": "#/$defs/proof"},
+        "atomRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "relationGraphRefs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "primaryRelationRef": {"type": ["string", "null"]},
+        "readingAxis": {"enum": ["left-to-right", "top-to-bottom", "center-out", "numbered-path"]},
+        "contentOrder": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+        "focalAnchor": {"type": "string", "minLength": 1},
+        "densityProfile": {"enum": ["focused", "balanced", "compact"]},
+        "introFamily": {"type": "string", "minLength": 1},
+        "transitionFromPrevious": {"type": ["object", "null"]},
+        "pageNecessity": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "proof": {
+      "type": "object",
+      "required": ["kind", "primaryAtomRef", "atomRefs", "evidenceRefs", "description"],
+      "properties": {
+        "kind": {"enum": ["source-backed-claim", "semantic-relationship", "numeric-evidence", "decision-evidence", "media-evidence"]},
+        "primaryAtomRef": {"type": "string", "minLength": 1},
+        "atomRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "evidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "description": {"type": "string", "minLength": 1}
+        ,"dataShape": {"enum": ["text", "independent-items", "ordered-actions", "milestones", "paired-objects", "causal-claims", "hierarchy", "numeric", "chart-series", "media", "mixed-evidence"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

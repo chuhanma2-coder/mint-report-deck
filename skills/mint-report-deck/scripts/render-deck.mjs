@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { renderV06Page } from "./renderers/html/registry.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
@@ -12,10 +13,17 @@ if (!process.argv[2] || !fs.existsSync(input)) {
   process.exit(2);
 }
 const deck = JSON.parse(fs.readFileSync(input, "utf8"));
+const layoutArg = process.argv[4] ? path.resolve(process.argv[4]) : path.join(path.dirname(input), "layout-plan.json");
+const layoutPlan = deck.schemaVersion === "0.6" && fs.existsSync(layoutArg) ? JSON.parse(fs.readFileSync(layoutArg, "utf8")) : null;
+if (deck.schemaVersion === "0.6" && (!layoutPlan || layoutPlan.schemaVersion !== "0.6")) {
+  console.error("V0.6 render requires a validated layout-plan.json as the third argument or beside deck-spec.json");
+  process.exit(2);
+}
 const css = fs.readFileSync(path.join(root, "assets/runtime/mint-runtime.css"), "utf8");
 const js = fs.readFileSync(path.join(root, "assets/runtime/mint-runtime.js"), "utf8");
 const e = (v = "") => String(v).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c]));
 const arr = (v) => Array.isArray(v) ? v : [];
+const compact = (value) => String(value || "").replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ").replace(/&nbsp;|&#160;/g, " ").replace(/&amp;/g, "&").replace(/[\s，。；：、,.!?！？—-]/g, "");
 const title = (s) => arr(s.titleLines).map(e).join("<br>");
 const emphasized = (value, slide) => {
   let safe = e(value);
@@ -98,10 +106,44 @@ function slideContent(slide) {
 }
 
 const fullBleed = (slide) => ["cover", "section-intro"].includes(slide.type);
-const pages = deck.slides.map((slide, i) => `<section class="slide ${slide.type === "cover" ? "cover" : slide.type === "section-intro" ? "slide--section" : slide.dark ? "slide--forest" : ""} ${i === 0 ? "is-active" : ""}" data-title="${e(arr(slide.titleLines).join("｜") || deck.title)}">${fullBleed(slide) ? slideContent(slide) : `<div class="page">${chrome(slide, i)}<div class="body">${slideContent(slide)}</div>${footer(slide, i)}</div>`}</section>`).join("\n");
+const primaryItemCount = (slide) => {
+  if (slide.type === "cover") return arr(slide.titleLines).length;
+  if (slide.type === "section-intro") return slide.sectionTitle ? 1 : 0;
+  if (slide.type === "statement") return arr(slide.statementLines).length;
+  if (slide.type === "quantitative-story") return arr(slide.primaryVisual?.data?.groups).length || arr(slide.primaryVisual?.data?.metrics).length || (slide.primaryVisual?.data?.chart ? 1 : 0);
+  if (slide.type === "capability-chain") return arr(slide.stages).length;
+  if (["process", "timeline"].includes(slide.type)) return arr(slide.items).length;
+  if (slide.type === "architecture-brief") return arr(slide.layers).length;
+  if (slide.type === "dual-track-roadmap") return arr(slide.tracks).reduce((sum, track) => sum + arr(track.items).length, 0);
+  if (slide.type === "swimlane") return arr(slide.lanes).reduce((sum, lane) => sum + arr(lane.items).length, 0);
+  if (slide.type === "comparison") return arr(slide.columns).length;
+  if (slide.type === "matrix") return arr(slide.cells).flat().filter((cell) => String(cell || "").trim()).length;
+  if (slide.type === "table") return arr(slide.rows).length;
+  if (slide.type === "chart") return arr(slide.chart?.labels).length;
+  if (slide.type === "heatmap") return arr(slide.heatmap?.values).flat().length;
+  if (slide.type === "media") return slide.image ? 1 : 0;
+  if (slide.type === "risk-spotlight") return slide.risk?.judgment ? 1 : 0;
+  if (slide.type === "decision") return slide.decision ? 1 : 0;
+  return 0;
+};
+const pages = deck.slides.map((slide, i) => {
+  const layoutPage = layoutPlan?.pages?.find((page) => page.pageId === slide.id);
+  const content = deck.schemaVersion === "0.6" ? renderV06Page(deck, slide, layoutPage, { pageIndex:i, mediaUrl }) : slideContent(slide);
+  const visibleText = content.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ").replace(/&[^;]+;/g, " ").replace(/\s+/g, "").length;
+  const primaryItems = primaryItemCount(slide);
+  const visibleCompact = compact(content);
+  const missingClaims = arr(slide.visibleClaims).filter((claim) => !visibleCompact.includes(compact(claim?.text)));
+  const renderedAtomRefs = [...content.matchAll(/data-atom-refs="([^"]*)"/g)].flatMap((match) => match[1].split(/\s+/).filter(Boolean));
+  const visibleClaimRefs = deck.schemaVersion === "0.6" ? renderedAtomRefs : arr(slide.visibleClaims).filter((claim) => !missingClaims.includes(claim)).flatMap((claim) => arr(claim.atomRefs));
+  if (deck.schemaVersion === "0.5" && (!content.trim() || visibleText < 2 || primaryItems < 1 || missingClaims.length)) throw new Error(`第 ${i + 1} 页渲染合同失败：content=${visibleText}, primaryItems=${primaryItems}, missingClaims=${missingClaims.map((claim) => claim?.text).join("｜")}`);
+  if (deck.schemaVersion === "0.6" && (!content.trim() || visibleText < 2 || !layoutPage || layoutPage.status !== "planned")) throw new Error(`第 ${i + 1} 页V0.6渲染合同失败：content=${visibleText}, layout=${layoutPage?.status || "missing"}`);
+  const attrs = `data-slide-id="${e(slide.id || `P${i + 1}`)}" data-slide-type="${e(slide.type)}" data-primary-kind="${e(slide.primaryVisual?.kind || slide.type)}" data-pattern-id="${e(layoutPage?.patternId || "legacy")}" data-atom-refs="${e(arr(slide.atomRefs).join(" "))}" data-visible-claim-refs="${e([...new Set(visibleClaimRefs)].join(" "))}" data-render-contract="pass" data-visible-text="${visibleText}" data-primary-items="${primaryItems}"`;
+  if (deck.schemaVersion === "0.6") return `<section class="slide slide--v06 ${slide.dark ? "slide--forest" : ""} ${i === 0 ? "is-active" : ""}" data-title="${e(arr(slide.titleLines).join("｜") || deck.title)}" ${attrs}>${content}</section>`;
+  return `<section class="slide ${slide.type === "cover" ? "cover" : slide.type === "section-intro" ? "slide--section" : slide.dark ? "slide--forest" : ""} ${i === 0 ? "is-active" : ""}" data-title="${e(arr(slide.titleLines).join("｜") || deck.title)}" ${attrs}>${fullBleed(slide) ? content : `<div class="page">${chrome(slide, i)}<div class="body">${content}</div>${footer(slide, i)}</div>`}</section>`;
+}).join("\n");
 const extra = fs.readFileSync(path.join(root, "assets/runtime/mint-components.css"), "utf8");
 const model = JSON.stringify(deck).replace(/</g, "\\u003c");
-const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="mint-deck-id" content="${e(deck.id)}"><meta name="mint-deck-version" content="${e(deck.version)}"><title>${e(deck.title)}</title><style>${css}\n${extra}</style></head><body><main class="deck-shell"><div class="deck-stage" id="mintDeckStage">${pages}</div></main><nav class="deck-nav" id="deckNav"><div class="nav-title">页面导航 · 悬停展开</div><div class="nav-list" id="navList"></div></nav><div class="deck-actions"><button class="deck-action" id="editButton" title="编辑文字（E）">✎</button><button class="deck-action" id="downloadButton" title="下载或导出（P）">↓</button><button class="deck-action" id="fullscreenButton" title="全屏（F）">⛶</button></div><div class="export-menu" id="exportMenu"><button class="export-choice" id="exportPdfButton">导出 PDF<small>打开打印窗口，选择“存储为 PDF”</small></button><button class="export-choice" id="exportHtmlButton">下载 HTML<small>保留编辑、导航与图表互动</small></button></div><div class="modal-layer" id="lightbox" aria-hidden="true"><button class="modal-close" data-modal-close>×</button><div class="lightbox-content"></div></div><div class="modal-layer" id="drawer" aria-hidden="true"><button class="modal-close" data-modal-close>×</button><div class="drawer-panel"></div></div><div class="edit-toast" id="editToast"></div><script type="application/json" id="mint-deck-data">${model}</script><script>${js}</script></body></html>`;
+const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="mint-deck-id" content="${e(deck.id)}"><meta name="mint-deck-version" content="${e(deck.version)}"><meta name="mint-pdf-state" content="unavailable"><title>${e(deck.title)}</title><style>${css}\n${extra}</style></head><body><main class="deck-shell"><div class="deck-stage" id="mintDeckStage">${pages}</div></main><nav class="deck-nav" id="deckNav"><div class="nav-title">页面导航 · 悬停展开</div><div class="nav-list" id="navList"></div></nav><div class="deck-actions"><button class="deck-action" id="editButton" title="编辑文字（E）">✎</button><button class="deck-action" id="downloadButton" title="下载或导出（P）">↓</button><button class="deck-action" id="fullscreenButton" title="全屏（F）">⛶</button></div><div class="export-menu" id="exportMenu"><button class="export-choice" id="exportPdfButton" data-pdf-mode="print">打印 / 导出当前版本<small>在打印窗口中选择“存储为 PDF”</small></button><button class="export-choice" id="exportHtmlButton">下载 HTML<small>保留编辑、导航与图表互动</small></button></div><div class="modal-layer" id="lightbox" aria-hidden="true"><button class="modal-close" data-modal-close>×</button><div class="lightbox-content"></div></div><div class="modal-layer" id="drawer" aria-hidden="true"><button class="modal-close" data-modal-close>×</button><div class="drawer-panel"></div></div><div class="edit-toast" id="editToast"></div><script type="application/json" id="mint-deck-data">${model}</script><script>${js}</script></body></html>`;
 fs.mkdirSync(path.dirname(output), { recursive: true });
 fs.writeFileSync(output, html);
 console.log(output);

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.6",
+  "sourceContentMapVersion": "0.6",
+  "nodes": [
+    {"id":"A1","kind":"atom","label":"并列事项A","sourceRefs":["USER:1"]},
+    {"id":"A1","kind":"atom","label":"重复节点","sourceRefs":["USER:2"]}
+  ],
+  "edges": [
+    {"id":"E1","source":"A1","target":"MISSING","relationType":"parallel","direction":"directed","evidenceRefs":["USER:1"],"confidence":1,"orderBasis":{"type":"explicit-marker"},"connectorPolicy":"arrow"},
+    {"id":"E2","source":"A1","target":"MISSING","relationType":"sequence","direction":"directed","evidenceRefs":["USER:2"],"confidence":0.8,"orderBasis":{"type":"none"},"connectorPolicy":"arrow"}
+  ],
+  "migrationWarnings": []
+}

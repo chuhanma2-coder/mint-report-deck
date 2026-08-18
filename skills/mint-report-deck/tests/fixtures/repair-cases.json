@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {"id":"dedupe-and-title","issues":["DEDUP_SUPPORT","TITLE_BREAK"],"expect":"repair-required"},
+    {"id":"fake-whitespace","issues":["ZONE_REGROUP"],"expect":"repair-required"},
+    {"id":"wrong-pattern","issues":["PATTERN_REROUTE"],"expect":"repair-required"},
+    {"id":"exact-one-page-split","issues":["PAGE_SPLIT"],"expect":"blocked"},
+    {"id":"unsafe-semantic","issues":["UNSAFE"],"expect":"blocked"},
+    {"id":"two-round-limit","issues":["DEDUP_SUPPORT","TITLE_BREAK","ZONE_REGROUP"],"expect":"blocked"}
+  ]
+}

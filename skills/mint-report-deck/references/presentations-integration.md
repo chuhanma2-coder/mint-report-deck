@@ -28,9 +28,28 @@ Create `presentation-content.json` from the validated deck spec:
 - For a multi-section deck, duplicate one `section-intro` family for every top-level section. Preserve its geometry, type scale and reading order so introductions never drift into unrelated styles.
 - Replace inherited placeholder text and data; preserve the Mint master/layout/slide relationship.
 - Keep text boxes, simple diagrams, tables and charts editable.
-- For a quantitative page, verify the exported PPTX package contains a native chart part (`ppt/charts/`) or otherwise prove that its data table opens and can be edited. A vector chart specimen is only a layout guide; it does not satisfy data editability. If the runtime cannot preserve native chart data, do not claim that requirement passed and deliver the interactive HTML chart instead.
+- For a quantitative page, verify the exported PPTX package contains a native chart XML part and an Office chart relationship. Standard PowerPoint commonly uses `ppt/charts/`; the fixed Artifact Tool runtime currently uses `ppt/slides/charts/`. Either path passes only when the slide relationship type is `relationships/chart`. A vector chart specimen is only a layout guide; it does not satisfy data editability. If the runtime cannot preserve native chart data, do not claim that requirement passed and deliver the interactive HTML chart instead.
 - Never draw a page from scratch when a compatible family exists. If no controlled family can express the relationship, stop with `needs-layout-review` rather than improvising a new visual language.
 - Run full-size rendering and slide tests. Fix overlap, clipping, arbitrary Chinese wrapping, font fallback and empty placeholders.
 - Compare PPTX and HTML facts, entities, numbers, page count and reading sequence. Pixel equality is not required.
 
 The bundled library is a design and component source, not a content deck. Its specimen copy must never survive into a generated report.
+
+## Deterministic P1-08 adapter
+
+`scripts/render-pptx.mjs` is the only supported native PPTX adapter. It consumes the same validated `deck-spec.json` as HTML, builds a per-run `template-frame-map.json`, duplicates the mapped specimen slide, deletes the 25 source specimens, and edits inherited named objects. It never starts from a blank slide.
+
+Run it with the fixed Presentations runtime:
+
+```bash
+NODE_PATH="$RUNTIME_NODE_MODULES" "$RUNTIME_NODE" \
+  skills/mint-report-deck/scripts/render-pptx.mjs \
+  /absolute/path/deck-spec.json \
+  /absolute/path/report.pptx
+```
+
+The adapter blocks with `needs-layout-review` when a page has no controlled source family or exceeds a recipe capacity. It does not silently substitute a table, screenshot, or unrelated pattern.
+
+Every output directory contains `.pptx-work/template-frame-map.json`, inherited-object layouts, rendered PNG previews, a montage, and an inspect snapshot. `scripts/qa-pptx-editability.mjs` then checks slide XML, editable text/shape counts, specimen-copy leakage, image substitution and native chart parts.
+
+For chart pages, `--expect-native-chart` is mandatory. A visual chart that exports only as shapes does not pass the editable-chart requirement.

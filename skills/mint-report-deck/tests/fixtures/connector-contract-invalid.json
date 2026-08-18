@@ -1,0 +1,25 @@
+{
+  "map": {
+    "schemaVersion":"0.6",
+    "semanticGraph": {
+      "schemaVersion":"0.6","sourceContentMapVersion":"0.6",
+      "nodes":[
+        {"id":"DU:D1","kind":"atom","label":"覆盖面扩大","sourceRefs":["USER:1"]},
+        {"id":"DU:D2","kind":"atom","label":"分析深度扩大","sourceRefs":["USER:1"]}
+      ],
+      "edges":[
+        {"id":"SGE-PAR","source":"DU:D1","target":"DU:D2","relationType":"parallel","direction":"none","evidenceRefs":["USER:1"],"confidence":0.99,"orderBasis":{"type":"none"},"connectorPolicy":"none","needsReview":false}
+      ],
+      "migrationWarnings":[]
+    }
+  },
+  "deck": {
+    "schemaVersion":"0.6","slides":[{
+      "id":"P1","elementIds":["item-a"],
+      "connectors":[
+        {"id":"C1","relationRef":"SGE-PAR","connectorType":"arrow","direction":"forward","fromElementId":"item-a","toElementId":"item-b"},
+        {"id":"C2","relationRef":"MISSING","connectorType":"line","direction":"none","fromElementId":"item-a","toElementId":"item-b"}
+      ]
+    }]
+  }
+}

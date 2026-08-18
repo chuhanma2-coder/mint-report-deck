@@ -1,0 +1,10 @@
+{
+  "pageCount": 5,
+  "pages": [
+    {"id":"P1","patternId":"parallel-columns","relationType":"parallel","requiredTexts":["140","自动发现","成本费用","完整累计报告"],"arrowCount":0},
+    {"id":"P2","patternId":"horizontal-sequence","relationType":"flow","requiredTexts":["Google Play","有效变化","原文证据","Mint检查项"],"arrowCount":3},
+    {"id":"P3","patternId":"before-after","relationType":"before-after","requiredTexts":["V1","V2","83","36,868"],"arrowCount":1},
+    {"id":"P4","patternId":"risk-decision","relationType":"causal","requiredTexts":["261.53","58%","三级复核","DeepSeek V4 Pro"],"arrowCount":2},
+    {"id":"P5","patternId":"timeline","relationType":"sequence","requiredTexts":["小额熔断测试","只读知识库MCP","检索、追溯、过滤和治理查询","不开放上传、发布、驳回和删除"],"arrowCount":2}
+  ]
+}

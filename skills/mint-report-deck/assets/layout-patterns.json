@@ -1,0 +1,88 @@
+{
+  "version": "0.6",
+  "principle": "A layout pattern is eligible only when its semantic, capacity, data-shape and connector contracts all match the page contract.",
+  "fallbackPatternId": null,
+  "layoutDefaults": {
+    "canvas": {"width":1920,"height":1080},
+    "safeArea": {"x":96,"y":54,"width":1728,"height":944},
+    "grid": {"columns":12,"rows":12,"columnGap":24,"rowGap":18},
+    "primaryVisualShare": {"min":0.55,"target":0.64,"max":0.70}
+  },
+  "layoutTemplates": {
+    "editorial-full": {"zones":[
+      {"id":"title","role":"title","col":1,"colSpan":8,"row":1,"rowSpan":2,"readingOrder":1},
+      {"id":"page-answer","role":"page-answer","col":9,"colSpan":4,"row":1,"rowSpan":2,"readingOrder":2},
+      {"id":"primary","role":"primary","col":1,"colSpan":12,"row":3,"rowSpan":8,"readingOrder":3},
+      {"id":"support","role":"support","col":1,"colSpan":12,"row":11,"rowSpan":1,"readingOrder":4,"optional":true},
+      {"id":"source","role":"source","col":1,"colSpan":12,"row":12,"rowSpan":1,"readingOrder":5}
+    ]},
+    "editorial-split": {"zones":[
+      {"id":"title","role":"title","col":1,"colSpan":8,"row":1,"rowSpan":2,"readingOrder":1},
+      {"id":"page-answer","role":"page-answer","col":9,"colSpan":4,"row":1,"rowSpan":2,"readingOrder":2},
+      {"id":"primary","role":"primary","col":1,"colSpan":8,"row":3,"rowSpan":9,"readingOrder":3},
+      {"id":"support","role":"support","col":9,"colSpan":4,"row":3,"rowSpan":9,"readingOrder":4},
+      {"id":"source","role":"source","col":1,"colSpan":12,"row":12,"rowSpan":1,"readingOrder":5}
+    ]},
+    "editorial-stack": {"zones":[
+      {"id":"title","role":"title","col":1,"colSpan":8,"row":1,"rowSpan":2,"readingOrder":1},
+      {"id":"page-answer","role":"page-answer","col":9,"colSpan":4,"row":1,"rowSpan":2,"readingOrder":2},
+      {"id":"primary","role":"primary","col":1,"colSpan":12,"row":3,"rowSpan":6,"readingOrder":3},
+      {"id":"support","role":"support","col":1,"colSpan":12,"row":9,"rowSpan":3,"readingOrder":4},
+      {"id":"source","role":"source","col":1,"colSpan":12,"row":12,"rowSpan":1,"readingOrder":5}
+    ]},
+    "full-frame": {"zones":[
+      {"id":"title","role":"title","col":1,"colSpan":12,"row":1,"rowSpan":3,"readingOrder":1},
+      {"id":"page-answer","role":"page-answer","col":1,"colSpan":7,"row":4,"rowSpan":2,"readingOrder":2},
+      {"id":"primary","role":"primary","col":1,"colSpan":12,"row":6,"rowSpan":6,"readingOrder":3},
+      {"id":"source","role":"source","col":1,"colSpan":12,"row":12,"rowSpan":1,"readingOrder":4}
+    ]}
+  },
+  "patternTemplates": {
+    "hero":"full-frame",
+    "split-evidence":"editorial-split",
+    "parallel-columns":"editorial-full",
+    "parallel-bands":"editorial-full",
+    "four-grid":"editorial-full",
+    "card-matrix":"editorial-full",
+    "radial-branches":"editorial-full",
+    "layered-capability-chain":"editorial-full",
+    "horizontal-sequence":"editorial-full",
+    "vertical-sequence":"editorial-stack",
+    "timeline":"editorial-full",
+    "before-after":"editorial-full",
+    "comparison":"editorial-full",
+    "problem-cause-solution":"editorial-stack",
+    "hierarchy":"editorial-full",
+    "numeric-story":"editorial-stack",
+    "chart-insight":"editorial-split",
+    "risk-decision":"editorial-stack",
+    "media-evidence":"editorial-split",
+    "full-bleed-media":"full-frame",
+    "section-intro":"full-frame",
+    "summary-decision":"editorial-stack"
+  },
+  "patterns": [
+    {"id":"hero","pageRoles":["opening","claim","summary"],"relationTypes":["none"],"cardinality":{"min":1,"max":2},"dataShapes":["text","mixed-evidence"],"densityProfiles":["focused","balanced"],"readingAxes":["top-to-bottom"],"requiredZones":["title","primary"],"optionalZones":["evidence","source"],"connectorPolicies":["none"],"rendererKeys":{"html":"statement","pptx":"statement"},"fallback":false,"coverageTags":["hero"]},
+    {"id":"split-evidence","pageRoles":["claim","evidence","contrast"],"relationTypes":["evidence","comparison","none"],"cardinality":{"min":2,"max":4},"dataShapes":["mixed-evidence","media","text"],"densityProfiles":["balanced","compact"],"readingAxes":["left-to-right"],"requiredZones":["title","claim","evidence"],"optionalZones":["implication","source"],"connectorPolicies":["none","line"],"rendererKeys":{"html":"statement","pptx":"split-evidence"},"fallback":false,"coverageTags":["split","data-conclusion"]},
+    {"id":"parallel-columns","pageRoles":["evidence","contrast","mechanism"],"relationTypes":["parallel"],"cardinality":{"min":2,"max":3},"dataShapes":["independent-items","text"],"densityProfiles":["focused","balanced"],"readingAxes":["left-to-right"],"requiredZones":["title","parallel-items"],"optionalZones":["conclusion","source"],"connectorPolicies":["none","bracket"],"rendererKeys":{"html":"comparison","pptx":"parallel-columns"},"fallback":false,"coverageTags":["parallel-three"]},
+    {"id":"parallel-bands","pageRoles":["evidence","mechanism","summary"],"relationTypes":["parallel"],"cardinality":{"min":3,"max":6},"dataShapes":["independent-items","text"],"densityProfiles":["balanced","compact"],"readingAxes":["top-to-bottom"],"requiredZones":["title","parallel-items"],"optionalZones":["conclusion","source"],"connectorPolicies":["none","bracket"],"rendererKeys":{"html":"comparison","pptx":"parallel-bands"},"fallback":false,"coverageTags":["total-detail"]},
+    {"id":"four-grid","pageRoles":["evidence","summary"],"relationTypes":["parallel"],"cardinality":{"min":4,"max":4},"dataShapes":["independent-items"],"densityProfiles":["balanced"],"readingAxes":["numbered-path"],"requiredZones":["title","grid"],"optionalZones":["conclusion"],"connectorPolicies":["none"],"rendererKeys":{"html":"matrix","pptx":"four-grid"},"fallback":false,"coverageTags":["four-grid"]},
+    {"id":"card-matrix","pageRoles":["evidence","contrast"],"relationTypes":["parallel"],"cardinality":{"min":2,"max":4},"dataShapes":["independent-items"],"densityProfiles":["balanced","compact"],"readingAxes":["numbered-path"],"requiredZones":["title","grid"],"optionalZones":["conclusion"],"connectorPolicies":["none"],"rendererKeys":{"html":"matrix","pptx":"card-matrix"},"fallback":false,"coverageTags":["card-matrix"]},
+    {"id":"radial-branches","pageRoles":["mechanism","evidence"],"relationTypes":["parallel","hierarchy"],"cardinality":{"min":3,"max":6},"dataShapes":["independent-items","hierarchy"],"densityProfiles":["focused","balanced"],"readingAxes":["center-out"],"requiredZones":["title","center","branches"],"optionalZones":["conclusion"],"connectorPolicies":["none","branch"],"rendererKeys":{"html":"architecture-brief","pptx":"radial-branches"},"fallback":false,"coverageTags":["radial"]},
+    {"id":"layered-capability-chain","pageRoles":["mechanism","evidence","decision"],"relationTypes":["flow","hierarchy","dependency"],"cardinality":{"min":3,"max":5},"dataShapes":["ordered-actions","hierarchy","mixed-evidence"],"densityProfiles":["focused","balanced"],"readingAxes":["top-to-bottom","left-to-right"],"requiredZones":["title","capability-stages"],"optionalZones":["context","result","decision"],"connectorPolicies":["arrow","line"],"rendererKeys":{"html":"capability-chain","pptx":"layered-capability-chain"},"fallback":false,"coverageTags":["capability-chain"]},
+    {"id":"horizontal-sequence","pageRoles":["mechanism","action","evidence"],"relationTypes":["sequence","flow","dependency"],"cardinality":{"min":3,"max":6},"dataShapes":["ordered-actions"],"densityProfiles":["focused","balanced"],"readingAxes":["left-to-right"],"requiredZones":["title","steps"],"optionalZones":["focus","result"],"connectorPolicies":["arrow"],"rendererKeys":{"html":"process","pptx":"horizontal-sequence"},"fallback":false,"coverageTags":["horizontal-flow"]},
+    {"id":"vertical-sequence","pageRoles":["mechanism","action","diagnosis"],"relationTypes":["sequence","flow","dependency"],"cardinality":{"min":3,"max":6},"dataShapes":["ordered-actions"],"densityProfiles":["balanced","compact"],"readingAxes":["top-to-bottom"],"requiredZones":["title","steps"],"optionalZones":["focus","result"],"connectorPolicies":["arrow"],"rendererKeys":{"html":"process","pptx":"vertical-sequence"},"fallback":false,"coverageTags":["vertical-flow"]},
+    {"id":"timeline","pageRoles":["context","evidence","action"],"relationTypes":["temporal","sequence"],"cardinality":{"min":2,"max":7},"dataShapes":["milestones","ordered-actions"],"densityProfiles":["focused","balanced","compact"],"readingAxes":["left-to-right"],"requiredZones":["title","timeline"],"optionalZones":["decision","source"],"connectorPolicies":["axis","arrow"],"rendererKeys":{"html":"timeline","pptx":"timeline"},"fallback":false,"coverageTags":["timeline"]},
+    {"id":"before-after","pageRoles":["contrast","evidence"],"relationTypes":["before-after"],"cardinality":{"min":2,"max":2},"dataShapes":["paired-objects","mixed-evidence"],"densityProfiles":["focused","balanced"],"readingAxes":["left-to-right"],"requiredZones":["title","before","after"],"optionalZones":["change","implication"],"connectorPolicies":["arrow"],"rendererKeys":{"html":"comparison","pptx":"before-after"},"fallback":false,"coverageTags":["before-after"]},
+    {"id":"comparison","pageRoles":["contrast","evidence","decision"],"relationTypes":["comparison"],"cardinality":{"min":2,"max":5},"dataShapes":["paired-objects","text","numeric"],"densityProfiles":["focused","balanced","compact"],"readingAxes":["left-to-right"],"requiredZones":["title","comparison"],"optionalZones":["recommendation","source"],"connectorPolicies":["none","line"],"rendererKeys":{"html":"comparison","pptx":"comparison"},"fallback":false,"coverageTags":["comparison"]},
+    {"id":"problem-cause-solution","pageRoles":["diagnosis","risk","decision"],"relationTypes":["problem-cause-solution","causal"],"cardinality":{"min":3,"max":7},"dataShapes":["causal-claims"],"densityProfiles":["balanced","compact"],"readingAxes":["left-to-right","top-to-bottom"],"requiredZones":["title","problem","causes","solution"],"optionalZones":["evidence","action"],"connectorPolicies":["arrow","line"],"rendererKeys":{"html":"process","pptx":"problem-cause-solution"},"fallback":false,"coverageTags":["problem-solution"]},
+    {"id":"hierarchy","pageRoles":["context","mechanism","evidence"],"relationTypes":["hierarchy","composition"],"cardinality":{"min":3,"max":9},"dataShapes":["hierarchy"],"densityProfiles":["balanced","compact"],"readingAxes":["top-to-bottom","center-out"],"requiredZones":["title","hierarchy"],"optionalZones":["explanation","source"],"connectorPolicies":["branch","line"],"rendererKeys":{"html":"architecture-brief","pptx":"hierarchy"},"fallback":false,"coverageTags":["hierarchy"]},
+    {"id":"numeric-story","pageRoles":["claim","evidence","decision"],"relationTypes":["none","comparison","composition"],"cardinality":{"min":1,"max":4},"dataShapes":["numeric"],"densityProfiles":["focused","balanced"],"readingAxes":["top-to-bottom","left-to-right"],"requiredZones":["title","metric","meaning"],"optionalZones":["formula","threshold","source"],"connectorPolicies":["none","line"],"rendererKeys":{"html":"quantitative-story","pptx":"numeric-story"},"fallback":false,"coverageTags":["big-number"]},
+    {"id":"chart-insight","pageRoles":["evidence","claim"],"relationTypes":["temporal","comparison","composition"],"cardinality":{"min":2,"max":12},"dataShapes":["chart-series"],"densityProfiles":["balanced","compact"],"readingAxes":["left-to-right"],"requiredZones":["title","chart","insight"],"optionalZones":["source","method"],"connectorPolicies":["none","axis"],"rendererKeys":{"html":"chart","pptx":"chart-insight"},"fallback":false,"coverageTags":["chart-insight"]},
+    {"id":"risk-decision","pageRoles":["risk","decision","action"],"relationTypes":["causal","dependency","evidence","none"],"cardinality":{"min":1,"max":4},"dataShapes":["causal-claims","mixed-evidence","text"],"densityProfiles":["focused","balanced"],"readingAxes":["top-to-bottom"],"requiredZones":["title","risk-or-decision","action"],"optionalZones":["evidence","impact"],"connectorPolicies":["none","line","arrow"],"rendererKeys":{"html":"risk-spotlight","pptx":"risk-decision"},"fallback":false,"coverageTags":["summary"]},
+    {"id":"media-evidence","pageRoles":["evidence","claim"],"relationTypes":["evidence","none"],"cardinality":{"min":1,"max":3},"dataShapes":["media","mixed-evidence"],"densityProfiles":["focused","balanced"],"readingAxes":["left-to-right","top-to-bottom"],"requiredZones":["title","media","claim"],"optionalZones":["caption","source"],"connectorPolicies":["none","line"],"rendererKeys":{"html":"media","pptx":"media-evidence"},"fallback":false,"coverageTags":["image-text"]},
+    {"id":"full-bleed-media","pageRoles":["opening","claim"],"relationTypes":["none"],"cardinality":{"min":1,"max":1},"dataShapes":["media"],"densityProfiles":["focused"],"readingAxes":["top-to-bottom"],"requiredZones":["media","title"],"optionalZones":["caption"],"connectorPolicies":["none"],"rendererKeys":{"html":"media","pptx":"full-bleed-media"},"fallback":false,"coverageTags":["full-image"]},
+    {"id":"section-intro","pageRoles":["section-intro"],"relationTypes":["none"],"cardinality":{"min":1,"max":1},"dataShapes":["text"],"densityProfiles":["focused"],"readingAxes":["top-to-bottom"],"requiredZones":["title","section-claim"],"optionalZones":["question"],"connectorPolicies":["none"],"rendererKeys":{"html":"section-intro","pptx":"section-intro"},"fallback":false,"coverageTags":["section"]},
+    {"id":"summary-decision","pageRoles":["summary","decision"],"relationTypes":["none","evidence","dependency"],"cardinality":{"min":1,"max":5},"dataShapes":["text","mixed-evidence"],"densityProfiles":["focused","balanced"],"readingAxes":["top-to-bottom"],"requiredZones":["title","conclusion","action"],"optionalZones":["evidence","source"],"connectorPolicies":["none","line"],"rendererKeys":{"html":"decision","pptx":"summary-decision"},"fallback":false,"coverageTags":["summary"]}
+  ]
+}
